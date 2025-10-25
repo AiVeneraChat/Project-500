@@ -1,21 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Project 500 - Угадай число</title>
     <style>
+        :root {
+            --primary-color: #0f0;
+            --secondary-color: #0a0;
+            --background-color: #000;
+            --container-bg: #111;
+            --game-area-bg: #050505;
+            --text-color: #0f0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
         body {
             font-family: 'Courier New', Courier, monospace;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #000;
-            color: #0f0;
+            margin: 0;
+            padding: 15px;
+            background-color: var(--background-color);
+            color: var(--text-color);
             image-rendering: pixelated;
             position: relative;
             overflow-x: hidden;
-            transition: all 0.3s ease;
+            min-height: 100vh;
+            font-size: 16px;
+            line-height: 1.4;
         }
         
         /* Эффект старого ЭЛТ-монитора */
@@ -92,74 +107,88 @@
         }
         
         .container {
-            background-color: #111;
+            background-color: var(--container-bg);
             border-radius: 0;
-            padding: 25px;
-            box-shadow: 0 0 10px #0f0;
-            border: 2px solid #0f0;
+            padding: 15px;
+            box-shadow: 0 0 10px var(--primary-color);
+            border: 2px solid var(--primary-color);
             position: relative;
             z-index: 1;
-            transition: all 0.3s ease;
+            max-width: 100%;
+            margin: 0 auto;
         }
         
         h1 {
-            color: #0f0;
+            color: var(--primary-color);
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 24px;
+            margin: 0 0 10px;
+            font-size: 22px;
             text-shadow: 2px 2px 0 #030;
             width: 100%;
-            transition: all 0.3s ease;
         }
         
         .subtitle {
             text-align: center;
-            color: #0a0;
-            margin-bottom: 30px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
             font-size: 14px;
-            transition: all 0.3s ease;
         }
         
         .game-area {
-            margin: 20px 0;
-            padding: 15px;
-            border: 2px solid #0a0;
+            margin: 15px 0;
+            padding: 12px;
+            border: 2px solid var(--secondary-color);
             border-radius: 0;
-            background-color: #050505;
-            transition: all 0.3s ease;
+            background-color: var(--game-area-bg);
         }
         
         input[type="number"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0;
-            border: 2px solid #0a0;
+            border: 2px solid var(--secondary-color);
             border-radius: 0;
             box-sizing: border-box;
-            background-color: #000;
-            color: #0f0;
+            background-color: var(--background-color);
+            color: var(--text-color);
             font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            font-size: 18px;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        
+        /* Убираем стрелки в input number */
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
         }
         
         button {
-            background-color: #000;
-            color: #0f0;
-            border: 2px solid #0f0;
-            padding: 10px 15px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+            padding: 12px 15px;
             border-radius: 0;
             cursor: pointer;
             font-size: 16px;
-            margin: 5px;
             font-family: 'Courier New', Courier, monospace;
             image-rendering: pixelated;
             transition: all 0.3s ease;
+            flex: 1;
+            min-height: 50px;
         }
         
-        button:hover {
-            background-color: #0f0;
-            color: #000;
+        button:hover, button:active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
         }
         
         button:disabled {
@@ -170,139 +199,157 @@
         }
         
         #newGameBtn {
-            background-color: #000;
-            color: #0f0;
-            border: 2px solid #0f0;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
         }
         
-        #newGameBtn:hover {
-            background-color: #0f0;
-            color: #000;
+        #newGameBtn:hover, #newGameBtn:active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
         }
         
         .message {
-            padding: 10px;
+            padding: 12px;
             margin: 15px 0;
             border-radius: 0;
             text-align: center;
             font-weight: bold;
-            border: 2px solid #0a0;
-            transition: all 0.3s ease;
+            border: 2px solid var(--secondary-color);
+            font-size: 16px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .hint {
             background-color: #051005;
-            border: 2px solid #0a0;
-            color: #0f0;
+            border: 2px solid var(--secondary-color);
+            color: var(--text-color);
         }
         
         .success {
             background-color: #051005;
-            border: 2px solid #0f0;
-            color: #0f0;
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
             animation: pulse 0.5s infinite alternate;
         }
         
         @keyframes pulse {
-            from { box-shadow: 0 0 5px #0f0; }
-            to { box-shadow: 0 0 20px #0f0; }
+            from { box-shadow: 0 0 5px var(--primary-color); }
+            to { box-shadow: 0 0 20px var(--primary-color); }
         }
         
         .attempts {
             margin-top: 15px;
             font-style: italic;
-            color: #0a0;
-            transition: all 0.3s ease;
+            color: var(--secondary-color);
+            text-align: center;
+            font-size: 16px;
         }
         
         .rules {
-            margin-top: 25px;
-            padding: 15px;
+            margin-top: 20px;
+            padding: 12px;
             background-color: #051005;
             border-radius: 0;
             font-size: 14px;
-            border: 2px solid #0a0;
-            transition: all 0.3s ease;
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .rules h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        
+        .rules ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        
+        .rules li {
+            margin-bottom: 8px;
         }
         
         .pixel-border {
             border-style: solid;
             border-width: 4px;
-            border-color: #0f0 #050 #050 #0f0;
-            transition: all 0.3s ease;
+            border-color: var(--primary-color) #050 #050 var(--primary-color);
         }
         
         .pixel-border-reverse {
             border-style: solid;
             border-width: 4px;
-            border-color: #050 #0f0 #0f0 #050;
-            transition: all 0.3s ease;
+            border-color: #050 var(--primary-color) var(--primary-color) #050;
         }
         
         .history-section {
             margin: 15px 0;
             padding: 10px;
             background-color: #051005;
-            border: 1px solid #0a0;
-            transition: all 0.3s ease;
+            border: 1px solid var(--secondary-color);
+        }
+        
+        .history-section h3 {
+            margin-top: 0;
+            text-align: center;
         }
         
         .history-list {
-            max-height: 150px;
+            max-height: 120px;
             overflow-y: auto;
             margin-top: 10px;
             padding: 8px;
-            background-color: #000;
-            border: 1px dashed #0a0;
-            font-size: 13px;
-            color: #0a0;
-            transition: all 0.3s ease;
+            background-color: var(--background-color);
+            border: 1px dashed var(--secondary-color);
+            font-size: 14px;
+            color: var(--secondary-color);
         }
         
         /* Стилизация скроллбара */
         .history-list::-webkit-scrollbar {
-            width: 12px;
+            width: 8px;
         }
         
         .history-list::-webkit-scrollbar-track {
             background: #051005;
-            border: 1px solid #0a0;
+            border: 1px solid var(--secondary-color);
         }
         
         .history-list::-webkit-scrollbar-thumb {
-            background: #0a0;
-            border: 1px solid #0f0;
+            background: var(--secondary-color);
+            border: 1px solid var(--primary-color);
         }
         
         .history-list::-webkit-scrollbar-thumb:hover {
-            background: #0f0;
+            background: var(--primary-color);
         }
         
         .history-item {
             margin: 5px 0;
             padding: 3px;
-            border-bottom: 1px solid #0a0;
+            border-bottom: 1px solid var(--secondary-color);
         }
         
-        /* Новые стили для визуализации диапазона */
+        /* Визуализация диапазона */
         .range-visualization {
             margin: 20px 0;
             padding: 10px;
-            background-color: #000;
-            border: 1px solid #0a0;
+            background-color: var(--background-color);
+            border: 1px solid var(--secondary-color);
             position: relative;
-            height: 80px;
-            transition: all 0.5s ease;
+            height: 90px;
         }
         
         .range-visualization.narrow-range {
-            box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
+            box-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
             animation: narrow-pulse 1s infinite alternate;
         }
         
         @keyframes narrow-pulse {
-            from { box-shadow: 0 0 10px #0f0, 0 0 20px #0f0; }
-            to { box-shadow: 0 0 20px #0f0, 0 0 40px #0f0; }
+            from { box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); }
+            to { box-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--primary-color); }
         }
         
         .range-scale {
@@ -310,14 +357,14 @@
             width: 100%;
             height: 40px;
             background-color: #051005;
-            border: 1px solid #0a0;
+            border: 1px solid var(--secondary-color);
             margin-bottom: 10px;
         }
         
         .range-numbers {
             display: flex;
             justify-content: space-between;
-            color: #0a0;
+            color: var(--secondary-color);
             font-size: 12px;
             margin-top: 5px;
         }
@@ -326,7 +373,7 @@
             position: absolute;
             height: 100%;
             background-color: rgba(0, 255, 0, 0.2);
-            border: 1px solid #0f0;
+            border: 1px solid var(--primary-color);
             transition: all 0.5s ease;
         }
         
@@ -334,7 +381,6 @@
             position: absolute;
             width: 2px;
             height: 100%;
-            background-color: #f00;
             top: 0;
         }
         
@@ -347,18 +393,18 @@
         }
         
         .range-marker.correct {
-            background-color: #0f0;
+            background-color: var(--primary-color);
             width: 4px;
             height: 120%;
             top: -10%;
-            box-shadow: 0 0 10px #0f0;
+            box-shadow: 0 0 10px var(--primary-color);
             animation: correct-pulse 1s infinite;
         }
         
         @keyframes correct-pulse {
-            0% { box-shadow: 0 0 5px #0f0; }
-            50% { box-shadow: 0 0 15px #0f0; }
-            100% { box-shadow: 0 0 5px #0f0; }
+            0% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 15px var(--primary-color); }
+            100% { box-shadow: 0 0 5px var(--primary-color); }
         }
         
         .marker-label {
@@ -366,18 +412,24 @@
             top: -20px;
             left: -10px;
             font-size: 10px;
-            color: #0f0;
-            background-color: #000;
+            color: var(--primary-color);
+            background-color: var(--background-color);
             padding: 2px;
-            border: 1px solid #0a0;
+            border: 1px solid var(--secondary-color);
         }
         
         .stats {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 5px;
             margin-top: 10px;
-            font-size: 12px;
-            color: #0a0;
+            font-size: 14px;
+            color: var(--secondary-color);
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
         }
         
         .glitch-text {
@@ -458,24 +510,28 @@
         }
         
         .terminal-text {
-            color: #0f0;
-            border-right: 2px solid #0f0;
+            color: var(--primary-color);
+            border-right: 2px solid var(--primary-color);
             padding-right: 5px;
             animation: blink 1s infinite;
         }
         
         @keyframes blink {
-            0%, 100% { border-color: #0f0; }
+            0%, 100% { border-color: var(--primary-color); }
             50% { border-color: transparent; }
         }
         
         /* Стили для статистики */
         .stats-section {
             margin: 20px 0;
-            padding: 15px;
+            padding: 12px;
             background-color: #051005;
-            border: 1px solid #0a0;
-            transition: all 0.3s ease;
+            border: 1px solid var(--secondary-color);
+        }
+        
+        .stats-section h3 {
+            margin-top: 0;
+            text-align: center;
         }
         
         .stats-grid {
@@ -487,21 +543,21 @@
         
         .stat-item {
             padding: 8px;
-            background-color: #000;
-            border: 1px solid #0a0;
+            background-color: var(--background-color);
+            border: 1px solid var(--secondary-color);
             text-align: center;
         }
         
         .stat-value {
             font-size: 18px;
             font-weight: bold;
-            color: #0f0;
+            color: var(--primary-color);
             margin-top: 5px;
         }
         
         .stat-label {
             font-size: 12px;
-            color: #0a0;
+            color: var(--secondary-color);
         }
         
         /* Новые эффекты */
@@ -545,13 +601,13 @@
         
         .power-light {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background-color: #0f0;
-            box-shadow: 0 0 10px #0f0;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
             z-index: 104;
             animation: power-flicker 3s infinite;
         }
@@ -580,30 +636,14 @@
             top: -100px;
             width: 10px;
             font-size: 14px;
-            color: #0f0;
-            text-shadow: 0 0 5px #0f0;
+            color: var(--primary-color);
+            text-shadow: 0 0 5px var(--primary-color);
             animation: matrix-fall linear infinite;
         }
         
         @keyframes matrix-fall {
             0% { top: -100px; }
             100% { top: 100%; }
-        }
-        
-        /* Адаптивность для мобильных устройств */
-        @media (max-width: 600px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .range-visualization {
-                height: 100px;
-            }
         }
         
         /* Стили для режима паники */
@@ -635,7 +675,7 @@
             box-shadow: 0 0 5px #f00 !important;
         }
         
-        .panic-mode button:hover {
+        .panic-mode button:hover, .panic-mode button:active {
             background-color: #f00 !important;
             color: #000 !important;
         }
@@ -749,12 +789,14 @@
             justify-content: center;
             align-items: center;
             z-index: 200;
-            font-size: 48px;
+            font-size: 36px;
             color: #f00;
             text-shadow: 0 0 10px #f00;
             flex-direction: column;
             display: none;
             pointer-events: none;
+            padding: 20px;
+            text-align: center;
         }
         
         .panic-timer.active {
@@ -762,17 +804,18 @@
         }
         
         .timer-text {
-            font-size: 36px;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 15px;
             text-align: center;
         }
         
         .timer-count {
-            font-size: 72px;
+            font-size: 48px;
             font-weight: bold;
             color: #f00;
             text-shadow: 0 0 20px #f00;
             animation: timer-pulse 1s infinite;
+            margin-bottom: 15px;
         }
         
         @keyframes timer-pulse {
@@ -789,19 +832,21 @@
             animation: blink 1s infinite;
         }
 
- .hint-popup {
+        .hint-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #000;
-            border: 3px solid #0f0;
+            background-color: var(--background-color);
+            border: 3px solid var(--primary-color);
             padding: 20px;
             z-index: 300;
-            box-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
+            box-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--primary-color);
             text-align: center;
             animation: hint-appear 0.5s ease-out;
             display: none;
+            width: 80%;
+            max-width: 300px;
         }
         
         .hint-popup.active {
@@ -832,16 +877,16 @@
         .hint-title {
             font-size: 18px;
             margin-bottom: 15px;
-            color: #0f0;
-            text-shadow: 0 0 10px #0f0;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
         }
         
         .hint-value {
             font-size: 24px;
             font-weight: bold;
             margin: 15px 0;
-            color: #0f0;
-            text-shadow: 0 0 15px #0f0;
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color);
             animation: hint-pulse 1s infinite alternate;
         }
         
@@ -859,7 +904,7 @@
         .hint-timer {
             margin-top: 15px;
             font-size: 14px;
-            color: #0a0;
+            color: var(--secondary-color);
         }
         
         .hint-popup.panic-mode .hint-timer {
@@ -879,6 +924,54 @@
         
         .hint-overlay.active {
             display: block;
+        }
+        
+        /* Медиа-запросы для адаптивности */
+        @media (min-width: 480px) {
+            .buttons-container {
+                flex-direction: row;
+            }
+            
+            .stats {
+                flex-direction: row;
+            }
+            
+            .stats-row {
+                flex: 1;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .container {
+                max-width: 700px;
+                margin: 0 auto;
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .game-area {
+                padding: 15px;
+            }
+            
+            .buttons-container {
+                flex-direction: row;
+            }
+        }
+        
+        /* Отключение анимаций для пользователей, предпочитающих уменьшенное движение */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
@@ -911,9 +1004,12 @@
         <div class="game-area pixel-border-reverse">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
             
-            <input type="number" id="guessInput" min="1" max="1000" placeholder="Введите число от 1 до 1000">
-            <button id="guessBtn" class="pixel-border">ПРОВЕРИТЬ</button>
-            <button id="newGameBtn" class="pixel-border">НОВАЯ ИГРА</button>
+            <input type="number" id="guessInput" min="1" max="1000" placeholder="Введите число от 1 до 1000" inputmode="numeric">
+            
+            <div class="buttons-container">
+                <button id="guessBtn" class="pixel-border">ПРОВЕРИТЬ</button>
+                <button id="newGameBtn" class="pixel-border">НОВАЯ ИГРА</button>
+            </div>
             
             <div id="message" class="message"></div>
             <div id="attempts" class="attempts">Попытки: 0</div>
@@ -929,9 +1025,13 @@
                     <span>1000</span>
                 </div>
                 <div class="stats">
-                    <div>Минимум: <span id="minValue">1</span></div>
-                    <div>Максимум: <span id="maxValue">1000</span></div>
-                    <div>Текущий диапазон: <span id="currentRange">1-1000</span></div>
+                    <div class="stats-row">
+                        <div>Минимум: <span id="minValue">1</span></div>
+                        <div>Максимум: <span id="maxValue">1000</span></div>
+                    </div>
+                    <div class="stats-row">
+                        <div>Текущий диапазон: <span id="currentRange">1-1000</span></div>
+                    </div>
                 </div>
                 <div id="panicWarning" class="panic-warning" style="display: none;">
                     ВНИМАНИЕ! Диапазон сужается! Скоро активируется режим паники!
@@ -1045,18 +1145,19 @@
         
         // Создание эффекта "матричного дождя"
         function createMatrixRain() {
+            // Уменьшаем количество колонок для мобильных устройств
             const chars = "a2Lp8QMAXIMmZ0nX3B7hyR4tGcW9sD1sRUSSIA5P9";
-            const columns = Math.floor(window.innerWidth / 20);
+            const columns = Math.min(Math.floor(window.innerWidth / 30), 20);
             
             for (let i = 0; i < columns; i++) {
                 const column = document.createElement('div');
                 column.className = 'matrix-column';
-                column.style.left = (i * 20) + 'px';
+                column.style.left = (i * 30) + 'px';
                 column.style.animationDuration = (Math.random() * 5 + 5) + 's';
                 column.style.animationDelay = (Math.random() * 5) + 's';
                 
                 // Создаем символы в колонке
-                for (let j = 0; j < 20; j++) {
+                for (let j = 0; j < 15; j++) {
                     const char = document.createElement('div');
                     char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
                     char.style.opacity = Math.random() * 0.5 + 0.5;
@@ -1242,6 +1343,9 @@
             
             // Обновление визуализации диапазона
             updateRangeVisualization();
+            
+            // Фокус на поле ввода
+            guessInput.focus();
             
             console.log('Загаданное число: ' + targetNumber); // Для отладки
         }
@@ -1436,6 +1540,13 @@
             initGame();
             createMatrixRain();
         };
+        
+        // Обработка изменения ориентации экрана
+        window.addEventListener('orientationchange', function() {
+            // Пересоздаем матричный дождь при изменении ориентации
+            matrixRainEl.innerHTML = '';
+            createMatrixRain();
+        });
     </script>
 </body>
 </html>
