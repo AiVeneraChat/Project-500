@@ -1,0 +1,1441 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 500 - Угадай число</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #000;
+            color: #0f0;
+            image-rendering: pixelated;
+            position: relative;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        /* Эффект старого ЭЛТ-монитора */
+        .crt-effect::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+        
+        .crt-effect::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            z-index: 101;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+        
+        @keyframes flicker {
+            0% { opacity: 0.1; }
+            5% { opacity: 0.1; }
+            10% { opacity: 0.2; }
+            15% { opacity: 0.1; }
+            20% { opacity: 0.3; }
+            25% { opacity: 0.1; }
+            30% { opacity: 0.2; }
+            35% { opacity: 0.1; }
+            40% { opacity: 0.2; }
+            45% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+            55% { opacity: 0.1; }
+            60% { opacity: 0.2; }
+            65% { opacity: 0.1; }
+            70% { opacity: 0.1; }
+            75% { opacity: 0.2; }
+            80% { opacity: 0.1; }
+            85% { opacity: 0.2; }
+            90% { opacity: 0.1; }
+            95% { opacity: 0.3; }
+            100% { opacity: 0.1; }
+        }
+        
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            z-index: 99;
+            pointer-events: none;
+            animation: scan 3s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        
+        .container {
+            background-color: #111;
+            border-radius: 0;
+            padding: 25px;
+            box-shadow: 0 0 10px #0f0;
+            border: 2px solid #0f0;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: #0f0;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-shadow: 2px 2px 0 #030;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #0a0;
+            margin-bottom: 30px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .game-area {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #0a0;
+            border-radius: 0;
+            background-color: #050505;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #0a0;
+            border-radius: 0;
+            box-sizing: border-box;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        button {
+            background-color: #000;
+            color: #0f0;
+            border: 2px solid #0f0;
+            padding: 10px 15px;
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            image-rendering: pixelated;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #0f0;
+            color: #000;
+        }
+        
+        button:disabled {
+            background-color: #222;
+            color: #050;
+            border-color: #050;
+            cursor: not-allowed;
+        }
+        
+        #newGameBtn {
+            background-color: #000;
+            color: #0f0;
+            border: 2px solid #0f0;
+        }
+        
+        #newGameBtn:hover {
+            background-color: #0f0;
+            color: #000;
+        }
+        
+        .message {
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 0;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #0a0;
+            transition: all 0.3s ease;
+        }
+        
+        .hint {
+            background-color: #051005;
+            border: 2px solid #0a0;
+            color: #0f0;
+        }
+        
+        .success {
+            background-color: #051005;
+            border: 2px solid #0f0;
+            color: #0f0;
+            animation: pulse 0.5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { box-shadow: 0 0 5px #0f0; }
+            to { box-shadow: 0 0 20px #0f0; }
+        }
+        
+        .attempts {
+            margin-top: 15px;
+            font-style: italic;
+            color: #0a0;
+            transition: all 0.3s ease;
+        }
+        
+        .rules {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #051005;
+            border-radius: 0;
+            font-size: 14px;
+            border: 2px solid #0a0;
+            transition: all 0.3s ease;
+        }
+        
+        .pixel-border {
+            border-style: solid;
+            border-width: 4px;
+            border-color: #0f0 #050 #050 #0f0;
+            transition: all 0.3s ease;
+        }
+        
+        .pixel-border-reverse {
+            border-style: solid;
+            border-width: 4px;
+            border-color: #050 #0f0 #0f0 #050;
+            transition: all 0.3s ease;
+        }
+        
+        .history-section {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #051005;
+            border: 1px solid #0a0;
+            transition: all 0.3s ease;
+        }
+        
+        .history-list {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #000;
+            border: 1px dashed #0a0;
+            font-size: 13px;
+            color: #0a0;
+            transition: all 0.3s ease;
+        }
+        
+        /* Стилизация скроллбара */
+        .history-list::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        .history-list::-webkit-scrollbar-track {
+            background: #051005;
+            border: 1px solid #0a0;
+        }
+        
+        .history-list::-webkit-scrollbar-thumb {
+            background: #0a0;
+            border: 1px solid #0f0;
+        }
+        
+        .history-list::-webkit-scrollbar-thumb:hover {
+            background: #0f0;
+        }
+        
+        .history-item {
+            margin: 5px 0;
+            padding: 3px;
+            border-bottom: 1px solid #0a0;
+        }
+        
+        /* Новые стили для визуализации диапазона */
+        .range-visualization {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #000;
+            border: 1px solid #0a0;
+            position: relative;
+            height: 80px;
+            transition: all 0.5s ease;
+        }
+        
+        .range-visualization.narrow-range {
+            box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
+            animation: narrow-pulse 1s infinite alternate;
+        }
+        
+        @keyframes narrow-pulse {
+            from { box-shadow: 0 0 10px #0f0, 0 0 20px #0f0; }
+            to { box-shadow: 0 0 20px #0f0, 0 0 40px #0f0; }
+        }
+        
+        .range-scale {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            background-color: #051005;
+            border: 1px solid #0a0;
+            margin-bottom: 10px;
+        }
+        
+        .range-numbers {
+            display: flex;
+            justify-content: space-between;
+            color: #0a0;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .range-current {
+            position: absolute;
+            height: 100%;
+            background-color: rgba(0, 255, 0, 0.2);
+            border: 1px solid #0f0;
+            transition: all 0.5s ease;
+        }
+        
+        .range-marker {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background-color: #f00;
+            top: 0;
+        }
+        
+        .range-marker.higher {
+            background-color: #ff0;
+        }
+        
+        .range-marker.lower {
+            background-color: #0ff;
+        }
+        
+        .range-marker.correct {
+            background-color: #0f0;
+            width: 4px;
+            height: 120%;
+            top: -10%;
+            box-shadow: 0 0 10px #0f0;
+            animation: correct-pulse 1s infinite;
+        }
+        
+        @keyframes correct-pulse {
+            0% { box-shadow: 0 0 5px #0f0; }
+            50% { box-shadow: 0 0 15px #0f0; }
+            100% { box-shadow: 0 0 5px #0f0; }
+        }
+        
+        .marker-label {
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-size: 10px;
+            color: #0f0;
+            background-color: #000;
+            padding: 2px;
+            border: 1px solid #0a0;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #0a0;
+        }
+        
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 red;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 blue;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(42px, 9999px, 44px, 0); }
+            5% { clip: rect(12px, 9999px, 59px, 0); }
+            10% { clip: rect(48px, 9999px, 29px, 0); }
+            15% { clip: rect(42px, 9999px, 73px, 0); }
+            20% { clip: rect(63px, 9999px, 27px, 0); }
+            25% { clip: rect(34px, 9999px, 55px, 0); }
+            30% { clip: rect(86px, 9999px, 73px, 0); }
+            35% { clip: rect(20px, 9999px, 20px, 0); }
+            40% { clip: rect(26px, 9999px, 60px, 0); }
+            45% { clip: rect(25px, 9999px, 66px, 0); }
+            50% { clip: rect(57px, 9999px, 98px, 0); }
+            55% { clip: rect(5px, 9999px, 46px, 0); }
+            60% { clip: rect(82px, 9999px, 31px, 0); }
+            65% { clip: rect(54px, 9999px, 27px, 0); }
+            70% { clip: rect(28px, 9999px, 99px, 0); }
+            75% { clip: rect(45px, 9999px, 69px, 0); }
+            80% { clip: rect(23px, 9999px, 85px, 0); }
+            85% { clip: rect(54px, 9999px, 84px, 0); }
+            90% { clip: rect(45px, 9999px, 47px, 0); }
+            95% { clip: rect(37px, 9999px, 20px, 0); }
+            100% { clip: rect(4px, 9999px, 91px, 0); }
+        }
+        
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            5% { clip: rect(52px, 9999px, 74px, 0); }
+            10% { clip: rect(79px, 9999px, 85px, 0); }
+            15% { clip: rect(75px, 9999px, 5px, 0); }
+            20% { clip: rect(67px, 9999px, 61px, 0); }
+            25% { clip: rect(14px, 9999px, 79px, 0); }
+            30% { clip: rect(1px, 9999px, 66px, 0); }
+            35% { clip: rect(86px, 9999px, 30px, 0); }
+            40% { clip: rect(23px, 9999px, 98px, 0); }
+            45% { clip: rect(85px, 9999px, 72px, 0); }
+            50% { clip: rect(71px, 9999px, 75px, 0); }
+            55% { clip: rect(2px, 9999px, 48px, 0); }
+            60% { clip: rect(30px, 9999px, 16px, 0); }
+            65% { clip: rect(59px, 9999px, 50px, 0); }
+            70% { clip: rect(41px, 9999px, 62px, 0); }
+            75% { clip: rect(2px, 9999px, 82px, 0); }
+            80% { clip: rect(47px, 9999px, 73px, 0); }
+            85% { clip: rect(3px, 9999px, 27px, 0); }
+            90% { clip: rect(26px, 9999px, 55px, 0); }
+            95% { clip: rect(42px, 9999px, 97px, 0); }
+            100% { clip: rect(38px, 9999px, 49px, 0); }
+        }
+        
+        .terminal-text {
+            color: #0f0;
+            border-right: 2px solid #0f0;
+            padding-right: 5px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { border-color: #0f0; }
+            50% { border-color: transparent; }
+        }
+        
+        /* Стили для статистики */
+        .stats-section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #051005;
+            border: 1px solid #0a0;
+            transition: all 0.3s ease;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .stat-item {
+            padding: 8px;
+            background-color: #000;
+            border: 1px solid #0a0;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f0;
+            margin-top: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #0a0;
+        }
+        
+        /* Новые эффекты */
+        .crt-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>');
+            z-index: 102;
+            pointer-events: none;
+            opacity: 0.05;
+            animation: noise 0.2s infinite;
+        }
+        
+        @keyframes noise {
+            0% { transform: translate(0,0); }
+            10% { transform: translate(-1%,-1%); }
+            20% { transform: translate(-2%,1%); }
+            30% { transform: translate(1%,-2%); }
+            40% { transform: translate(-1%,2%); }
+            50% { transform: translate(2%,-1%); }
+            60% { transform: translate(-2%,1%); }
+            70% { transform: translate(1%,-2%); }
+            80% { transform: translate(-1%,2%); }
+            90% { transform: translate(2%,-1%); }
+            100% { transform: translate(0,0); }
+        }
+        
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+            z-index: 103;
+            pointer-events: none;
+        }
+        
+        .power-light {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #0f0;
+            box-shadow: 0 0 10px #0f0;
+            z-index: 104;
+            animation: power-flicker 3s infinite;
+        }
+        
+        @keyframes power-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+            51% { opacity: 0.3; }
+            52% { opacity: 0.7; }
+            95% { opacity: 0.8; }
+        }
+        
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.1;
+        }
+        
+        .matrix-column {
+            position: absolute;
+            top: -100px;
+            width: 10px;
+            font-size: 14px;
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+            animation: matrix-fall linear infinite;
+        }
+        
+        @keyframes matrix-fall {
+            0% { top: -100px; }
+            100% { top: 100%; }
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .range-visualization {
+                height: 100px;
+            }
+        }
+        
+        /* Стили для режима паники */
+        .panic-mode {
+            color: #f00 !important;
+            border-color: #f00 !important;
+            box-shadow: 0 0 10px #f00 !important;
+        }
+        
+        .panic-mode .container {
+            box-shadow: 0 0 10px #f00, 0 0 20px #f00 !important;
+            border: 2px solid #f00 !important;
+        }
+        
+        .panic-mode .game-area {
+            border: 2px solid #f00 !important;
+            box-shadow: 0 0 10px #f00 !important;
+        }
+        
+        .panic-mode input[type="number"] {
+            border: 2px solid #f00 !important;
+            color: #f00 !important;
+            box-shadow: 0 0 5px #f00 !important;
+        }
+        
+        .panic-mode button {
+            color: #f00 !important;
+            border: 2px solid #f00 !important;
+            box-shadow: 0 0 5px #f00 !important;
+        }
+        
+        .panic-mode button:hover {
+            background-color: #f00 !important;
+            color: #000 !important;
+        }
+        
+        .panic-mode .message {
+            border: 2px solid #f00 !important;
+            box-shadow: 0 0 5px #f00 !important;
+        }
+        
+        .panic-mode .hint {
+            background-color: #300 !important;
+            border: 2px solid #f00 !important;
+            color: #f00 !important;
+        }
+        
+        .panic-mode .success {
+            background-color: #300 !important;
+            border: 2px solid #f00 !important;
+            color: #f00 !important;
+        }
+        
+        .panic-mode .attempts {
+            color: #f00 !important;
+        }
+        
+        .panic-mode .rules {
+            background-color: #300 !important;
+            border: 2px solid #f00 !important;
+            color: #f00 !important;
+        }
+        
+        .panic-mode .history-section {
+            background-color: #300 !important;
+            border: 1px solid #f00 !important;
+        }
+        
+        .panic-mode .history-list {
+            background-color: #200 !important;
+            border: 1px dashed #f00 !important;
+            color: #f00 !important;
+        }
+        
+        .panic-mode .stats-section {
+            background-color: #300 !important;
+            border: 1px solid #f00 !important;
+        }
+        
+        .panic-mode .stat-item {
+            border: 1px solid #f00 !important;
+        }
+        
+        .panic-mode .stat-value {
+            color: #f00 !important;
+        }
+        
+        .panic-mode .range-visualization {
+            border: 1px solid #f00 !important;
+            box-shadow: 0 0 10px #f00 !important;
+        }
+        
+        .panic-mode .range-scale {
+            background-color: #300 !important;
+            border: 1px solid #f00 !important;
+        }
+        
+        .panic-mode .range-numbers {
+            color: #f00 !important;
+        }
+        
+        .panic-mode .range-current {
+            background-color: rgba(255, 0, 0, 0.2) !important;
+            border: 1px solid #f00 !important;
+        }
+        
+        .panic-mode .scan-line {
+            background: rgba(255, 0, 0, 0.3) !important;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5) !important;
+        }
+        
+        .panic-mode .power-light {
+            background-color: #f00 !important;
+            box-shadow: 0 0 10px #f00 !important;
+        }
+        
+        .shake-screen {
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        
+        .panic-timer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            font-size: 48px;
+            color: #f00;
+            text-shadow: 0 0 10px #f00;
+            flex-direction: column;
+            display: none;
+            pointer-events: none;
+        }
+        
+        .panic-timer.active {
+            display: flex;
+        }
+        
+        .timer-text {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .timer-count {
+            font-size: 72px;
+            font-weight: bold;
+            color: #f00;
+            text-shadow: 0 0 20px #f00;
+            animation: timer-pulse 1s infinite;
+        }
+        
+        @keyframes timer-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .panic-warning {
+            color: #f00;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            animation: blink 1s infinite;
+        }
+
+ .hint-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #000;
+            border: 3px solid #0f0;
+            padding: 20px;
+            z-index: 300;
+            box-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
+            text-align: center;
+            animation: hint-appear 0.5s ease-out;
+            display: none;
+        }
+        
+        .hint-popup.active {
+            display: block;
+        }
+        
+        .hint-popup.panic-mode {
+            border: 3px solid #f00;
+            box-shadow: 0 0 20px #f00, 0 0 40px #f00;
+            color: #f00;
+        }
+        
+        @keyframes hint-appear {
+            0% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            70% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .hint-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+        }
+        
+        .hint-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #0f0;
+            text-shadow: 0 0 15px #0f0;
+            animation: hint-pulse 1s infinite alternate;
+        }
+        
+        .hint-popup.panic-mode .hint-title,
+        .hint-popup.panic-mode .hint-value {
+            color: #f00;
+            text-shadow: 0 0 10px #f00;
+        }
+        
+        @keyframes hint-pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+        
+        .hint-timer {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #0a0;
+        }
+        
+        .hint-popup.panic-mode .hint-timer {
+            color: #a00;
+        }
+        
+        .hint-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 299;
+            display: none;
+        }
+        
+        .hint-overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="crt-effect">
+    <div class="scan-line"></div>
+    <div class="crt-noise"></div>
+    <div class="vignette"></div>
+    <div class="power-light"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+    
+    <!-- Новый элемент для подсказки -->
+    <div class="hint-overlay" id="hintOverlay"></div>
+    <div class="hint-popup" id="hintPopup">
+        <div class="hint-title">ПОДСКАЗКА СИСТЕМЫ</div>
+        <div>Попробуй число:</div>
+        <div class="hint-value" id="hintNumber">500</div>
+        <div class="hint-timer">Исчезнет через: <span id="hintTimer">5</span> сек.</div>
+    </div>
+    
+    <div class="panic-timer" id="panicTimer">
+        <div class="timer-text">РЕЖИМ ПАНИКИ!</div>
+        <div class="timer-count" id="timerCount">15</div>
+        <div class="timer-text">+10 попыток через:</div>
+    </div>
+    
+    <div class="container pixel-border">
+        <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
+        <div class="subtitle terminal-text">УГАДАЙ ЧИСЛО ОТ 1 ДО 1000</div>
+        
+        <div class="game-area pixel-border-reverse">
+            <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
+            
+            <input type="number" id="guessInput" min="1" max="1000" placeholder="Введите число от 1 до 1000">
+            <button id="guessBtn" class="pixel-border">ПРОВЕРИТЬ</button>
+            <button id="newGameBtn" class="pixel-border">НОВАЯ ИГРА</button>
+            
+            <div id="message" class="message"></div>
+            <div id="attempts" class="attempts">Попытки: 0</div>
+            
+            <!-- Визуализация диапазона -->
+            <div class="range-visualization" id="rangeVisualization">
+                <div class="range-scale" id="rangeScale">
+                    <div class="range-current" id="rangeCurrent"></div>
+                    <!-- Маркеры будут добавляться динамически -->
+                </div>
+                <div class="range-numbers">
+                    <span>1</span>
+                    <span>1000</span>
+                </div>
+                <div class="stats">
+                    <div>Минимум: <span id="minValue">1</span></div>
+                    <div>Максимум: <span id="maxValue">1000</span></div>
+                    <div>Текущий диапазон: <span id="currentRange">1-1000</span></div>
+                </div>
+                <div id="panicWarning" class="panic-warning" style="display: none;">
+                    ВНИМАНИЕ! Диапазон сужается! Скоро активируется режим паники!
+                </div>
+            </div>
+            
+            <!-- Секция истории -->
+            <div class="history-section">
+                <h3>ИСТОРИЯ ПОПЫТОК:</h3>
+                <div id="historyList" class="history-list">
+                    <!-- История будет добавляться сюда -->
+                </div>
+            </div>
+            
+            <!-- Секция статистики -->
+            <div class="stats-section">
+                <h3>СТАТИСТИКА:</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">СЫГРАНО ИГР</div>
+                        <div class="stat-value" id="gamesPlayed">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">РЕКОРД</div>
+                        <div class="stat-value" id="bestScore">-</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">СРЕДНЕЕ</div>
+                        <div class="stat-value" id="averageAttempts">-</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">ПОСЛЕДНЯЯ</div>
+                        <div class="stat-value" id="lastAttempts">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="rules pixel-border-reverse">
+            <h3>ПРАВИЛА ИГРЫ:</h3>
+            <ul>
+                <li>Компьютер загадывает случайное число от 1 до 1000</li>
+                <li>Вы вводите число в поле выше и нажимаете "ПРОВЕРИТЬ"</li>
+                <li>Компьютер подскажет, больше или меньше загаданное число</li>
+                <li>Цель - угадать число за минимальное количество попыток</li>
+                <li>Для начала новой игры нажмите кнопку "НОВАЯ ИГРА"</li>
+                <li>Все ваши попытки сохраняются в истории ниже</li>
+                <li>Диапазон возможных чисел сужается после каждой попытки</li>
+                <li>Когда диапазон становится узким, он начинает светиться!</li>
+                <li>При сужении диапазона до 10 чисел активируется режим паники!</li>
+                <li>Каждые 5 попыток система предлагает подсказку</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Игровые переменные
+        let targetNumber;
+        let attempts;
+        let gameActive;
+        let guessHistory;
+        const minRange = 1;
+        const maxRange = 1000;
+        let currentMin;
+        let currentMax;
+        let panicModeActive = false;
+        let panicTimer;
+        let panicTimeLeft = 15;
+        
+        // Переменные для системы подсказок
+        let hintActive = false;
+        let hintTimer;
+        let hintTimeLeft = 5;
+        
+        // Статистика
+        let gamesPlayed = 0;
+        let bestScore = null;
+        let totalAttempts = 0;
+        let lastAttempts = 0;
+        
+        // Элементы DOM
+        const guessInput = document.getElementById('guessInput');
+        const guessBtn = document.getElementById('guessBtn');
+        const newGameBtn = document.getElementById('newGameBtn');
+        const messageEl = document.getElementById('message');
+        const attemptsEl = document.getElementById('attempts');
+        const historyListEl = document.getElementById('historyList');
+        const rangeScaleEl = document.getElementById('rangeScale');
+        const rangeCurrentEl = document.getElementById('rangeCurrent');
+        const minValueEl = document.getElementById('minValue');
+        const maxValueEl = document.getElementById('maxValue');
+        const currentRangeEl = document.getElementById('currentRange');
+        const rangeVisualizationEl = document.getElementById('rangeVisualization');
+        const matrixRainEl = document.getElementById('matrixRain');
+        const panicTimerEl = document.getElementById('panicTimer');
+        const timerCountEl = document.getElementById('timerCount');
+        const panicWarningEl = document.getElementById('panicWarning');
+        const bodyEl = document.body;
+        
+        // Элементы для подсказок
+        const hintPopup = document.getElementById('hintPopup');
+        const hintOverlay = document.getElementById('hintOverlay');
+        const hintNumberEl = document.getElementById('hintNumber');
+        const hintTimerEl = document.getElementById('hintTimer');
+        
+        // Элементы статистики
+        const gamesPlayedEl = document.getElementById('gamesPlayed');
+        const bestScoreEl = document.getElementById('bestScore');
+        const averageAttemptsEl = document.getElementById('averageAttempts');
+        const lastAttemptsEl = document.getElementById('lastAttempts');
+        
+        // Создание эффекта "матричного дождя"
+        function createMatrixRain() {
+            const chars = "a2Lp8QMAXIMmZ0nX3B7hyR4tGcW9sD1sRUSSIA5P9";
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = (i * 20) + 'px';
+                column.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                column.style.animationDelay = (Math.random() * 5) + 's';
+                
+                // Создаем символы в колонке
+                for (let j = 0; j < 20; j++) {
+                    const char = document.createElement('div');
+                    char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                    char.style.opacity = Math.random() * 0.5 + 0.5;
+                    column.appendChild(char);
+                }
+                
+                matrixRainEl.appendChild(column);
+            }
+        }
+        
+        // Функции для системы подсказок
+        function showHint() {
+            if (!gameActive || hintActive) return;
+            
+            // Вычисляем подсказку - среднее между текущим минимумом и максимумом
+            const hintNumber = Math.round((currentMin + currentMax) / 2);
+            hintNumberEl.textContent = hintNumber;
+            hintTimeLeft = 5;
+            hintTimerEl.textContent = hintTimeLeft;
+            
+            // Активируем подсказку
+            hintActive = true;
+            hintOverlay.classList.add('active');
+            hintPopup.classList.add('active');
+            
+            // Если активен режим паники, добавляем соответствующий стиль
+            if (panicModeActive) {
+                hintPopup.classList.add('panic-mode');
+            } else {
+                hintPopup.classList.remove('panic-mode');
+            }
+            
+            // Запускаем таймер подсказки
+            hintTimer = setInterval(function() {
+                hintTimeLeft--;
+                hintTimerEl.textContent = hintTimeLeft;
+                
+                if (hintTimeLeft <= 0) {
+                    hideHint();
+                }
+            }, 1000);
+        }
+        
+        function hideHint() {
+            hintActive = false;
+            hintOverlay.classList.remove('active');
+            hintPopup.classList.remove('active');
+            clearInterval(hintTimer);
+        }
+        
+        // Функции для режима паники
+        function activatePanicMode() {
+            if (panicModeActive) return;
+            
+            panicModeActive = true;
+            bodyEl.classList.add('panic-mode', 'shake-screen');
+            panicTimerEl.classList.add('active');
+            panicTimeLeft = 15;
+            timerCountEl.textContent = panicTimeLeft;
+            
+            // Если подсказка активна, обновляем ее стиль
+            if (hintActive) {
+                hintPopup.classList.add('panic-mode');
+            }
+            
+            // Запускаем таймер
+            panicTimer = setInterval(function() {
+                panicTimeLeft--;
+                timerCountEl.textContent = panicTimeLeft;
+                
+                if (panicTimeLeft <= 0) {
+                    deactivatePanicMode();
+                    attempts += 10;
+                    attemptsEl.textContent = `Попытки: ${attempts}`;
+                    messageEl.textContent = 'РЕЖИМ ПАНИКИ ЗАВЕРШЕН! +10 попыток!';
+                    messageEl.className = 'message hint';
+                }
+            }, 1000);
+        }
+        
+        function deactivatePanicMode() {
+            panicModeActive = false;
+            bodyEl.classList.remove('panic-mode', 'shake-screen');
+            panicTimerEl.classList.remove('active');
+            clearInterval(panicTimer);
+            
+            // Если подсказка активна, убираем стиль паники
+            if (hintActive) {
+                hintPopup.classList.remove('panic-mode');
+            }
+        }
+        
+        // Загрузка статистики из localStorage
+        function loadStats() {
+            const savedStats = localStorage.getItem('project500_stats');
+            if (savedStats) {
+                const stats = JSON.parse(savedStats);
+                gamesPlayed = stats.gamesPlayed || 0;
+                bestScore = stats.bestScore || null;
+                totalAttempts = stats.totalAttempts || 0;
+                lastAttempts = stats.lastAttempts || 0;
+            }
+            updateStatsDisplay();
+        }
+        
+        // Сохранение статистики в localStorage
+        function saveStats() {
+            const stats = {
+                gamesPlayed,
+                bestScore,
+                totalAttempts,
+                lastAttempts
+            };
+            localStorage.setItem('project500_stats', JSON.stringify(stats));
+        }
+        
+        // Обновление отображения статистики
+        function updateStatsDisplay() {
+            gamesPlayedEl.textContent = gamesPlayed;
+            
+            if (bestScore !== null) {
+                bestScoreEl.textContent = bestScore;
+            } else {
+                bestScoreEl.textContent = '-';
+            }
+            
+            if (gamesPlayed > 0) {
+                const average = (totalAttempts / gamesPlayed).toFixed(1);
+                averageAttemptsEl.textContent = average;
+            } else {
+                averageAttemptsEl.textContent = '-';
+            }
+            
+            if (lastAttempts > 0) {
+                lastAttemptsEl.textContent = lastAttempts;
+            } else {
+                lastAttemptsEl.textContent = '-';
+            }
+        }
+        
+        // Обновление статистики после победы
+        function updateStats() {
+            gamesPlayed++;
+            totalAttempts += attempts;
+            lastAttempts = attempts;
+            
+            if (bestScore === null || attempts < bestScore) {
+                bestScore = attempts;
+            }
+            
+            updateStatsDisplay();
+            saveStats();
+        }
+        
+        // Инициализация игры
+        function initGame() {
+            currentMin = minRange;
+            currentMax = maxRange;
+            targetNumber = Math.floor(Math.random() * (maxRange - minRange + 1)) + minRange;
+            attempts = 0;
+            gameActive = true;
+            guessHistory = [];
+            
+            // Деактивируем режим паники и подсказки
+            deactivatePanicMode();
+            hideHint();
+            
+            // Обновление UI
+            messageEl.textContent = '';
+            messageEl.className = 'message';
+            attemptsEl.textContent = 'Попытки: 0';
+            historyListEl.innerHTML = '';
+            guessInput.value = '';
+            guessInput.disabled = false;
+            guessBtn.disabled = false;
+            guessInput.min = minRange;
+            guessInput.max = maxRange;
+            guessInput.placeholder = `Введите число от ${minRange} до ${maxRange}`;
+            panicWarningEl.style.display = 'none';
+            
+            // Убираем эффект свечения диапазона
+            rangeVisualizationEl.classList.remove('narrow-range');
+            
+            // Обновление визуализации диапазона
+            updateRangeVisualization();
+            
+            console.log('Загаданное число: ' + targetNumber); // Для отладки
+        }
+        
+        // Обновление визуализации диапазона
+        function updateRangeVisualization() {
+            // Очистка предыдущих маркеров
+            const markers = document.querySelectorAll('.range-marker');
+            markers.forEach(marker => marker.remove());
+            
+            // Обновление текущего диапазона
+            const rangeWidth = ((currentMax - currentMin) / (maxRange - minRange)) * 100;
+            const rangeLeft = ((currentMin - minRange) / (maxRange - minRange)) * 100;
+            
+            rangeCurrentEl.style.width = rangeWidth + '%';
+            rangeCurrentEl.style.left = rangeLeft + '%';
+            
+            // Обновление статистики
+            minValueEl.textContent = currentMin;
+            maxValueEl.textContent = currentMax;
+            currentRangeEl.textContent = `${currentMin}-${currentMax}`;
+            
+            // Проверка на узкий диапазон для эффекта свечения
+            const rangeDiff = currentMax - currentMin;
+            if (rangeDiff <= 50) {
+                rangeVisualizationEl.classList.add('narrow-range');
+            } else {
+                rangeVisualizationEl.classList.remove('narrow-range');
+            }
+            
+            // Проверка на активацию режима паники
+            if (rangeDiff <= 10 && gameActive && !panicModeActive) {
+                activatePanicMode();
+            }
+            
+            // Показ предупреждения о приближающемся режиме паники
+            if (rangeDiff <= 20 && rangeDiff > 10 && gameActive && !panicModeActive) {
+                panicWarningEl.style.display = 'block';
+            } else {
+                panicWarningEl.style.display = 'none';
+            }
+            
+            // Добавление маркеров для каждой попытки
+            guessHistory.forEach(attempt => {
+                const marker = document.createElement('div');
+                marker.className = 'range-marker';
+                
+                // Позиционирование маркера
+                const markerPosition = ((attempt.guess - minRange) / (maxRange - minRange)) * 100;
+                marker.style.left = markerPosition + '%';
+                
+                // Определение типа маркера
+                if (attempt.result === 'correct') {
+                    marker.classList.add('correct');
+                } else if (attempt.result === 'higher') {
+                    marker.classList.add('higher');
+                } else {
+                    marker.classList.add('lower');
+                }
+                
+                // Добавление подписи
+                const label = document.createElement('div');
+                label.className = 'marker-label';
+                label.textContent = attempt.guess;
+                marker.appendChild(label);
+                
+                rangeScaleEl.appendChild(marker);
+            });
+        }
+        
+        // Обновление истории
+        function updateHistory() {
+            historyListEl.innerHTML = '';
+            
+            if (guessHistory.length === 0) {
+                historyListEl.innerHTML = '<div class="history-item">История пуста</div>';
+                return;
+            }
+            
+            // Показываем историю в обратном порядке (последние попытки сверху)
+            guessHistory.slice().reverse().forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                let resultText = '';
+                if (item.result === 'correct') {
+                    resultText = '✓ УГАДАЛ';
+                } else if (item.result === 'higher') {
+                    resultText = '↑ БОЛЬШЕ';
+                } else {
+                    resultText = '↓ МЕНЬШЕ';
+                }
+                
+                historyItem.textContent = `Попытка ${item.attempt}: ${item.guess} - ${resultText}`;
+                historyListEl.appendChild(historyItem);
+            });
+        }
+        
+        // Обработка попытки угадать
+        function makeGuess() {
+            if (!gameActive) return;
+            
+            // Если активно окно подсказки, скрываем его
+            if (hintActive) {
+                hideHint();
+            }
+            
+            const userGuess = parseInt(guessInput.value);
+            
+            // Проверка ввода
+            if (isNaN(userGuess) || userGuess < minRange || userGuess > maxRange) {
+                messageEl.textContent = `Пожалуйста, введите число от ${minRange} до ${maxRange}!`;
+                messageEl.className = 'message hint';
+                return;
+            }
+            
+            attempts++;
+            attemptsEl.textContent = `Попытки: ${attempts}`;
+            
+            // Проверяем, нужно ли показать подсказку (каждые 5 попыток)
+            if (attempts % 5 === 0 && attempts > 0) {
+                // Показываем подсказку через небольшую задержку
+                setTimeout(showHint, 500);
+            }
+            
+            // Записываем попытку в историю
+            let result;
+            if (userGuess === targetNumber) {
+                result = 'correct';
+                messageEl.textContent = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!`;
+                messageEl.className = 'message success';
+                gameActive = false;
+                guessInput.disabled = true;
+                guessBtn.disabled = true;
+                
+                // Деактивируем режим паники и подсказки при победе
+                deactivatePanicMode();
+                hideHint();
+                
+                // Обновляем статистику
+                updateStats();
+            } else if (userGuess < targetNumber) {
+                result = 'higher';
+                messageEl.textContent = 'Загаданное число БОЛЬШЕ!';
+                messageEl.className = 'message hint';
+                // Обновляем минимальное значение диапазона
+                if (userGuess > currentMin) {
+                    currentMin = userGuess + 1;
+                }
+            } else {
+                result = 'lower';
+                messageEl.textContent = 'Загаданное число МЕНЬШЕ!';
+                messageEl.className = 'message hint';
+                // Обновляем максимальное значение диапазона
+                if (userGuess < currentMax) {
+                    currentMax = userGuess - 1;
+                }
+            }
+            
+            // Добавляем попытку в историю
+            guessHistory.push({
+                attempt: attempts,
+                guess: userGuess,
+                result: result
+            });
+            
+            // Обновляем отображение истории и диапазона
+            updateHistory();
+            updateRangeVisualization();
+            
+            guessInput.value = '';
+            guessInput.focus();
+        }
+        
+        // Обработчики событий
+        guessBtn.addEventListener('click', makeGuess);
+        
+        newGameBtn.addEventListener('click', initGame);
+        
+        guessInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                makeGuess();
+            }
+        });
+        
+        // Закрытие подсказки при клике на оверлей
+        hintOverlay.addEventListener('click', hideHint);
+        
+        // Начало игры при загрузке страницы
+        window.onload = function() {
+            loadStats();
+            initGame();
+            createMatrixRain();
+        };
+    </script>
+</body>
+</html>
