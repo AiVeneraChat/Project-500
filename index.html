@@ -620,32 +620,6 @@
             95% { opacity: 0.8; }
         }
         
-        .matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.1;
-        }
-        
-        .matrix-column {
-            position: absolute;
-            top: -100px;
-            width: 10px;
-            font-size: 14px;
-            color: var(--primary-color);
-            text-shadow: 0 0 5px var(--primary-color);
-            animation: matrix-fall linear infinite;
-        }
-        
-        @keyframes matrix-fall {
-            0% { top: -100px; }
-            100% { top: 100%; }
-        }
-        
         /* Стили для режима паники */
         .panic-mode {
             color: #f00 !important;
@@ -1148,7 +1122,6 @@
     <div class="crt-noise"></div>
     <div class="vignette"></div>
     <div class="power-light"></div>
-    <div class="matrix-rain" id="matrixRain"></div>
     
     <!-- Новый элемент для подсказки -->
     <div class="hint-overlay" id="hintOverlay"></div>
@@ -1175,7 +1148,7 @@
     
     <div class="container pixel-border">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.6.mini</div>
         
         <div class="game-area pixel-border-reverse">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
@@ -1312,7 +1285,6 @@
         const maxValueEl = document.getElementById('maxValue');
         const currentRangeEl = document.getElementById('currentRange');
         const rangeVisualizationEl = document.getElementById('rangeVisualization');
-        const matrixRainEl = document.getElementById('matrixRain');
         const panicTimerEl = document.getElementById('panicTimer');
         const timerCountEl = document.getElementById('timerCount');
         const panicWarningEl = document.getElementById('panicWarning');
@@ -1335,31 +1307,6 @@
         const bestScoreEl = document.getElementById('bestScore');
         const averageAttemptsEl = document.getElementById('averageAttempts');
         const lastAttemptsEl = document.getElementById('lastAttempts');
-        
-        // Создание эффекта "матричного дождя"
-        function createMatrixRain() {
-            // Уменьшаем количество колонок для мобильных устройств
-            const chars = "a2Lp8QMAXIMmZ0nX3B7hyR4tGcW9sD1sRUSSIA5P9";
-            const columns = Math.min(Math.floor(window.innerWidth / 30), 20);
-            
-            for (let i = 0; i < columns; i++) {
-                const column = document.createElement('div');
-                column.className = 'matrix-column';
-                column.style.left = (i * 30) + 'px';
-                column.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                column.style.animationDelay = (Math.random() * 5) + 's';
-                
-                // Создаем символы в колонке
-                for (let j = 0; j < 15; j++) {
-                    const char = document.createElement('div');
-                    char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-                    char.style.opacity = Math.random() * 0.5 + 0.5;
-                    column.appendChild(char);
-                }
-                
-                matrixRainEl.appendChild(column);
-            }
-        }
         
         // Функции для системы подсказок
         function showHint() {
@@ -1405,7 +1352,7 @@
         
         // Функции для режима тревоги
         function activateAlarmMode() {
-            if (alarmModeActive || (currentMax - currentMin) < 10) return;
+            if (alarmModeActive || (currentMax - currentMin) < 15) return;
             
             alarmModeActive = true;
             bodyEl.classList.add('alarm-mode');
@@ -1804,15 +1751,7 @@
         window.onload = function() {
             loadStats();
             initGame();
-            createMatrixRain();
         };
-        
-        // Обработка изменения ориентации экрана
-        window.addEventListener('orientationchange', function() {
-            // Пересоздаем матричный дождь при изменении ориентации
-            matrixRainEl.innerHTML = '';
-            createMatrixRain();
-        });
     </script>
 </body>
 </html>
