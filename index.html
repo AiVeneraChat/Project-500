@@ -1068,6 +1068,114 @@
             animation: blink 1s infinite;
         }
         
+        /* Стили для кнопки сброса прогресса */
+        .reset-section {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #200;
+            border-radius: 0;
+            font-size: 14px;
+            border: 2px solid #500;
+            text-align: center;
+        }
+        
+        .reset-section h3 {
+            margin-top: 0;
+            text-align: center;
+            color: #a00;
+        }
+        
+        #resetProgressBtn {
+            background-color: #200;
+            color: #a00;
+            border: 2px solid #a00;
+            margin-top: 10px;
+        }
+        
+        #resetProgressBtn:hover, #resetProgressBtn:active {
+            background-color: #a00;
+            color: #200;
+        }
+        
+        /* Модальное окно подтверждения сброса */
+        .reset-confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 400;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .reset-confirm-overlay.active {
+            display: flex;
+        }
+        
+        .reset-confirm-popup {
+            background-color: var(--background-color);
+            border: 3px solid #a00;
+            padding: 25px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 0 20px #a00, 0 0 40px #a00;
+            animation: hint-appear 0.5s ease-out;
+        }
+        
+        .reset-confirm-popup h3 {
+            margin-top: 0;
+            color: #a00;
+            text-shadow: 0 0 10px #a00;
+            font-size: 20px;
+        }
+        
+        .reset-confirm-popup p {
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        
+        .reset-confirm-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .reset-confirm-btn {
+            padding: 10px 20px;
+            border: 2px solid;
+            background-color: var(--background-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+        
+        #confirmResetBtn {
+            color: #a00;
+            border-color: #a00;
+        }
+        
+        #confirmResetBtn:hover, #confirmResetBtn:active {
+            background-color: #a00;
+            color: var(--background-color);
+        }
+        
+        #cancelResetBtn {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        #cancelResetBtn:hover, #cancelResetBtn:active {
+            background-color: var(--secondary-color);
+            color: var(--background-color);
+        }
+        
         /* Медиа-запросы для адаптивности */
         @media (min-width: 480px) {
             .buttons-container {
@@ -1146,9 +1254,22 @@
         <div class="timer-text">+10 попыток через:</div>
     </div>
     
+    <!-- Окно подтверждения сброса прогресса -->
+    <div class="reset-confirm-overlay" id="resetConfirmOverlay">
+        <div class="reset-confirm-popup">
+            <h3>СБРОС ПРОГРЕССА</h3>
+            <p>Вы уверены, что хотите сбросить ВЕСЬ прогресс за ВСЕ игры?</p>
+            <p>Это действие нельзя отменить!</p>
+            <div class="reset-confirm-buttons">
+                <button id="confirmResetBtn" class="reset-confirm-btn">ДА, СБРОСИТЬ</button>
+                <button id="cancelResetBtn" class="reset-confirm-btn">ОТМЕНА</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="container pixel-border">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.7</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.7.m</div>
         
         <div class="game-area pixel-border-reverse">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
@@ -1247,6 +1368,13 @@
                 <li>Режим тревоги отключается после ввода числа</li>
             </ul>
         </div>
+        
+        <!-- Новая секция с кнопкой сброса прогресса -->
+        <div class="reset-section">
+            <h3>ОПАСНАЯ ЗОНА</h3>
+            <p>Нажатие этой кнопки полностью сбросит всю статистику и прогресс</p>
+            <button id="resetProgressBtn" class="pixel-border">СБРОСИТЬ ВЕСЬ ПРОГРЕСС</button>
+        </div>
     </div>
 
     <script>
@@ -1319,6 +1447,49 @@
         const coinsEl = document.getElementById('coins');
         const averageAttemptsEl = document.getElementById('averageAttempts');
         const lastAttemptsEl = document.getElementById('lastAttempts');
+        
+        // Элементы для сброса прогресса
+        const resetProgressBtn = document.getElementById('resetProgressBtn');
+        const resetConfirmOverlay = document.getElementById('resetConfirmOverlay');
+        const confirmResetBtn = document.getElementById('confirmResetBtn');
+        const cancelResetBtn = document.getElementById('cancelResetBtn');
+        
+        // Функция сброса прогресса
+        function resetProgress() {
+            // Сброс статистики
+            gamesPlayed = 0;
+            bestScore = null;
+            worstScore = null;
+            totalAttempts = 0;
+            lastAttempts = 0;
+            coins = 0;
+            
+            // Очистка localStorage
+            localStorage.removeItem('project500_stats');
+            
+            // Обновление отображения статистики
+            updateStatsDisplay();
+            
+            // Перезапуск игры
+            initGame();
+            
+            // Закрытие окна подтверждения
+            resetConfirmOverlay.classList.remove('active');
+            
+            // Показ сообщения о сбросе
+            messageEl.textContent = 'ПРОГРЕСС СБРОШЕН!';
+            messageEl.className = 'message hint';
+        }
+        
+        // Показать окно подтверждения сброса
+        function showResetConfirm() {
+            resetConfirmOverlay.classList.add('active');
+        }
+        
+        // Скрыть окно подтверждения сброса
+        function hideResetConfirm() {
+            resetConfirmOverlay.classList.remove('active');
+        }
         
         // Функции для системы подсказок
         function showHint() {
@@ -1774,6 +1945,18 @@
         
         // Закрытие подсказки при клике на оверлей
         hintOverlay.addEventListener('click', hideHint);
+        
+        // Обработчики для сброса прогресса
+        resetProgressBtn.addEventListener('click', showResetConfirm);
+        cancelResetBtn.addEventListener('click', hideResetConfirm);
+        confirmResetBtn.addEventListener('click', resetProgress);
+        
+        // Закрытие окна подтверждения при клике на оверлей
+        resetConfirmOverlay.addEventListener('click', function(e) {
+            if (e.target === resetConfirmOverlay) {
+                hideResetConfirm();
+            }
+        });
         
         // Начало игры при загрузке страницы
         window.onload = function() {
