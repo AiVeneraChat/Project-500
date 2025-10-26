@@ -474,15 +474,15 @@
             45% { clip: rect(25px, 9999px, 66px, 0); }
             50% { clip: rect(57px, 9999px, 98px, 0); }
             55% { clip: rect(5px, 9999px, 46px, 0); }
-            60% { clip: rect(82px, 9999px, 31px, 0); }
-            65% { clip: rect(54px, 9999px, 27px, 0); }
-            70% { clip: rect(28px, 9999px, 99px, 0); }
-            75% { clip: rect(45px, 9999px, 69px, 0); }
-            80% { clip: rect(23px, 9999px, 85px, 0); }
-            85% { clip: rect(54px, 9999px, 84px, 0); }
-            90% { clip: rect(45px, 9999px, 47px, 0); }
-            95% { clip: rect(37px, 9999px, 20px, 0); }
-            100% { clip: rect(4px, 9999px, 91px, 0); }
+            60% { clip: rect(30px, 9999px, 16px, 0); }
+            65% { clip: rect(59px, 9999px, 50px, 0); }
+            70% { clip: rect(41px, 9999px, 62px, 0); }
+            75% { clip: rect(2px, 9999px, 82px, 0); }
+            80% { clip: rect(47px, 9999px, 73px, 0); }
+            85% { clip: rect(3px, 9999px, 27px, 0); }
+            90% { clip: rect(26px, 9999px, 55px, 0); }
+            95% { clip: rect(42px, 9999px, 97px, 0); }
+            100% { clip: rect(38px, 9999px, 49px, 0); }
         }
         
         @keyframes glitch-anim2 {
@@ -926,6 +926,174 @@
             display: block;
         }
         
+        /* Стили для режима тревоги */
+        .alarm-mode {
+            color: #ff0 !important;
+            border-color: #ff0 !important;
+            box-shadow: 0 0 10px #ff0 !important;
+        }
+        
+        .alarm-mode .container {
+            box-shadow: 0 0 10px #ff0, 0 0 20px #ff0 !important;
+            border: 2px solid #ff0 !important;
+        }
+        
+        .alarm-mode .game-area {
+            border: 2px solid #ff0 !important;
+            box-shadow: 0 0 10px #ff0 !important;
+        }
+        
+        .alarm-mode input[type="number"] {
+            border: 2px solid #ff0 !important;
+            color: #ff0 !important;
+            box-shadow: 0 0 5px #ff0 !important;
+        }
+        
+        .alarm-mode button {
+            color: #ff0 !important;
+            border: 2px solid #ff0 !important;
+            box-shadow: 0 0 5px #ff0 !important;
+        }
+        
+        .alarm-mode button:hover, .alarm-mode button:active {
+            background-color: #ff0 !important;
+            color: #000 !important;
+        }
+        
+        .alarm-mode .message {
+            border: 2px solid #ff0 !important;
+            box-shadow: 0 0 5px #ff0 !important;
+        }
+        
+        .alarm-mode .hint {
+            background-color: #333300 !important;
+            border: 2px solid #ff0 !important;
+            color: #ff0 !important;
+        }
+        
+        .alarm-mode .success {
+            background-color: #333300 !important;
+            border: 2px solid #ff0 !important;
+            color: #ff0 !important;
+        }
+        
+        .alarm-mode .attempts {
+            color: #ff0 !important;
+        }
+        
+        .alarm-mode .rules {
+            background-color: #333300 !important;
+            border: 2px solid #ff0 !important;
+            color: #ff0 !important;
+        }
+        
+        .alarm-mode .history-section {
+            background-color: #333300 !important;
+            border: 1px solid #ff0 !important;
+        }
+        
+        .alarm-mode .history-list {
+            background-color: #222200 !important;
+            border: 1px dashed #ff0 !important;
+            color: #ff0 !important;
+        }
+        
+        .alarm-mode .stats-section {
+            background-color: #333300 !important;
+            border: 1px solid #ff0 !important;
+        }
+        
+        .alarm-mode .stat-item {
+            border: 1px solid #ff0 !important;
+        }
+        
+        .alarm-mode .stat-value {
+            color: #ff0 !important;
+        }
+        
+        .alarm-mode .range-visualization {
+            border: 1px solid #ff0 !important;
+            box-shadow: 0 0 10px #ff0 !important;
+        }
+        
+        .alarm-mode .range-scale {
+            background-color: #333300 !important;
+            border: 1px solid #ff0 !important;
+        }
+        
+        .alarm-mode .range-numbers {
+            color: #ff0 !important;
+        }
+        
+        .alarm-mode .range-current {
+            background-color: rgba(255, 255, 0, 0.2) !important;
+            border: 1px solid #ff0 !important;
+        }
+        
+        .alarm-mode .scan-line {
+            background: rgba(255, 255, 0, 0.3) !important;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5) !important;
+        }
+        
+        .alarm-mode .power-light {
+            background-color: #ff0 !important;
+            box-shadow: 0 0 10px #ff0 !important;
+        }
+        
+        .alarm-timer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            font-size: 36px;
+            color: #ff0;
+            text-shadow: 0 0 10px #ff0;
+            flex-direction: column;
+            display: none;
+            pointer-events: none;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .alarm-timer.active {
+            display: flex;
+        }
+        
+        .alarm-timer .timer-text {
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .alarm-timer .timer-count {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff0;
+            text-shadow: 0 0 20px #ff0;
+            animation: alarm-timer-pulse 1s infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes alarm-timer-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .alarm-warning {
+            color: #ff0;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            animation: blink 1s infinite;
+        }
+        
         /* Медиа-запросы для адаптивности */
         @media (min-width: 480px) {
             .buttons-container {
@@ -991,9 +1159,17 @@
         <div class="hint-timer">Исчезнет через: <span id="hintTimer">5</span> сек.</div>
     </div>
     
+    <!-- Таймер режима паники -->
     <div class="panic-timer" id="panicTimer">
         <div class="timer-text">РЕЖИМ ПАНИКИ!</div>
         <div class="timer-count" id="timerCount">15</div>
+        <div class="timer-text">+10 попыток через:</div>
+    </div>
+    
+    <!-- Таймер режима тревоги -->
+    <div class="alarm-timer" id="alarmTimer">
+        <div class="timer-text">РЕЖИМ ТРЕВОГИ!</div>
+        <div class="timer-count" id="alarmTimerCount">30</div>
         <div class="timer-text">+10 попыток через:</div>
     </div>
     
@@ -1035,6 +1211,9 @@
                 </div>
                 <div id="panicWarning" class="panic-warning" style="display: none;">
                     ВНИМАНИЕ! Диапазон сужается! Скоро активируется режим паники!
+                </div>
+                <div id="alarmWarning" class="alarm-warning" style="display: none;">
+                    ВНИМАНИЕ! Следующая активация режима тревоги через: <span id="alarmAttemptsLeft">2</span> попыток
                 </div>
             </div>
             
@@ -1082,7 +1261,9 @@
                 <li>Диапазон возможных чисел сужается после каждой попытки</li>
                 <li>Когда диапазон становится узким, он начинает светиться!</li>
                 <li>При сужении диапазона до 10 чисел активируется режим паники!</li>
+                <li>После 10 попыток и затем каждые 2 попытки активируется режим тревоги!</li>
                 <li>Каждые 5 попыток система предлагает подсказку</li>
+                <li>Режим тревоги отключается после ввода числа</li>
             </ul>
         </div>
     </div>
@@ -1100,6 +1281,12 @@
         let panicModeActive = false;
         let panicTimer;
         let panicTimeLeft = 15;
+        
+        // Переменные для режима тревоги
+        let alarmModeActive = false;
+        let alarmTimer;
+        let alarmTimeLeft = 30;
+        let nextAlarmAttempt = 10; // Первая активация на 10-й попытке
         
         // Переменные для системы подсказок
         let hintActive = false;
@@ -1130,6 +1317,12 @@
         const timerCountEl = document.getElementById('timerCount');
         const panicWarningEl = document.getElementById('panicWarning');
         const bodyEl = document.body;
+        
+        // Элементы для режима тревоги
+        const alarmTimerEl = document.getElementById('alarmTimer');
+        const alarmTimerCountEl = document.getElementById('alarmTimerCount');
+        const alarmWarningEl = document.getElementById('alarmWarning');
+        const alarmAttemptsLeftEl = document.getElementById('alarmAttemptsLeft');
         
         // Элементы для подсказок
         const hintPopup = document.getElementById('hintPopup');
@@ -1183,11 +1376,13 @@
             hintOverlay.classList.add('active');
             hintPopup.classList.add('active');
             
-            // Если активен режим паники, добавляем соответствующий стиль
+            // Если активен режим паники или тревоги, добавляем соответствующий стиль
             if (panicModeActive) {
                 hintPopup.classList.add('panic-mode');
+            } else if (alarmModeActive) {
+                hintPopup.classList.add('alarm-mode');
             } else {
-                hintPopup.classList.remove('panic-mode');
+                hintPopup.classList.remove('panic-mode', 'alarm-mode');
             }
             
             // Запускаем таймер подсказки
@@ -1208,6 +1403,51 @@
             clearInterval(hintTimer);
         }
         
+        // Функции для режима тревоги
+        function activateAlarmMode() {
+            if (alarmModeActive || (currentMax - currentMin) < 10) return;
+            
+            alarmModeActive = true;
+            bodyEl.classList.add('alarm-mode');
+            alarmTimerEl.classList.add('active');
+            alarmTimeLeft = 15;
+            alarmTimerCountEl.textContent = alarmTimeLeft;
+            
+            // Если подсказка активна, обновляем ее стиль
+            if (hintActive) {
+                hintPopup.classList.add('alarm-mode');
+            }
+            
+            // Запускаем таймер
+            alarmTimer = setInterval(function() {
+                alarmTimeLeft--;
+                alarmTimerCountEl.textContent = alarmTimeLeft;
+                
+                if (alarmTimeLeft <= 0) {
+                    deactivateAlarmMode();
+                    attempts += 10;
+                    attemptsEl.textContent = `Попытки: ${attempts}`;
+                    messageEl.textContent = 'РЕЖИМ ТРЕВОГИ ЗАВЕРШЕН! +10 попыток!';
+                    messageEl.className = 'message hint';
+                    
+                    // Устанавливаем следующую активацию через 2 попытки
+                    nextAlarmAttempt = attempts + 2;
+                }
+            }, 1000);
+        }
+        
+        function deactivateAlarmMode() {
+            alarmModeActive = false;
+            bodyEl.classList.remove('alarm-mode');
+            alarmTimerEl.classList.remove('active');
+            clearInterval(alarmTimer);
+            
+            // Если подсказка активна, убираем стиль тревоги
+            if (hintActive) {
+                hintPopup.classList.remove('alarm-mode');
+            }
+        }
+        
         // Функции для режима паники
         function activatePanicMode() {
             if (panicModeActive) return;
@@ -1215,7 +1455,7 @@
             panicModeActive = true;
             bodyEl.classList.add('panic-mode', 'shake-screen');
             panicTimerEl.classList.add('active');
-            panicTimeLeft = 15;
+            panicTimeLeft = 5;
             timerCountEl.textContent = panicTimeLeft;
             
             // Если подсказка активна, обновляем ее стиль
@@ -1321,9 +1561,13 @@
             gameActive = true;
             guessHistory = [];
             
-            // Деактивируем режим паники и подсказки
+            // Сбрасываем режимы
             deactivatePanicMode();
+            deactivateAlarmMode();
             hideHint();
+            
+            // Сбрасываем следующую активацию тревоги
+            nextAlarmAttempt = 10;
             
             // Обновление UI
             messageEl.textContent = '';
@@ -1337,6 +1581,7 @@
             guessInput.max = maxRange;
             guessInput.placeholder = `Введите число от ${minRange} до ${maxRange}`;
             panicWarningEl.style.display = 'none';
+            alarmWarningEl.style.display = 'none';
             
             // Убираем эффект свечения диапазона
             rangeVisualizationEl.classList.remove('narrow-range');
@@ -1386,6 +1631,14 @@
                 panicWarningEl.style.display = 'block';
             } else {
                 panicWarningEl.style.display = 'none';
+            }
+            
+            // Показ предупреждения о приближающемся режиме тревоги
+            if (attempts >= 8 && attempts < nextAlarmAttempt && gameActive && !alarmModeActive && rangeDiff >= 10) {
+                alarmWarningEl.style.display = 'block';
+                alarmAttemptsLeftEl.textContent = nextAlarmAttempt - attempts;
+            } else {
+                alarmWarningEl.style.display = 'none';
             }
             
             // Добавление маркеров для каждой попытки
@@ -1453,6 +1706,13 @@
                 hideHint();
             }
             
+            // Отключаем режим тревоги при вводе числа
+            if (alarmModeActive) {
+                deactivateAlarmMode();
+                // Устанавливаем следующую активацию через 2 попытки
+                nextAlarmAttempt = attempts + 2;
+            }
+            
             const userGuess = parseInt(guessInput.value);
             
             // Проверка ввода
@@ -1464,6 +1724,11 @@
             
             attempts++;
             attemptsEl.textContent = `Попытки: ${attempts}`;
+            
+            // Проверяем, нужно ли активировать режим тревоги
+            if (attempts === nextAlarmAttempt && (currentMax - currentMin) >= 10) {
+                activateAlarmMode();
+            }
             
             // Проверяем, нужно ли показать подсказку (каждые 5 попыток)
             if (attempts % 5 === 0 && attempts > 0) {
@@ -1481,8 +1746,9 @@
                 guessInput.disabled = true;
                 guessBtn.disabled = true;
                 
-                // Деактивируем режим паники и подсказки при победе
+                // Деактивируем режимы при победе
                 deactivatePanicMode();
+                deactivateAlarmMode();
                 hideHint();
                 
                 // Обновляем статистику
