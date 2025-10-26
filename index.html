@@ -1148,7 +1148,7 @@
     
     <div class="container pixel-border">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.6.mini</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.7</div>
         
         <div class="game-area pixel-border-reverse">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
@@ -1211,6 +1211,14 @@
                         <div class="stat-value" id="bestScore">-</div>
                     </div>
                     <div class="stat-item">
+                        <div class="stat-label">АНТИ-РЕКОРД</div>
+                        <div class="stat-value" id="worstScore">-</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">МОНЕТКИ(-)</div>
+                        <div class="stat-value" id="coins">0</div>
+                    </div>
+                    <div class="stat-item">
                         <div class="stat-label">СРЕДНЕЕ</div>
                         <div class="stat-value" id="averageAttempts">-</div>
                     </div>
@@ -1269,8 +1277,10 @@
         // Статистика
         let gamesPlayed = 0;
         let bestScore = null;
+        let worstScore = null;
         let totalAttempts = 0;
         let lastAttempts = 0;
+        let coins = 0;
         
         // Элементы DOM
         const guessInput = document.getElementById('guessInput');
@@ -1305,6 +1315,8 @@
         // Элементы статистики
         const gamesPlayedEl = document.getElementById('gamesPlayed');
         const bestScoreEl = document.getElementById('bestScore');
+        const worstScoreEl = document.getElementById('worstScore');
+        const coinsEl = document.getElementById('coins');
         const averageAttemptsEl = document.getElementById('averageAttempts');
         const lastAttemptsEl = document.getElementById('lastAttempts');
         
@@ -1444,8 +1456,10 @@
                 const stats = JSON.parse(savedStats);
                 gamesPlayed = stats.gamesPlayed || 0;
                 bestScore = stats.bestScore || null;
+                worstScore = stats.worstScore || null;
                 totalAttempts = stats.totalAttempts || 0;
                 lastAttempts = stats.lastAttempts || 0;
+                coins = stats.coins || 0;
             }
             updateStatsDisplay();
         }
@@ -1455,8 +1469,10 @@
             const stats = {
                 gamesPlayed,
                 bestScore,
+                worstScore,
                 totalAttempts,
-                lastAttempts
+                lastAttempts,
+                coins
             };
             localStorage.setItem('project500_stats', JSON.stringify(stats));
         }
@@ -1470,6 +1486,14 @@
             } else {
                 bestScoreEl.textContent = '-';
             }
+            
+            if (worstScore !== null) {
+                worstScoreEl.textContent = worstScore;
+            } else {
+                worstScoreEl.textContent = '-';
+            }
+            
+            coinsEl.textContent = coins;
             
             if (gamesPlayed > 0) {
                 const average = (totalAttempts / gamesPlayed).toFixed(1);
@@ -1493,6 +1517,10 @@
             
             if (bestScore === null || attempts < bestScore) {
                 bestScore = attempts;
+            }
+            
+            if (worstScore === null || attempts > worstScore) {
+                worstScore = attempts;
             }
             
             updateStatsDisplay();
