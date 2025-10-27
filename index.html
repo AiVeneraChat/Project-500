@@ -118,6 +118,12 @@
             margin: 0 auto;
         }
         
+        .header-container {
+            position: relative;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
         h1 {
             color: var(--primary-color);
             text-align: center;
@@ -125,6 +131,27 @@
             font-size: 22px;
             text-shadow: 2px 2px 0 #030;
             width: 100%;
+            display: inline-block;
+        }
+        
+        .do-not-press-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            padding: 2px 5px;
+            background: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .do-not-press-btn:hover {
+            background: #0f0;
+            color: #000;
         }
         
         .subtitle {
@@ -1176,6 +1203,65 @@
             color: var(--background-color);
         }
         
+        /* Модальное окно для кнопки "Не нажимать" */
+        .do-not-press-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 500;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .do-not-press-overlay.active {
+            display: flex;
+        }
+        
+        .do-not-press-popup {
+            background-color: var(--background-color);
+            border: 3px solid var(--primary-color);
+            padding: 30px;
+            max-width: 90%;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--primary-color);
+            animation: hint-appear 0.5s ease-out;
+        }
+        
+        .do-not-press-popup h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .do-not-press-popup p {
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        
+        #closeDoNotPressBtn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #closeDoNotPressBtn:hover, #closeDoNotPressBtn:active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+        
         /* Медиа-запросы для адаптивности */
         @media (min-width: 480px) {
             .buttons-container {
@@ -1212,6 +1298,11 @@
             
             .buttons-container {
                 flex-direction: row;
+            }
+            
+            .do-not-press-btn {
+                font-size: 12px;
+                padding: 3px 8px;
             }
         }
         
@@ -1267,8 +1358,20 @@
         </div>
     </div>
     
+    <!-- Окно для кнопки "Не нажимать" -->
+    <div class="do-not-press-overlay" id="doNotPressOverlay">
+        <div class="do-not-press-popup">
+            <h3>Ну и зачем?</h3>
+            <p>???????????????????????????????????????????????????????????????????????????</p>
+            <button id="closeDoNotPressBtn">Закрыть</button>
+        </div>
+    </div>
+    
     <div class="container pixel-border">
-        <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
+        <div class="header-container">
+            <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
+            <button class="do-not-press-btn" id="doNotPressBtn">Не нажимать</button>
+        </div>
         <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.7.m</div>
         
         <div class="game-area pixel-border-reverse">
@@ -1453,6 +1556,21 @@
         const resetConfirmOverlay = document.getElementById('resetConfirmOverlay');
         const confirmResetBtn = document.getElementById('confirmResetBtn');
         const cancelResetBtn = document.getElementById('cancelResetBtn');
+        
+        // Элементы для кнопки "Не нажимать"
+        const doNotPressBtn = document.getElementById('doNotPressBtn');
+        const doNotPressOverlay = document.getElementById('doNotPressOverlay');
+        const closeDoNotPressBtn = document.getElementById('closeDoNotPressBtn');
+        
+        // Функция для показа окна "Не нажимать"
+        function showDoNotPressPopup() {
+            doNotPressOverlay.classList.add('active');
+        }
+        
+        // Функция для скрытия окна "Не нажимать"
+        function hideDoNotPressPopup() {
+            doNotPressOverlay.classList.remove('active');
+        }
         
         // Функция сброса прогресса
         function resetProgress() {
@@ -1882,7 +2000,7 @@
                 setTimeout(showHint, 500);
             }
             
-            // Записываем попытку в историю
+            // Записываем попытку в истории
             let result;
             if (userGuess === targetNumber) {
                 result = 'correct';
@@ -1955,6 +2073,17 @@
         resetConfirmOverlay.addEventListener('click', function(e) {
             if (e.target === resetConfirmOverlay) {
                 hideResetConfirm();
+            }
+        });
+        
+        // Обработчики для кнопки "Не нажимать"
+        doNotPressBtn.addEventListener('click', showDoNotPressPopup);
+        closeDoNotPressBtn.addEventListener('click', hideDoNotPressPopup);
+        
+        // Закрытие окна "Не нажимать" при клике на оверлей
+        doNotPressOverlay.addEventListener('click', function(e) {
+            if (e.target === doNotPressOverlay) {
+                hideDoNotPressPopup();
             }
         });
         
