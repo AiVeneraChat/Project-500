@@ -2153,6 +2153,31 @@ body::-webkit-scrollbar-thumb:hover {
                 price: 150,
                 icon: '💊',
                 owned: false
+            },
+            // НОВЫЕ ПРЕДМЕТЫ:
+            {
+                id: 'switch',
+                name: 'Выключатель',
+                description: 'С вероятностью 50% за игру отключает режим тревоги на всю текущую игру.',
+                price: 500,
+                icon: '🔌',
+                owned: false
+            },
+            {
+                id: 'attempts_falsification',
+                name: 'Фальсификация Попыток',
+                description: 'Снижает наценку в магазине на 20%, делая товары дешевле.',
+                price: 350,
+                icon: '📉',
+                owned: false
+            },
+            {
+                id: 'five_bonus',
+                name: 'Пятёрочка выручает',
+                description: 'Добавляет бонус 35% монеток от имеющихся в конце игры, если в загаданном числе присутствует цифра 5.',
+                price: 555,
+                icon: '5️',
+                owned: false
             }
         ];
         
@@ -2234,6 +2259,11 @@ body::-webkit-scrollbar-thumb:hover {
             if (gamesPlayed > 0) {
                 // Наценка равна среднему количеству попыток (округляем до целого)
                 markup = Math.round(totalAttempts / gamesPlayed);
+            }
+            
+            // НОВЫЙ ЭФФЕКТ: Фальсификация Попыток снижает наценку на 20%
+            if (inventory.includes('attempts_falsification')) {
+                markup = Math.round(markup * 0.8);
             }
             
             shopMarkupEl.textContent = `${markup}%`;
@@ -2489,6 +2519,18 @@ body::-webkit-scrollbar-thumb:hover {
         
         // Функции для режима тревоги
         function activateAlarmMode() {
+            // НОВАЯ ПРОВЕРКА: Выключатель
+            if (inventory.includes('switch')) {
+                // С вероятностью 50% отключаем режим тревоги на всю игру
+                if (Math.random() < 0.5) {
+                    // Отключаем режим тревоги на эту игру
+                    nextAlarmAttempt = 99999; // Очень большое число, чтобы тревога не активировалась
+                    messageEl.textContent = 'ВЫКЛЮЧАТЕЛЬ СРАБОТАЛ! Режим тревоги отключен на эту игру!';
+                    messageEl.className = 'message success';
+                    return;
+                }
+            }
+            
             if (alarmModeActive || (currentMax - currentMin) < 15 || bonusDifficultyActive) return;
             
             alarmModeActive = true;
@@ -2675,11 +2717,11 @@ body::-webkit-scrollbar-thumb:hover {
             
             // Применяем бонусы за рекорд
             let bonusPercent = 0;
-            if (bestScore <= 2) {
+            if (attempts <= 2) {
                 bonusPercent = 40; // +40% за 2 и менее попыток
-            } else if (bestScore <= 6) {
+            } else if (attempts <= 6) {
                 bonusPercent = 20;  // +20% за 6 и менее попыток
-            } else if (bestScore <= 8) {
+            } else if (attempts <= 8) {
                 bonusPercent = 15;  // +15% за 8 и менее попыток
             }
             
@@ -2687,12 +2729,24 @@ body::-webkit-scrollbar-thumb:hover {
             const bonusAmount = Math.floor(coinsEarned * bonusPercent / 100);
             coinsEarned += bonusAmount;
             
+            // НОВЫЙ БОНУС: Пятёрочка выручает
+            let fiveBonusAmount = 0;
+            if (inventory.includes('five_bonus')) {
+                // Проверяем, есть ли цифра 5 в загаданном числе
+                const targetString = targetNumber.toString();
+                if (targetString.includes('5')) {
+                    fiveBonusAmount = Math.floor(coinsEarned * 0.35);
+                    coinsEarned += fiveBonusAmount;
+                }
+            }
+            
             return {
                 base: baseCoins,
                 penalty: attempts,
                 bonus: bonusAmount,
                 total: coinsEarned,
-                bonusPercent: bonusPercent
+                bonusPercent: bonusPercent,
+                fiveBonus: fiveBonusAmount
             };
         }
         
@@ -2719,11 +2773,20 @@ body::-webkit-scrollbar-thumb:hover {
             saveStats();
             
             // Показываем сообщение о победе с информацией о монетках
+            let messageHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty}`;
+            
             if (coinsCalculation.bonusPercent > 0) {
-                messageEl.innerHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty} + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus})`;
-            } else {
-                messageEl.innerHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty})`;
+                messageHTML += ` + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus}`;
             }
+            
+            // НОВОЕ: Добавляем информацию о бонусе "Пятёрочка выручает"
+            if (coinsCalculation.fiveBonus > 0) {
+                messageHTML += ` + бонус "Пятёрочка": ${coinsCalculation.fiveBonus}`;
+            }
+            
+            messageHTML += `)`;
+            
+            messageEl.innerHTML = messageHTML;
         }
         
         // Инициализация игры
