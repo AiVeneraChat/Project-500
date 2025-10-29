@@ -2263,7 +2263,7 @@ body::-webkit-scrollbar-thumb:hover {
             
             // НОВЫЙ ЭФФЕКТ: Фальсификация Попыток снижает наценку на 20%
             if (inventory.includes('attempts_falsification')) {
-                markup = Math.round(markup * 0.8);
+                markup = markup - 20;
             }
             
             shopMarkupEl.textContent = `${markup}%`;
