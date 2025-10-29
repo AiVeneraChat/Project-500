@@ -45,7 +45,7 @@
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             background-size: 100% 2px, 3px 100%;
-            z-index: 100;
+            z-index: 10000;
             pointer-events: none;
         }
         
@@ -59,7 +59,7 @@
             right: 0;
             background: rgba(0, 0, 0, 0.1);
             opacity: 0;
-            z-index: 101;
+            z-index: 10001;
             pointer-events: none;
             animation: flicker 0.15s infinite;
         }
@@ -96,7 +96,7 @@
             height: 2px;
             background: rgba(0, 255, 0, 0.3);
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-            z-index: 99;
+            z-index: 9999;
             pointer-events: none;
             animation: scan 3s linear infinite;
         }
@@ -339,7 +339,6 @@
             background-color: var(--background-color);
             border: 1px solid var(--secondary-color);
             position: relative;
-            height: 90px;
         }
         
         .range-visualization.narrow-range {
@@ -794,7 +793,7 @@
         
         @keyframes timer-pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.5); }
             100% { transform: scale(1); }
         }
         
@@ -834,17 +833,11 @@
         }
         
         @keyframes hint-appear {
-            0% { 
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.5);
+          0% { 
+            opacity: 0;
             }
-            70% { 
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
-            }
-            100% { 
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
+         100% { 
+            opacity: 1;
             }
         }
         
@@ -1078,6 +1071,12 @@
             border: 2px solid #500;
             text-align: center;
         }
+
+        .reset-section p {
+            margin: 15px 0;
+            line-height: 1.5;
+            color: #a00;
+        }
         
         .reset-section h3 {
             margin-top: 0;
@@ -1135,6 +1134,7 @@
         
         .reset-confirm-popup p {
             margin: 15px 0;
+            color: #a00;
             line-height: 1.5;
         }
         
@@ -1175,7 +1175,480 @@
             background-color: var(--secondary-color);
             color: var(--background-color);
         }
+
+        .shop-section {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #111;
+            border-radius: 0;
+            font-size: 14px;
+            border: 2px solid #fff;
+            text-align: center;
+        }
         
+        .shop-section h3 {
+            margin-top: 0;
+            text-align: center;
+            color: #fff;
+        }
+
+        .shop-section p {
+            margin: 15px 0;
+            line-height: 1.5;
+            color: #fff;
+        }
+        
+        #shopBtn {
+            background-color: #111;
+            color: #fff;
+            border: 2px solid #fff;
+            margin-top: 10px;
+        }
+        
+        #shopBtn:hover, #shopBtn:active {
+            background-color: #fff;
+            color: #111;
+        }
+        
+        /* Стили для модального окна магазина */
+        .shop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 400;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .shop-overlay.active {
+            display: flex;
+        }
+        
+        .shop-popup {
+            background-color: var(--background-color);
+            border: 3px solid #fff;
+            padding: 25px;
+            max-width: 90%;
+            width: 500px;
+            text-align: center;
+            box-shadow: 0 0 20px #fff, 0 0 40px #fff;
+            animation: hint-appear 0.5s ease-out;
+        }
+        
+        .shop-popup h3 {
+            margin-top: 0;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+            font-size: 20px;
+        }
+        
+        .shop-popup p {
+            margin: 15px 0;
+            line-height: 1.5;
+            color: #fff;
+        }
+        
+        .shop-close-btn {
+            padding: 10px 20px;
+            border: 2px solid #fff;
+            background-color: var(--background-color);
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .shop-close-btn:hover, .shop-close-btn:active {
+            background-color: #fff;
+            color: var(--background-color);
+        }
+
+        .shop-info {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid #fff;
+            text-align: center;
+        }
+        
+        .shop-markup-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+            margin: 10px 0;
+        }
+        
+        .shop-note {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 10px;
+        }
+
+        .shop-markup-text {
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        /* Стили для монеток */
+        .coins-value {
+            color: #ffffff !important;
+            text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+            animation: coins-glow 2s infinite alternate;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(0,255,255,0.1));
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        @keyframes coins-glow {
+            0% {
+                text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #00ffff, 0 0 20px #00ffff;
+                transform: scale(1);
+            }
+            100% {
+                text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #00ffff, 0 0 40px #00ffff, 0 0 50px #00ffff;
+                transform: scale(1.05);
+            }
+        }
+
+        .coins-value::before {
+            content: "M";
+            margin-right: 5px;
+            display: inline-block;
+            animation: coin-spin 3s infinite linear;
+        }
+
+        @keyframes coin-spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        /* Эффект для увеличения счетчика монеток */
+        @keyframes coins-count-up {
+            0% { 
+                transform: scale(1);
+                text-shadow: 0 0 5px #ffffff;
+            }
+            50% { 
+                transform: scale(1.3);
+                text-shadow: 0 0 20px #ffff00, 0 0 30px #ffff00;
+            }
+            100% { 
+                transform: scale(1);
+                text-shadow: 0 0 10px #ffffff;
+            }
+        }
+
+        .coins-count-up {
+            animation: coins-count-up 0.5s ease-out;
+        }
+
+        /* Специальный стиль для монеток в магазине */
+        .shop-coins-display {
+            color: #ffffff !important;
+            text-shadow: 0 0 10px #ffffff, 0 0 20px #ffff00, 0 0 30px #ffff00;
+            animation: shop-coins-glow 3s infinite alternate;
+            font-size: 24px !important;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        @keyframes shop-coins-glow {
+            0% {
+                text-shadow: 0 0 5px #ffffff, 0 0 10px #ffff00, 0 0 15px #ffff00;
+                transform: scale(1);
+            }
+            100% {
+                text-shadow: 0 0 10px #ffffff, 0 0 20px #ffff00, 0 0 30px #ffff00, 0 0 40px #ffff00;
+                transform: scale(1.05);
+            }
+        }
+
+        .shop-coins-display::before {
+            content: "M";
+            margin-right: 10px;
+            display: inline-block;
+            animation: coin-spin 3s infinite linear;
+        }
+
+        /* Стили для товаров в магазине */
+        .shop-items {
+            margin: 20px 0;
+        }
+
+        .shop-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #222;
+            border: 1px solid #fff;
+            border-radius: 0;
+            text-align: left;
+        }
+
+        .shop-item-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .shop-item-description {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .shop-item-price {
+            font-size: 16px;
+            color: #ff0;
+            margin-bottom: 10px;
+        }
+
+        .shop-buy-btn {
+            background-color: #333;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            transition: all 0.3s ease;
+        }
+
+        .shop-buy-btn:hover {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .shop-buy-btn:disabled {
+            background-color: #555;
+            color: #888;
+            border-color: #555;
+            cursor: not-allowed;
+        }
+
+        .shop-item-owned {
+            color: #0f0;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+.inventory-section {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #111;
+    border-radius: 0;
+    font-size: 14px;
+    border: 2px solid #0a0;
+    text-align: center;
+}
+
+.inventory-section h3 {
+    margin-top: 0;
+    text-align: center;
+    color: #0a0;
+}
+
+.inventory-section p {
+    margin: 15px 0;
+    line-height: 1.5;
+    color: #0a0;
+}
+
+.inventory-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.inventory-item {
+    padding: 12px;
+    background-color: #051005;
+    border: 1px solid #0a0;
+    border-radius: 0;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inventory-item.empty {
+    grid-column: 1 / -1;
+    opacity: 0.7;
+}
+
+.inventory-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+}
+
+.inventory-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.inventory-name {
+    font-weight: bold;
+    color: #0f0;
+    margin-bottom: 5px;
+}
+
+.inventory-description {
+    font-size: 12px;
+    color: #0a0;
+    margin-bottom: 10px;
+}
+
+.inventory-count {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #0f0;
+    color: #000;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.inventory-use-btn {
+    background-color: #0a0;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+    margin-top: 5px;
+}
+
+.inventory-use-btn:hover {
+    background-color: #0f0;
+}
+
+/* Стили для инвентаря в режиме паники */
+.panic-mode .inventory-section {
+    background-color: #300 !important;
+    border: 2px solid #f00 !important;
+}
+
+.panic-mode .inventory-section h3,
+.panic-mode .inventory-section p {
+    color: #f00 !important;
+}
+
+.panic-mode .inventory-item {
+    background-color: #200 !important;
+    border: 1px solid #f00 !important;
+}
+
+.panic-mode .inventory-name {
+    color: #f00 !important;
+}
+
+.panic-mode .inventory-description {
+    color: #a00 !important;
+}
+
+.panic-mode .inventory-count {
+    background-color: #f00 !important;
+    color: #000 !important;
+}
+
+.panic-mode .inventory-use-btn {
+    background-color: #a00 !important;
+    color: #000 !important;
+}
+
+.panic-mode .inventory-use-btn:hover {
+    background-color: #f00 !important;
+}
+
+/* Стили для инвентаря в режиме тревоги */
+.alarm-mode .inventory-section {
+    background-color: #333300 !important;
+    border: 2px solid #ff0 !important;
+}
+
+.alarm-mode .inventory-section h3,
+.alarm-mode .inventory-section p {
+    color: #ff0 !important;
+}
+
+.alarm-mode .inventory-item {
+    background-color: #222200 !important;
+    border: 1px solid #ff0 !important;
+}
+
+.alarm-mode .inventory-name {
+    color: #ff0 !important;
+}
+
+.alarm-mode .inventory-description {
+    color: #aa0 !important;
+}
+
+.alarm-mode .inventory-count {
+    background-color: #ff0 !important;
+    color: #000 !important;
+}
+
+.alarm-mode .inventory-use-btn {
+    background-color: #aa0 !important;
+    color: #000 !important;
+}
+
+.alarm-mode .inventory-use-btn:hover {
+    background-color: #ff0 !important;
+}
+
+        .shop-item-price {
+            font-size: 16px;
+            color: #ff0;
+            margin-bottom: 10px;
+        }
+        
+        .shop-original-price {
+            text-decoration: line-through;
+            color: #aaa;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .shop-final-price {
+            color: #ff0;
+            font-weight: bold;
+        }
+        
+        .shop-markup-note {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
         /* Медиа-запросы для адаптивности */
         @media (min-width: 480px) {
             .buttons-container {
@@ -1243,14 +1716,14 @@
     <!-- Таймер режима паники -->
     <div class="panic-timer" id="panicTimer">
         <div class="timer-text">РЕЖИМ ПАНИКИ!</div>
-        <div class="timer-count" id="timerCount">15</div>
-        <div class="timer-text">+10 попыток через:</div>
+        <div class="timer-count" id="timerCount">10</div>
+        <div class="timer-text">+15 попыток через:</div>
     </div>
     
     <!-- Таймер режима тревоги -->
     <div class="alarm-timer" id="alarmTimer">
         <div class="timer-text">РЕЖИМ ТРЕВОГИ!</div>
-        <div class="timer-count" id="alarmTimerCount">30</div>
+        <div class="timer-count" id="alarmTimerCount">20</div>
         <div class="timer-text">+10 попыток через:</div>
     </div>
     
@@ -1266,10 +1739,26 @@
             </div>
         </div>
     </div>
+
+    <div class="shop-overlay" id="shopOverlay">
+        <div class="shop-popup">
+            <h3>МАГАЗИН</h3>
+            <div class="shop-coins-display" id="shopCoinsDisplay">0</div>
+            <div class="shop-info">
+                <div class="shop-markup-text">Текущая наценка:</div>
+                <div class="shop-markup-value" id="shopMarkup">0%</div>
+                <div class="shop-note">Наценка равна среднему количеству попыток за все игры</div>
+            </div>
+            <div class="shop-items" id="shopItems">
+                <!-- Товары будут добавляться динамически -->
+            </div>
+            <button class="shop-close-btn" id="shopCloseBtn">ЗАКРЫТЬ</button>
+        </div>
+    </div>
     
     <div class="container pixel-border">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.7.m</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.8</div>
         
         <div class="game-area pixel-border-reverse">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
@@ -1332,8 +1821,8 @@
                         <div class="stat-value" id="bestScore">-</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">МОНЕТКИ(-)</div>
-                        <div class="stat-value" id="coins">0</div>
+                        <div class="stat-label">МОНЕТКИ</div>
+                        <div class="stat-value coins-value" id="coins">0</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">АНТИ-РЕКОРД</div>
@@ -1349,6 +1838,24 @@
                     </div>
                 </div>
             </div>
+
+            <div class="shop-section">
+                <h3>МАГАЗИН</h3>
+                <p>Тратьте заработанные монетки на улучшения!</p>
+                <button id="shopBtn" class="pixel-border">ОТКРЫТЬ МАГАЗИН</button>
+            </div>
+            
+            <div class="inventory-section">
+                <h3>ИНВЕНТАРЬ</h3>
+                <p>Здесь отображаются ваши приобретенные улучшения</p>
+                <div id="inventoryList" class="inventory-list">
+                    <div class="inventory-item empty">
+                        <div class="inventory-icon">📦</div>
+                        <div class="inventory-name">Инвентарь пуст</div>
+                        <div class="inventory-description">Купите улучшения в магазине</div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="rules pixel-border-reverse">
@@ -1358,6 +1865,9 @@
                 <li>Вы вводите число в поле выше и нажимаете "ПРОВЕРИТЬ"</li>
                 <li>Компьютер подскажет, больше или меньше загаданное число</li>
                 <li>Цель - угадать число за минимальное количество попыток</li>
+                <li>За каждую игру вы получаете монетки, количество равным загаданному числу</li>
+                <li>Каждая попытка стоит 1 монетку</li>
+                <li>Бонусы за рекорды: ≤2 попыток = +40%, ≤6 попыток = +20%, ≤8 попыток = +15%</li>
                 <li>Для начала новой игры нажмите кнопку "НОВАЯ ИГРА"</li>
                 <li>Все ваши попытки сохраняются в истории ниже</li>
                 <li>Диапазон возможных чисел сужается после каждой попытки</li>
@@ -1366,6 +1876,9 @@
                 <li>После 10 попыток и затем каждые 2 попытки активируется режим тревоги!</li>
                 <li>Каждые 5 попыток система предлагает подсказку</li>
                 <li>Режим тревоги отключается после ввода числа</li>
+                <li>В магазине можно приобрести улучшения за монетки</li>
+                <li>Предмет "Бонусная Сложность": каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, добавляется 5 попыток. Если успеваете ввести число до истечения таймера, получаете +25% монеток. Работает до 3 раз за игру.</li>
+                <li>Предмет "Успокаивающие": увеличивает таймер паники до 15 секунд</li>
             </ul>
         </div>
         
@@ -1389,7 +1902,7 @@
         let currentMax;
         let panicModeActive = false;
         let panicTimer;
-        let panicTimeLeft = 15;
+        let panicTimeLeft = 10;
         
         // Переменные для режима тревоги
         let alarmModeActive = false;
@@ -1410,6 +1923,34 @@
         let lastAttempts = 0;
         let coins = 0;
         
+        // Инвентарь и магазин
+        let inventory = [];
+        let shopItems = [
+            {
+                id: 'bonus_difficulty',
+                name: 'Бонусная Сложность',
+                description: 'Каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, +5 попыток. Если успеваете ввести число, +25% монеток. Работает до 3 раз за игру.',
+                price: 275,
+                icon: '⚡',
+                owned: false
+            },
+            {
+                id: 'calming_pills',
+                name: 'Успокаивающие',
+                description: 'Увеличивает таймер паники до 15 секунд, давая больше времени на реакцию.',
+                price: 150,
+                icon: '💊',
+                owned: false
+            }
+        ];
+        
+        // Переменные для бонусной сложности
+        let bonusDifficultyActive = false;
+        let bonusDifficultyTimer;
+        let bonusDifficultyTimeLeft = 5;
+        let bonusDifficultyUses = 0;
+        const maxBonusDifficultyUses = 3;
+        
         // Элементы DOM
         const guessInput = document.getElementById('guessInput');
         const guessBtn = document.getElementById('guessBtn');
@@ -1427,6 +1968,12 @@
         const timerCountEl = document.getElementById('timerCount');
         const panicWarningEl = document.getElementById('panicWarning');
         const bodyEl = document.body;
+        const shopBtn = document.getElementById('shopBtn');
+        const shopOverlay = document.getElementById('shopOverlay');
+        const shopCloseBtn = document.getElementById('shopCloseBtn');
+        const shopCoinsDisplay = document.getElementById('shopCoinsDisplay');
+        const shopItemsEl = document.getElementById('shopItems');
+        const inventoryListEl = document.getElementById('inventoryList');
         
         // Элементы для режима тревоги
         const alarmTimerEl = document.getElementById('alarmTimer');
@@ -1453,6 +2000,194 @@
         const resetConfirmOverlay = document.getElementById('resetConfirmOverlay');
         const confirmResetBtn = document.getElementById('confirmResetBtn');
         const cancelResetBtn = document.getElementById('cancelResetBtn');
+
+        // Функции для магазина
+        function openShop() {
+            updateShopDisplay();
+            shopOverlay.classList.add('active');
+        }
+        
+        function closeShop() {
+            shopOverlay.classList.remove('active');
+        }
+        
+        function updateShopDisplay() {
+            // Обновляем отображение монеток в магазине
+            shopCoinsDisplay.textContent = coins;
+            
+            // Обновляем наценку
+            const shopMarkupEl = document.getElementById('shopMarkup');
+            let markup = 0;
+            
+            if (gamesPlayed > 0) {
+                // Наценка равна среднему количеству попыток (округляем до целого)
+                markup = Math.round(totalAttempts / gamesPlayed);
+            }
+            
+            shopMarkupEl.textContent = `${markup}%`;
+            
+            // Обновляем список товаров
+            renderShopItems(markup);
+        }
+        
+        function renderShopItems(markup) {
+            shopItemsEl.innerHTML = '';
+            
+            shopItems.forEach(item => {
+                const shopItemEl = document.createElement('div');
+                shopItemEl.className = 'shop-item';
+                
+                const owned = inventory.includes(item.id);
+                
+                // Рассчитываем окончательную цену с учетом наценки
+                const finalPrice = Math.round(item.price * (1 + markup / 100));
+                
+                shopItemEl.innerHTML = `
+                    <div class="shop-item-name">${item.icon} ${item.name}</div>
+                    <div class="shop-item-description">${item.description}</div>
+                    <div class="shop-item-price">
+                        <span class="shop-original-price">${item.price} монеток</span>
+                        <span class="shop-final-price">${finalPrice} монеток</span>
+                    </div>
+                    <div class="shop-markup-note">(Наценка: +${markup}%)</div>
+                    ${owned ? 
+                        '<div class="shop-item-owned">✓ УЖЕ КУПЛЕНО</div>' : 
+                        `<button class="shop-buy-btn" data-item="${item.id}" data-price="${finalPrice}" ${coins < finalPrice ? 'disabled' : ''}>КУПИТЬ</button>`
+                    }
+                `;
+                
+                shopItemsEl.appendChild(shopItemEl);
+            });
+            
+            // Добавляем обработчики событий для кнопок покупки
+            document.querySelectorAll('.shop-buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-item');
+                    const price = parseInt(this.getAttribute('data-price'));
+                    buyItem(itemId, price);
+                });
+            });
+        }
+        
+        function buyItem(itemId, price) {
+            const item = shopItems.find(i => i.id === itemId);
+            
+            if (!item) return;
+            
+            if (coins < price) {
+                messageEl.textContent = 'Недостаточно монеток для покупки!';
+                messageEl.className = 'message hint';
+                return;
+            }
+            
+            if (inventory.includes(itemId)) {
+                messageEl.textContent = 'Этот предмет уже куплен!';
+                messageEl.className = 'message hint';
+                return;
+            }
+            
+            // Покупка предмета
+            coins -= price;
+            inventory.push(itemId);
+            item.owned = true;
+            
+            // Сохраняем обновленные данные
+            saveStats();
+            updateStatsDisplay(true);
+            updateShopDisplay();
+            updateInventoryDisplay();
+            
+            messageEl.textContent = `Поздравляем! Вы купили "${item.name}"!`;
+            messageEl.className = 'message success';
+            
+            // Закрываем магазин после покупки
+            closeShop();
+        }
+        
+        // Функции для инвентаря
+        function updateInventoryDisplay() {
+            inventoryListEl.innerHTML = '';
+            
+            if (inventory.length === 0) {
+                inventoryListEl.innerHTML = `
+                    <div class="inventory-item empty">
+                        <div class="inventory-icon">📦</div>
+                        <div class="inventory-name">Инвентарь пуст</div>
+                        <div class="inventory-description">Купите улучшения в магазине</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            inventory.forEach(itemId => {
+                const item = shopItems.find(i => i.id === itemId);
+                if (!item) return;
+                
+                const inventoryItemEl = document.createElement('div');
+                inventoryItemEl.className = 'inventory-item';
+                
+                inventoryItemEl.innerHTML = `
+                    <div class="inventory-icon">${item.icon}</div>
+                    <div class="inventory-name">${item.name}</div>
+                    <div class="inventory-description">${item.description}</div>
+                `;
+                
+                inventoryListEl.appendChild(inventoryItemEl);
+            });
+        }
+        
+        // Функции для бонусной сложности
+        function activateBonusDifficulty() {
+            if (bonusDifficultyActive || !inventory.includes('bonus_difficulty') || bonusDifficultyUses >= maxBonusDifficultyUses) return;
+            
+            // С вероятностью 50% активируем бонусную сложность
+            if (Math.random() < 0.5) {
+                bonusDifficultyActive = true;
+                bonusDifficultyUses++;
+                bodyEl.classList.add('alarm-mode');
+                alarmTimerEl.classList.add('active');
+                bonusDifficultyTimeLeft = 5;
+                alarmTimerCountEl.textContent = bonusDifficultyTimeLeft;
+                
+                // Обновляем текст для бонусной сложности
+                document.querySelector('.alarm-timer .timer-text').textContent = 'БОНУСНАЯ СЛОЖНОСТЬ!';
+                document.querySelectorAll('.alarm-timer .timer-text')[1].textContent = '+25% монеток если успеете!';
+                
+                // Запускаем таймер
+                bonusDifficultyTimer = setInterval(function() {
+                    bonusDifficultyTimeLeft--;
+                    alarmTimerCountEl.textContent = bonusDifficultyTimeLeft;
+                    
+                    if (bonusDifficultyTimeLeft <= 0) {
+                        deactivateBonusDifficulty(false);
+                        attempts += 5;
+                        attemptsEl.textContent = `Попытки: ${attempts}`;
+                        messageEl.textContent = 'Время вышло! +5 попыток!';
+                        messageEl.className = 'message hint';
+                    }
+                }, 1000);
+            }
+        }
+        
+        function deactivateBonusDifficulty(success) {
+            bonusDifficultyActive = false;
+            bodyEl.classList.remove('alarm-mode');
+            alarmTimerEl.classList.remove('active');
+            clearInterval(bonusDifficultyTimer);
+            
+            // Восстанавливаем стандартный текст для режима тревоги
+            document.querySelector('.alarm-timer .timer-text').textContent = 'РЕЖИМ ТРЕВОГИ!';
+            document.querySelectorAll('.alarm-timer .timer-text')[1].textContent = '+10 попыток через:';
+            
+            if (success) {
+                // Начисляем бонусные монетки
+                const bonusCoins = Math.floor(coins * 0.25);
+                coins += bonusCoins;
+                updateStatsDisplay(true);
+                messageEl.textContent = `Отлично! Вы успели! +${bonusCoins} монеток!`;
+                messageEl.className = 'message success';
+            }
+        }
         
         // Функция сброса прогресса
         function resetProgress() {
@@ -1463,12 +2198,19 @@
             totalAttempts = 0;
             lastAttempts = 0;
             coins = 0;
+            inventory = [];
+            
+            // Сброс состояния предметов магазина
+            shopItems.forEach(item => {
+                item.owned = false;
+            });
             
             // Очистка localStorage
             localStorage.removeItem('project500_stats');
             
             // Обновление отображения статистики
             updateStatsDisplay();
+            updateInventoryDisplay();
             
             // Перезапуск игры
             initGame();
@@ -1509,7 +2251,7 @@
             // Если активен режим паники или тревоги, добавляем соответствующий стиль
             if (panicModeActive) {
                 hintPopup.classList.add('panic-mode');
-            } else if (alarmModeActive) {
+            } else if (alarmModeActive || bonusDifficultyActive) {
                 hintPopup.classList.add('alarm-mode');
             } else {
                 hintPopup.classList.remove('panic-mode', 'alarm-mode');
@@ -1535,7 +2277,7 @@
         
         // Функции для режима тревоги
         function activateAlarmMode() {
-            if (alarmModeActive || (currentMax - currentMin) < 15) return;
+            if (alarmModeActive || (currentMax - currentMin) < 15 || bonusDifficultyActive) return;
             
             alarmModeActive = true;
             bodyEl.classList.add('alarm-mode');
@@ -1555,9 +2297,9 @@
                 
                 if (alarmTimeLeft <= 0) {
                     deactivateAlarmMode();
-                    attempts += 10;
+                    attempts += 15;
                     attemptsEl.textContent = `Попытки: ${attempts}`;
-                    messageEl.textContent = 'РЕЖИМ ТРЕВОГИ ЗАВЕРШЕН! +10 попыток!';
+                    messageEl.textContent = 'РЕЖИМ ТРЕВОГИ ЗАВЕРШЕН! +15 попыток!';
                     messageEl.className = 'message hint';
                     
                     // Устанавливаем следующую активацию через 2 попытки
@@ -1585,7 +2327,9 @@
             panicModeActive = true;
             bodyEl.classList.add('panic-mode', 'shake-screen');
             panicTimerEl.classList.add('active');
-            panicTimeLeft = 10;
+            
+            // Устанавливаем время паники в зависимости от наличия предмета "Успокаивающие"
+            panicTimeLeft = inventory.includes('calming_pills') ? 15 : 10;
             timerCountEl.textContent = panicTimeLeft;
             
             // Если подсказка активна, обновляем ее стиль
@@ -1631,8 +2375,15 @@
                 totalAttempts = stats.totalAttempts || 0;
                 lastAttempts = stats.lastAttempts || 0;
                 coins = stats.coins || 0;
+                inventory = stats.inventory || [];
+                
+                // Обновляем состояние предметов магазина
+                shopItems.forEach(item => {
+                    item.owned = inventory.includes(item.id);
+                });
             }
             updateStatsDisplay();
+            updateInventoryDisplay();
         }
         
         // Сохранение статистики в localStorage
@@ -1643,13 +2394,31 @@
                 worstScore,
                 totalAttempts,
                 lastAttempts,
-                coins
+                coins,
+                inventory
             };
             localStorage.setItem('project500_stats', JSON.stringify(stats));
         }
         
+        // Функция для обновления отображения монеток с анимацией
+        function updateCoinsDisplay(withAnimation = false) {
+            if (withAnimation) {
+                coinsEl.classList.add('coins-count-up');
+                setTimeout(() => {
+                    coinsEl.classList.remove('coins-count-up');
+                }, 500);
+            }
+            
+            coinsEl.textContent = coins;
+            
+            // Обновляем отображение монеток в магазине, если он открыт
+            if (shopOverlay.classList.contains('active')) {
+                shopCoinsDisplay.textContent = coins;
+            }
+        }
+        
         // Обновление отображения статистики
-        function updateStatsDisplay() {
+        function updateStatsDisplay(withCoinAnimation = false) {
             gamesPlayedEl.textContent = gamesPlayed;
             
             if (bestScore !== null) {
@@ -1664,7 +2433,8 @@
                 worstScoreEl.textContent = '-';
             }
             
-            coinsEl.textContent = coins;
+            // Обновляем отображение монеток с возможной анимацией
+            updateCoinsDisplay(withCoinAnimation);
             
             if (gamesPlayed > 0) {
                 const average = (totalAttempts / gamesPlayed).toFixed(1);
@@ -1678,6 +2448,40 @@
             } else {
                 lastAttemptsEl.textContent = '-';
             }
+        }
+        
+        // Расчет заработанных монеток
+        function calculateCoinsEarned() {
+            // Базовое количество монеток пропорционально загаданному числу
+            let baseCoins = Math.floor(targetNumber / 10);
+            
+            // Вычитаем 1 монетку за каждую попытку
+            let coinsEarned = baseCoins - attempts;
+            
+            // Не позволяем уйти в отрицательное значение
+            if (coinsEarned < 0) coinsEarned = 0;
+            
+            // Применяем бонусы за рекорд
+            let bonusPercent = 0;
+            if (bestScore <= 2) {
+                bonusPercent = 40; // +40% за 2 и менее попыток
+            } else if (bestScore <= 6) {
+                bonusPercent = 20;  // +20% за 6 и менее попыток
+            } else if (bestScore <= 8) {
+                bonusPercent = 15;  // +15% за 8 и менее попыток
+            }
+            
+            // Добавляем бонус
+            const bonusAmount = Math.floor(coinsEarned * bonusPercent / 100);
+            coinsEarned += bonusAmount;
+            
+            return {
+                base: baseCoins,
+                penalty: attempts,
+                bonus: bonusAmount,
+                total: coinsEarned,
+                bonusPercent: bonusPercent
+            };
         }
         
         // Обновление статистики после победы
@@ -1694,8 +2498,20 @@
                 worstScore = attempts;
             }
             
-            updateStatsDisplay();
+            // Расчет заработанных монеток
+            const coinsCalculation = calculateCoinsEarned();
+            coins += coinsCalculation.total;
+            
+            // Обновляем статистику с анимацией для монеток
+            updateStatsDisplay(true);
             saveStats();
+            
+            // Показываем сообщение о победе с информацией о монетках
+            if (coinsCalculation.bonusPercent > 0) {
+                messageEl.innerHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty} + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus})`;
+            } else {
+                messageEl.innerHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty})`;
+            }
         }
         
         // Инициализация игры
@@ -1710,7 +2526,11 @@
             // Сбрасываем режимы
             deactivatePanicMode();
             deactivateAlarmMode();
+            deactivateBonusDifficulty(false);
             hideHint();
+            
+            // Сбрасываем счетчик использования бонусной сложности
+            bonusDifficultyUses = 0;
             
             // Сбрасываем следующую активацию тревоги
             nextAlarmAttempt = 10;
@@ -1852,6 +2672,11 @@
                 hideHint();
             }
             
+            // Если активна бонусная сложность, деактивируем ее с успехом
+            if (bonusDifficultyActive) {
+                deactivateBonusDifficulty(true);
+            }
+            
             // Отключаем режим тревоги при вводе числа
             if (alarmModeActive) {
                 deactivateAlarmMode();
@@ -1882,12 +2707,15 @@
                 setTimeout(showHint, 500);
             }
             
+            // Проверяем, нужно ли активировать бонусную сложность
+            if (inventory.includes('bonus_difficulty') && bonusDifficultyUses < maxBonusDifficultyUses) {
+                activateBonusDifficulty();
+            }
+            
             // Записываем попытку в историю
             let result;
             if (userGuess === targetNumber) {
                 result = 'correct';
-                messageEl.textContent = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!`;
-                messageEl.className = 'message success';
                 gameActive = false;
                 guessInput.disabled = true;
                 guessBtn.disabled = true;
@@ -1895,10 +2723,13 @@
                 // Деактивируем режимы при победе
                 deactivatePanicMode();
                 deactivateAlarmMode();
+                deactivateBonusDifficulty(false);
                 hideHint();
                 
                 // Обновляем статистику
                 updateStats();
+                
+                messageEl.className = 'message success';
             } else if (userGuess < targetNumber) {
                 result = 'higher';
                 messageEl.textContent = 'Загаданное число БОЛЬШЕ!';
@@ -1955,6 +2786,17 @@
         resetConfirmOverlay.addEventListener('click', function(e) {
             if (e.target === resetConfirmOverlay) {
                 hideResetConfirm();
+            }
+        });
+        
+        // Обработчики событий для магазина
+        shopBtn.addEventListener('click', openShop);
+        shopCloseBtn.addEventListener('click', closeShop);
+        
+        // Закрытие магазина при клике на оверлей
+        shopOverlay.addEventListener('click', function(e) {
+            if (e.target === shopOverlay) {
+                closeShop();
             }
         });
         
