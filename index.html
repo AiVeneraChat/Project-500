@@ -2717,11 +2717,11 @@ body::-webkit-scrollbar-thumb:hover {
             
             // Применяем бонусы за рекорд
             let bonusPercent = 0;
-            if (attempts <= 2) {
+            if (bestScore <= 2) {
                 bonusPercent = 40; // +40% за 2 и менее попыток
-            } else if (attempts <= 6) {
+            } else if (bestScore <= 6) {
                 bonusPercent = 20;  // +20% за 6 и менее попыток
-            } else if (attempts <= 8) {
+            } else if (bestScore <= 8) {
                 bonusPercent = 15;  // +15% за 8 и менее попыток
             }
             
