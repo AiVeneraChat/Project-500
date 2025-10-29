@@ -32,6 +32,216 @@
             font-size: 16px;
             line-height: 1.4;
         }
+
+/* Общие стили для скроллбаров */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #051005;
+    border: 1px solid var(--secondary-color);
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #0f0;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--background-color);
+    border: 1px solid var(--secondary-color);
+}
+
+/* Стили для скроллбара в истории */
+.history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: #051005;
+    border: 1px solid var(--secondary-color);
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Стили для скроллбара в магазине */
+.shop-popup::-webkit-scrollbar {
+    width: 10px;
+}
+
+.shop-popup::-webkit-scrollbar-track {
+    background: #111;
+    border: 1px solid #fff;
+}
+
+.shop-popup::-webkit-scrollbar-thumb {
+    background: #fff;
+    border: 1px solid #0ff;
+}
+
+.shop-popup::-webkit-scrollbar-thumb:hover {
+    background: #0ff;
+    box-shadow: 0 0 5px #0ff;
+}
+
+/* Стили для скроллбара в инвентаре */
+.inventory-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.inventory-list::-webkit-scrollbar-track {
+    background: #051005;
+    border: 1px solid var(--secondary-color);
+}
+
+.inventory-list::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.inventory-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Стили для скроллбара в правилах (если понадобится) */
+.rules::-webkit-scrollbar {
+    width: 6px;
+}
+
+.rules::-webkit-scrollbar-track {
+    background: #051005;
+}
+
+.rules::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+}
+
+/* Стили для скроллбара в режиме паники */
+.panic-mode ::-webkit-scrollbar-track {
+    background: #300 !important;
+    border: 1px solid #f00 !important;
+}
+
+.panic-mode ::-webkit-scrollbar-thumb {
+    background: #a00 !important;
+    border: 1px solid #f00 !important;
+}
+
+.panic-mode ::-webkit-scrollbar-thumb:hover {
+    background: #f00 !important;
+    box-shadow: 0 0 5px #f00 !important;
+}
+
+/* Стили для скроллбара в режиме тревоги */
+.alarm-mode ::-webkit-scrollbar-track {
+    background: #333300 !important;
+    border: 1px solid #ff0 !important;
+}
+
+.alarm-mode ::-webkit-scrollbar-thumb {
+    background: #aa0 !important;
+    border: 1px solid #ff0 !important;
+}
+
+.alarm-mode ::-webkit-scrollbar-thumb:hover {
+    background: #ff0 !important;
+    box-shadow: 0 0 5px #ff0 !important;
+}
+
+/* Стили для Firefox */
+.history-list,
+.shop-popup,
+.inventory-list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) #051005;
+}
+
+.panic-mode .history-list,
+.panic-mode .shop-popup,
+.panic-mode .inventory-list {
+    scrollbar-color: #a00 #300;
+}
+
+.alarm-mode .history-list,
+.alarm-mode .shop-popup,
+.alarm-mode .inventory-list {
+    scrollbar-color: #aa0 #333300;
+}
+
+/* Анимация появления скроллбара */
+.history-list::-webkit-scrollbar-thumb,
+.shop-popup::-webkit-scrollbar-thumb,
+.inventory-list::-webkit-scrollbar-thumb {
+    transition: all 0.3s ease;
+}
+
+/* Стили для тонкого скроллбара на мобильных устройствах */
+@media (max-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .history-list::-webkit-scrollbar,
+    .inventory-list::-webkit-scrollbar {
+        width: 4px;
+    }
+}
+
+/* Эффект свечения для активного скроллбара */
+.history-list:focus::-webkit-scrollbar-thumb,
+.shop-popup:focus::-webkit-scrollbar-thumb,
+.inventory-list:focus::-webkit-scrollbar-thumb {
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Плавная прокрутка для всех элементов с скроллом */
+.history-list,
+.shop-popup,
+.inventory-list,
+.rules {
+    scroll-behavior: smooth;
+}
+
+/* Стили для скроллбара в body (если понадобится) */
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-left: 1px solid var(--secondary-color);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border: 1px solid var(--primary-color);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
         
         /* Эффект старого ЭЛТ-монитора */
         .crt-effect::before {
@@ -1234,6 +1444,8 @@
             padding: 25px;
             max-width: 90%;
             width: 500px;
+            height: 80%;
+            overflow: auto;
             text-align: center;
             box-shadow: 0 0 20px #fff, 0 0 40px #fff;
             animation: hint-appear 0.5s ease-out;
