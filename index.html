@@ -2257,7 +2257,7 @@
                 id: 'bonus_difficulty',
                 name: 'Бонусная Сложность',
                 description: 'Каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, +5 попыток. Если успеваете ввести число, +25% монеток. Работает до 3 раз за игру.',
-                price: 275,
+                price: 1275,
                 icon: '⚡',
                 owned: false
             },
@@ -2289,7 +2289,7 @@
             {
                 id: 'five_bonus',
                 name: 'Пятёрочка выручает',
-                description: 'Добавляет бонус 35% монеток от имеющихся в конце игры, если в загаданном числе присутствует цифра 5.',
+                description: 'Добавляет бонус 55% монеток от имеющихся в конце игры, если в загаданном числе присутствует цифра 5.',
                 price: 555,
                 icon: '5️',
                 owned: false
@@ -2984,7 +2984,7 @@
                 // Проверяем, есть ли цифра 5 в загаданном числе
                 const targetString = targetNumber.toString();
                 if (targetString.includes('5')) {
-                    fiveBonusAmount = Math.floor(coinsEarned * 0.35);
+                    fiveBonusAmount = Math.floor(coinsEarned * 0.55);
                     coinsEarned += fiveBonusAmount;
                 }
             }
