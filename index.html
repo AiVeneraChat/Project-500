@@ -1413,10 +1413,13 @@
             display: none;
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .shop-overlay.active {
             display: flex;
+            opacity: 1;
         }
         
         .shop-popup {
@@ -1429,7 +1432,30 @@
             overflow: auto;
             text-align: center;
             box-shadow: 0 0 20px #fff, 0 0 40px #fff;
-            animation: hint-appear 0.5s ease-out;
+            animation: shop-appear 0.4s ease-out;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .shop-overlay.active .shop-popup {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        @keyframes shop-appear {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         
         .shop-popup h3 {
@@ -1535,10 +1561,12 @@
             50% { 
                 transform: scale(1.3);
                 text-shadow: 0 0 20px #ffff00, 0 0 30px #ffff00;
+                color: #ffff00;
             }
             100% { 
                 transform: scale(1);
                 text-shadow: 0 0 10px #ffffff;
+                color: #ffffff;
             }
         }
 
@@ -1590,6 +1618,20 @@
             border: 1px solid #fff;
             border-radius: 0;
             text-align: left;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+    .shop-item:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+    }
+        .shop-item.purchased {
+            opacity: 0.7;
+            border-color: #0f0;
+            background-color: #151515;
         }
 
         .shop-item-name {
@@ -1610,6 +1652,18 @@
             font-size: 16px;
             color: #ff0;
             margin-bottom: 10px;
+        }
+        
+        .shop-original-price {
+            text-decoration: line-through;
+            color: #aaa;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .shop-final-price {
+            color: #ff0;
+            font-weight: bold;
         }
 
         .shop-buy-btn {
@@ -1638,6 +1692,59 @@
             color: #0f0;
             font-weight: bold;
             margin-top: 5px;
+        }
+
+        .purchase-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(0,255,255,0.1));
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: purchase-glow 1s ease-out;
+        }
+
+        @keyframes purchase-glow {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.5);
+            }
+        }
+
+        .purchase-text {
+            color: #0ff;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #0ff;
+            animation: purchase-text-pulse 1s ease-out;
+        }
+
+        @keyframes purchase-text-pulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
 .inventory-section {
@@ -1682,6 +1789,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: inventory-item-appear 0.5s ease forwards;
+}
+
+@keyframes inventory-item-appear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .inventory-item.empty {
@@ -1697,6 +1814,26 @@
 .inventory-icon {
     font-size: 24px;
     margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.inventory-item.active .inventory-icon {
+    animation: item-active-pulse 1s infinite;
+}
+
+@keyframes item-active-pulse {
+    0% {
+        transform: scale(1);
+        text-shadow: 0 0 5px currentColor;
+    }
+    50% {
+        transform: scale(1.2);
+        text-shadow: 0 0 15px currentColor, 0 0 20px currentColor;
+    }
+    100% {
+        transform: scale(1);
+        text-shadow: 0 0 5px currentColor;
+    }
 }
 
 .inventory-name {
@@ -1818,24 +1955,6 @@
     background-color: #ff0 !important;
 }
 
-        .shop-item-price {
-            font-size: 16px;
-            color: #ff0;
-            margin-bottom: 10px;
-        }
-        
-        .shop-original-price {
-            text-decoration: line-through;
-            color: #aaa;
-            font-size: 14px;
-            margin-right: 5px;
-        }
-        
-        .shop-final-price {
-            color: #ff0;
-            font-weight: bold;
-        }
-        
         .shop-markup-note {
             font-size: 12px;
             color: #aaa;
@@ -1854,10 +1973,13 @@
             display: none;
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .tax-notification.active {
             display: flex;
+            opacity: 1;
         }
         
         .tax-popup {
@@ -1868,7 +1990,29 @@
             width: 500px;
             text-align: center;
             box-shadow: 0 0 20px #f00, 0 0 40px #f00;
-            animation: hint-appear 0.5s ease-out;
+            animation: tax-appear 0.5s ease-out;
+            transform: scale(0.9);
+            opacity: 0;
+        }
+        
+        .tax-notification.active .tax-popup {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        @keyframes tax-appear {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         
         .tax-popup h3 {
@@ -1940,6 +2084,14 @@
             padding: 8px;
             background-color: #200;
             border: 1px solid #f00;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .tax-counter.show {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .tax-warning {
@@ -1948,6 +2100,161 @@
             margin-top: 10px;
             font-size: 14px;
             animation: blink 1s infinite;
+        }
+
+        /* Анимации для зачисления монет */
+        .coins-earned-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .coins-earned-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00, 0 0 30px #ff9900;
+            animation: coins-earned-float 2s ease-out forwards;
+            margin-bottom: 10px;
+        }
+
+        @keyframes coins-earned-float {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 1;
+            }
+            80% {
+                transform: translateY(-80px) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        .coins-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+            opacity: 0;
+            animation: coins-breakdown-appear 0.5s ease 0.5s forwards;
+        }
+
+        @keyframes coins-breakdown-appear {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .coins-breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            color: #fff;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            min-width: 200px;
+        }
+
+        .coins-breakdown-label {
+            text-align: left;
+        }
+
+        .coins-breakdown-value {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .coins-breakdown-positive {
+            color: #0f0;
+        }
+
+        .coins-breakdown-negative {
+            color: #f00;
+        }
+
+        .coins-breakdown-bonus {
+            color: #ff0;
+        }
+
+        /* Анимации для работы предметов */
+        .item-activation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .item-activation-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: item-activation-pulse 1.5s ease-out forwards;
+        }
+
+        @keyframes item-activation-pulse {
+            0% {
+                transform: scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            30% {
+                transform: scale(1.2) rotate(10deg);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(1) rotate(-5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0;
+            }
+        }
+
+        .item-activation-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px currentColor;
+            animation: item-activation-text-float 2s ease-out forwards;
+        }
+
+        @keyframes item-activation-text-float {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+            70% {
+                transform: translateY(-20px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
         }
 
         /* Медиа-запросы для адаптивности */
@@ -2005,8 +2312,22 @@
     <div class="vignette"></div>
     <div class="power-light"></div>
     
+    <!-- Анимации для зачисления монет -->
+    <div class="coins-earned-animation" id="coinsEarnedAnimation" style="display: none;">
+        <div class="coins-earned-value" id="coinsEarnedValue">+0</div>
+        <div class="coins-breakdown" id="coinsBreakdown">
+            <!-- Будет заполнено динамически -->
+        </div>
+    </div>
+    
+    <!-- Анимации для работы предметов -->
+    <div class="item-activation" id="itemActivation" style="display: none;">
+        <div class="item-activation-icon" id="itemActivationIcon">⚡</div>
+        <div class="item-activation-text" id="itemActivationText">Активирован!</div>
+    </div>
+    
     <!-- Счетчик до налога -->
-    <div id="taxCounter" class="tax-counter" style="display: none;">
+    <div id="taxCounter" class="tax-counter">
         До налога осталось: <span id="taxCounterValue">10</span> игр
     </div>
     
@@ -2078,7 +2399,7 @@
     
     <div class="container pixel-border">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.8</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.9</div>
         
         <div class="game-area pixel-border-reverse">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
@@ -2199,6 +2520,9 @@
                 <li>В магазине можно приобрести улучшения за монетки</li>
                 <li>Предмет "Бонусная Сложность": каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, добавляется 5 попыток. Если успеваете ввести число до истечения таймера, получаете +25% монеток. Работает до 3 раз за игру.</li>
                 <li>Предмет "Успокаивающие": увеличивает таймер паники до 15 секунд</li>
+    <li>Предмет "Отличник": повышает вероятность появления цифры 5 в загаданном числе на 30%</li>
+    <li>Предмет "Золотые Пятёрки": даёт +10 монет за каждую цифру 5 в загаданном числе</li>
+    <li>Предмет "Монетка": с вероятностью 1% удваивает все бонусы в конце игры</li>
                 <li>Каждую 10-ю игру взимается налог: ((-Среднее * 3) + (Число игр * 40) - Анти-Рекорд) + Бонус Рекорда%</li>
                 <li>Если налог не оплачен, весь прогресс сбрасывается</li>
             </ul>
@@ -2257,7 +2581,7 @@
                 id: 'bonus_difficulty',
                 name: 'Бонусная Сложность',
                 description: 'Каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, +5 попыток. Если успеваете ввести число, +25% монеток. Работает до 3 раз за игру.',
-                price: 1275,
+                price: 1000,
                 icon: '⚡',
                 owned: false
             },
@@ -2265,7 +2589,7 @@
                 id: 'calming_pills',
                 name: 'Успокаивающие',
                 description: 'Увеличивает таймер паники до 15 секунд, давая больше времени на реакцию.',
-                price: 150,
+                price: 100,
                 icon: '💊',
                 owned: false
             },
@@ -2282,18 +2606,42 @@
                 id: 'attempts_falsification',
                 name: 'Фальсификация Попыток',
                 description: 'Снижает наценку в магазине на 20%, делая товары дешевле.',
-                price: 350,
+                price: 150,
                 icon: '📉',
                 owned: false
             },
             {
                 id: 'five_bonus',
                 name: 'Пятёрочка выручает',
-                description: 'Добавляет бонус 55% монеток от имеющихся в конце игры, если в загаданном числе присутствует цифра 5.',
-                price: 555,
+                description: 'Добавляет бонус 35% монеток от имеющихся в конце игры, если в загаданном числе присутствует цифра 5.',
+                price: 55,
                 icon: '5️',
                 owned: false
-            }
+            },
+            {
+      id: 'golden_fives',
+      name: 'Золотые Пятёрки',
+      description: 'Даёт +10 монет за каждую цифру 5 в загаданном числе',
+      price: 155,
+      icon: '💰',
+      owned: false
+    },
+    {
+      id: 'excellent_student',
+      name: 'Отличник',
+      description: 'Повышает вероятность появления цифры 5 в загаданном числе на 60%',
+      price: 100,
+      icon: '🎓',
+      owned: false
+    },
+    {
+      id: 'lucky_coin',
+      name: 'Монетка',
+      description: 'С вероятностью 1% удваивает все бонусы в конце игры',
+      price: 800,
+      icon: '🪙',
+      owned: false
+    }
         ];
         
         // Переменные для бонусной сложности
@@ -2361,6 +2709,176 @@
         const taxAmountEl = document.getElementById('taxAmount');
         const payTaxBtn = document.getElementById('payTaxBtn');
 
+        // Элементы для анимаций
+        const coinsEarnedAnimation = document.getElementById('coinsEarnedAnimation');
+        const coinsEarnedValue = document.getElementById('coinsEarnedValue');
+        const coinsBreakdown = document.getElementById('coinsBreakdown');
+        const itemActivation = document.getElementById('itemActivation');
+        const itemActivationIcon = document.getElementById('itemActivationIcon');
+        const itemActivationText = document.getElementById('itemActivationText');
+
+        // Функции для анимаций
+  function showCoinsEarnedAnimation(coinsCalculation) {
+    // Устанавливаем значение
+    coinsEarnedValue.textContent = `+${coinsCalculation.total}`;
+    
+    // Создаем разбивку заработка
+    coinsBreakdown.innerHTML = '';
+    
+    // Базовая сумма
+    const baseItem = document.createElement('div');
+    baseItem.className = 'coins-breakdown-item';
+    baseItem.innerHTML = `
+      <span class="coins-breakdown-label">Базовая сумма:</span>
+      <span class="coins-breakdown-value coins-breakdown-positive">+${coinsCalculation.base}</span>
+    `;
+    coinsBreakdown.appendChild(baseItem);
+    
+    // Штраф за попытки
+    const penaltyItem = document.createElement('div');
+    penaltyItem.className = 'coins-breakdown-item';
+    penaltyItem.innerHTML = `
+      <span class="coins-breakdown-label">Штраф за попытки:</span>
+      <span class="coins-breakdown-value coins-breakdown-negative">-${coinsCalculation.penalty}</span>
+    `;
+    coinsBreakdown.appendChild(penaltyItem);
+    
+    // Бонус за рекорд (если есть)
+    if (coinsCalculation.bonusPercent > 0) {
+      const bonusItem = document.createElement('div');
+      bonusItem.className = 'coins-breakdown-item';
+      bonusItem.innerHTML = `
+        <span class="coins-breakdown-label">Бонус за рекорд (${coinsCalculation.bonusPercent}%):</span>
+        <span class="coins-breakdown-value coins-breakdown-bonus">+${coinsCalculation.bonus}</span>
+      `;
+      coinsBreakdown.appendChild(bonusItem);
+    }
+    
+    // Бонус "Пятёрочка" (если есть)
+    if (coinsCalculation.fiveBonus > 0) {
+      const fiveBonusItem = document.createElement('div');
+      fiveBonusItem.className = 'coins-breakdown-item';
+      fiveBonusItem.innerHTML = `
+        <span class="coins-breakdown-label">Бонус "Пятёрочка":</span>
+        <span class="coins-breakdown-value coins-breakdown-bonus">+${coinsCalculation.fiveBonus}</span>
+      `;
+      coinsBreakdown.appendChild(fiveBonusItem);
+    }
+    
+    // НОВЫЙ БОНУС: Золотые Пятёрки (если есть)
+    if (coinsCalculation.goldenFives > 0) {
+      const goldenFivesItem = document.createElement('div');
+      goldenFivesItem.className = 'coins-breakdown-item';
+      const fivesCount = countFivesInNumber(targetNumber);
+      goldenFivesItem.innerHTML = `
+        <span class="coins-breakdown-label">Золотые Пятёрки (${fivesCount} × 10):</span>
+        <span class="coins-breakdown-value coins-breakdown-bonus">+${coinsCalculation.goldenFives}</span>
+      `;
+      coinsBreakdown.appendChild(goldenFivesItem);
+    }
+    
+    // НОВЫЙ БОНУС: Монетка (если сработала)
+    if (coinsCalculation.luckyCoin) {
+      const luckyCoinItem = document.createElement('div');
+      luckyCoinItem.className = 'coins-breakdown-item';
+      luckyCoinItem.innerHTML = `
+        <span class="coins-breakdown-label">УДВОЕНИЕ МОНЕТКОЙ!</span>
+        <span class="coins-breakdown-value coins-breakdown-bonus">×2</span>
+      `;
+      coinsBreakdown.appendChild(luckyCoinItem);
+      
+      // Добавляем особый эффект к анимации
+      coinsEarnedValue.style.color = '#ff0';
+      coinsEarnedValue.style.textShadow = '0 0 20px #ff0, 0 0 30px #ff0, 0 0 40px #ff9900';
+    }
+    
+    // Показываем анимацию
+    coinsEarnedAnimation.style.display = 'flex';
+    
+    // Скрываем анимацию через 3 секунды
+    setTimeout(() => {
+      coinsEarnedAnimation.style.display = 'none';
+      // Сбрасываем стили
+      coinsEarnedValue.style.color = '';
+      coinsEarnedValue.style.textShadow = '';
+    }, 3000);
+  }
+        
+        function showItemActivationAnimation(itemName, itemIcon) {
+            // Устанавливаем иконку и текст
+            itemActivationIcon.textContent = itemIcon;
+            itemActivationText.textContent = `${itemName} активирован!`;
+            
+            // Показываем анимацию
+            itemActivation.style.display = 'flex';
+            
+            // Скрываем анимацию через 2 секунды
+            setTimeout(() => {
+                itemActivation.style.display = 'none';
+            }, 2000);
+        }
+
+  function generateTargetNumber() {
+    let number;
+    
+    // Если предмет "Отличник" куплен, увеличиваем вероятность цифры 5
+    if (inventory.includes('excellent_student')) {
+      // 30% шанс сгенерировать число с цифрой 5
+      if (Math.random() < 0.3) {
+        // Генерируем число, гарантированно содержащее цифру 5
+        const numbersWithFive = [];
+        
+        // Собираем все числа от 1 до 1000, содержащие цифру 5
+        for (let i = 1; i <= 1000; i++) {
+          if (i.toString().includes('5')) {
+            numbersWithFive.push(i);
+          }
+        }
+        
+        // Выбираем случайное число из этого списка
+        number = numbersWithFive[Math.floor(Math.random() * numbersWithFive.length)];
+      } else {
+        // Обычная генерация
+        number = Math.floor(Math.random() * (maxRange - minRange + 1)) + minRange;
+      }
+    } else {
+      // Обычная генерация
+      number = Math.floor(Math.random() * (maxRange - minRange + 1)) + minRange;
+    }
+    
+    return number;
+  }
+
+  function countFivesInNumber(number) {
+    return number.toString().split('').filter(digit => digit === '5').length;
+  }
+
+  // Функция для проверки срабатывания Монетки
+  function checkLuckyCoin() {
+    if (inventory.includes('lucky_coin') && Math.random() < 0.01) {
+      return true;
+    }
+    return false;
+  }
+        
+        function showPurchaseAnimation(itemElement) {
+            // Создаем элемент анимации покупки
+            const purchaseAnimation = document.createElement('div');
+            purchaseAnimation.className = 'purchase-animation';
+            
+            const purchaseText = document.createElement('div');
+            purchaseText.className = 'purchase-text';
+            purchaseText.textContent = 'КУПЛЕНО!';
+            
+            purchaseAnimation.appendChild(purchaseText);
+            itemElement.appendChild(purchaseAnimation);
+            
+            // Удаляем анимацию после завершения
+            setTimeout(() => {
+                purchaseAnimation.remove();
+            }, 1000);
+        }
+
         // Функции для системы налога
         function calculateTax() {
             // Формула налога: ((-Среднее * 3) + (Число игр * 40) - Анти-Рекорд) + Бонус Рекорда%
@@ -2406,7 +2924,7 @@
         
         function updateTaxCounter() {
             if (taxActive) {
-                taxCounter.style.display = 'none';
+                taxCounter.classList.remove('show');
                 return;
             }
             
@@ -2414,9 +2932,9 @@
             taxCounterValue.textContent = gamesUntilTax;
             
             if (gamesUntilTax < 10) {
-                taxCounter.style.display = 'block';
+                taxCounter.classList.add('show');
             } else {
-                taxCounter.style.display = 'none';
+                taxCounter.classList.remove('show');
             }
         }
         
@@ -2510,6 +3028,9 @@
             shopItems.forEach(item => {
                 const shopItemEl = document.createElement('div');
                 shopItemEl.className = 'shop-item';
+                if (item.owned) {
+                    shopItemEl.classList.add('purchased');
+                }
                 
                 const owned = inventory.includes(item.id);
                 
@@ -2538,12 +3059,12 @@
                 btn.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-item');
                     const price = parseInt(this.getAttribute('data-price'));
-                    buyItem(itemId, price);
+                    buyItem(itemId, price, this.closest('.shop-item'));
                 });
             });
         }
         
-        function buyItem(itemId, price) {
+        function buyItem(itemId, price, itemElement) {
             const item = shopItems.find(i => i.id === itemId);
             
             if (!item) return;
@@ -2565,6 +3086,9 @@
             inventory.push(itemId);
             item.owned = true;
             
+            // Показываем анимацию покупки
+            showPurchaseAnimation(itemElement);
+            
             // Сохраняем обновленные данные
             saveStats();
             updateStatsDisplay(true);
@@ -2574,8 +3098,15 @@
             messageEl.textContent = `Поздравляем! Вы купили "${item.name}"!`;
             messageEl.className = 'message success';
             
+            // Показываем анимацию активации предмета
+            setTimeout(() => {
+                showItemActivationAnimation(item.name, item.icon);
+            }, 500);
+            
             // Закрываем магазин после покупки
-            closeShop();
+            setTimeout(() => {
+                closeShop();
+            }, 1500);
         }
         
         // Функции для инвентаря
@@ -2600,6 +3131,11 @@
                 const inventoryItemEl = document.createElement('div');
                 inventoryItemEl.className = 'inventory-item';
                 
+                // Добавляем класс активности для предметов, которые могут быть активны
+                if (itemId === 'bonus_difficulty' && bonusDifficultyActive) {
+                    inventoryItemEl.classList.add('active');
+                }
+                
                 inventoryItemEl.innerHTML = `
                     <div class="inventory-icon">${item.icon}</div>
                     <div class="inventory-name">${item.name}</div>
@@ -2618,6 +3154,10 @@
             if (Math.random() < 0.5) {
                 bonusDifficultyActive = true;
                 bonusDifficultyUses++;
+                
+                // Показываем анимацию активации
+                showItemActivationAnimation('Бонусная Сложность', '⚡');
+                
                 bodyEl.classList.add('alarm-mode');
                 alarmTimerEl.classList.add('active');
                 bonusDifficultyTimeLeft = 5;
@@ -2626,6 +3166,9 @@
                 // Обновляем текст для бонусной сложности
                 document.querySelector('.alarm-timer .timer-text').textContent = 'БОНУСНАЯ СЛОЖНОСТЬ!';
                 document.querySelectorAll('.alarm-timer .timer-text')[1].textContent = '+25% монеток если успеете!';
+                
+                // Обновляем инвентарь для отображения активности предмета
+                updateInventoryDisplay();
                 
                 // Запускаем таймер
                 bonusDifficultyTimer = setInterval(function() {
@@ -2648,6 +3191,9 @@
             bodyEl.classList.remove('alarm-mode');
             alarmTimerEl.classList.remove('active');
             clearInterval(bonusDifficultyTimer);
+            
+            // Обновляем инвентарь для снятия активности предмета
+            updateInventoryDisplay();
             
             // Восстанавливаем стандартный текст для режима тревоги
             document.querySelector('.alarm-timer .timer-text').textContent = 'РЕЖИМ ТРЕВОГИ!';
@@ -2953,93 +3499,137 @@
             }
         }
         
-        // Расчет заработанных монеток
-        function calculateCoinsEarned() {
-            // Базовое количество монеток пропорционально загаданному числу
-            let baseCoins = Math.floor(targetNumber / 10);
-            
-            // Вычитаем 1 монетку за каждую попытку
-            let coinsEarned = baseCoins - attempts;
-            
-            // Не позволяем уйти в отрицательное значение
-            if (coinsEarned < 0) coinsEarned = 0;
-            
-            // Применяем бонусы за рекорд
-            let bonusPercent = 0;
-            if (bestScore <= 2) {
-                bonusPercent = 40; // +40% за 2 и менее попыток
-            } else if (bestScore <= 6) {
-                bonusPercent = 20;  // +20% за 6 и менее попыток
-            } else if (bestScore <= 8) {
-                bonusPercent = 15;  // +15% за 8 и менее попыток
-            }
-            
-            // Добавляем бонус
-            const bonusAmount = Math.floor(coinsEarned * bonusPercent / 100);
-            coinsEarned += bonusAmount;
-            
-            // НОВЫЙ БОНУС: Пятёрочка выручает
-            let fiveBonusAmount = 0;
-            if (inventory.includes('five_bonus')) {
-                // Проверяем, есть ли цифра 5 в загаданном числе
-                const targetString = targetNumber.toString();
-                if (targetString.includes('5')) {
-                    fiveBonusAmount = Math.floor(coinsEarned * 0.55);
-                    coinsEarned += fiveBonusAmount;
-                }
-            }
-            
-            return {
-                base: baseCoins,
-                penalty: attempts,
-                bonus: bonusAmount,
-                total: coinsEarned,
-                bonusPercent: bonusPercent,
-                fiveBonus: fiveBonusAmount
-            };
-        }
+  function calculateCoinsEarned() {
+    // Базовое количество монеток пропорционально загаданному числу
+    let baseCoins = Math.floor(targetNumber / 10);
+    
+    // Вычитаем 1 монетку за каждую попытку
+    let coinsEarned = baseCoins - attempts;
+    
+    // Не позволяем уйти в отрицательное значение
+    if (coinsEarned < 0) coinsEarned = 0;
+    
+    // Применяем бонусы за рекорд
+    let bonusPercent = 0;
+    if (bestScore <= 2) {
+      bonusPercent = 40; // +40% за 2 и менее попыток
+    } else if (bestScore <= 6) {
+      bonusPercent = 20;  // +20% за 6 и менее попыток
+    } else if (bestScore <= 8) {
+      bonusPercent = 15;  // +15% за 8 и менее попыток
+    }
+    
+    // Добавляем бонус за рекорд
+    const bonusAmount = Math.floor(coinsEarned * bonusPercent / 100);
+    coinsEarned += bonusAmount;
+    
+    // Бонус "Пятёрочка выручает"
+    let fiveBonusAmount = 0;
+    if (inventory.includes('five_bonus')) {
+      // Проверяем, есть ли цифра 5 в загаданном числе
+      const targetString = targetNumber.toString();
+      if (targetString.includes('5')) {
+        fiveBonusAmount = Math.floor(coinsEarned * 0.35);
+        coinsEarned += fiveBonusAmount;
+      }
+    }
+    
+    // НОВЫЙ БОНУС: Золотые Пятёрки
+    let goldenFivesBonus = 0;
+    if (inventory.includes('golden_fives')) {
+      const fivesCount = countFivesInNumber(targetNumber);
+      goldenFivesBonus = fivesCount * 10;
+      coinsEarned += goldenFivesBonus;
+    }
+    
+    // НОВЫЙ БОНУС: Монетка (удвоение всех бонусов с вероятностью 1%)
+    let luckyCoinMultiplier = 1;
+    let luckyCoinActive = false;
+    if (checkLuckyCoin()) {
+      luckyCoinMultiplier = 2;
+      luckyCoinActive = true;
+      // Удваиваем только бонусные части, а не базовые монетки
+      const basePart = baseCoins - attempts;
+      const bonusPart = coinsEarned - basePart;
+      coinsEarned = basePart + (bonusPart * 2);
+    }
+    
+    return {
+      base: baseCoins,
+      penalty: attempts,
+      bonus: bonusAmount,
+      total: coinsEarned,
+      bonusPercent: bonusPercent,
+      fiveBonus: fiveBonusAmount,
+      goldenFives: goldenFivesBonus,
+      luckyCoin: luckyCoinActive,
+      luckyCoinMultiplier: luckyCoinMultiplier
+    };
+  }
         
         // Обновление статистики после победы
-        function updateStats() {
-            gamesPlayed++;
-            totalAttempts += attempts;
-            lastAttempts = attempts;
-            
-            if (bestScore === null || attempts < bestScore) {
-                bestScore = attempts;
-            }
-            
-            if (worstScore === null || attempts > worstScore) {
-                worstScore = attempts;
-            }
-            
-            // Расчет заработанных монеток
-            const coinsCalculation = calculateCoinsEarned();
-            coins += coinsCalculation.total;
-            
-            // Обновляем статистику с анимацией для монеток
-            updateStatsDisplay(true);
-            saveStats();
-            
-            // Проверяем, не настало ли время для налога
-            checkTax();
-            
-            // Показываем сообщение о победе с информацией о монетках
-            let messageHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty}`;
-            
-            if (coinsCalculation.bonusPercent > 0) {
-                messageHTML += ` + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus}`;
-            }
-            
-            // НОВОЕ: Добавляем информацию о бонусе "Пятёрочка выручает"
-            if (coinsCalculation.fiveBonus > 0) {
-                messageHTML += ` + бонус "Пятёрочка": ${coinsCalculation.fiveBonus}`;
-            }
-            
-            messageHTML += `)`;
-            
-            messageEl.innerHTML = messageHTML;
-        }
+  function updateStats() {
+    gamesPlayed++;
+    totalAttempts += attempts;
+    lastAttempts = attempts;
+    
+    if (bestScore === null || attempts < bestScore) {
+      bestScore = attempts;
+    }
+    
+    if (worstScore === null || attempts > worstScore) {
+      worstScore = attempts;
+    }
+    
+    // Расчет заработанных монеток
+    const coinsCalculation = calculateCoinsEarned();
+    
+    // Показываем анимацию зачисления монет
+    showCoinsEarnedAnimation(coinsCalculation);
+    
+    coins += coinsCalculation.total;
+    
+    // Обновляем статистику с анимацией для монеток
+    updateStatsDisplay(true);
+    saveStats();
+    
+    // Проверяем, не настало ли время для налога
+    checkTax();
+    
+    // Показываем сообщение о победе с информацией о монетках
+    let messageHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty}`;
+    
+    if (coinsCalculation.bonusPercent > 0) {
+      messageHTML += ` + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus}`;
+    }
+    
+    // Добавляем информацию о бонусе "Пятёрочка выручает"
+    if (coinsCalculation.fiveBonus > 0) {
+      messageHTML += ` + бонус "Пятёрочка": ${coinsCalculation.fiveBonus}`;
+    }
+    
+    // НОВОЕ: Добавляем информацию о бонусе "Золотые Пятёрки"
+    if (coinsCalculation.goldenFives > 0) {
+      const fivesCount = countFivesInNumber(targetNumber);
+      messageHTML += ` + Золотые Пятёрки (${fivesCount}×10): ${coinsCalculation.goldenFives}`;
+    }
+    
+    // НОВОЕ: Добавляем информацию о срабатывании Монетки
+    if (coinsCalculation.luckyCoin) {
+      messageHTML += ` + УДВОЕНИЕ МОНЕТКОЙ!`;
+    }
+    
+    messageHTML += `)`;
+    
+    messageEl.innerHTML = messageHTML;
+    
+    // НОВОЕ: Специальное сообщение если сработала Монетка
+    if (coinsCalculation.luckyCoin) {
+      setTimeout(() => {
+        messageEl.innerHTML += `<br><span style="color: #ff0; text-shadow: 0 0 10px #ff0;">✨ УДАЧА! МОНЕТКА УДВОИЛА ВАШИ БОНУСЫ! ✨</span>`;
+      }, 1000);
+    }
+  }
         
         // Инициализация игры
         function initGame() {
@@ -3068,6 +3658,7 @@
             
             // Сбрасываем следующую активацию тревоги
             nextAlarmAttempt = 10;
+    targetNumber = generateTargetNumber();
             
             // Обновление UI
             messageEl.textContent = '';
