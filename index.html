@@ -3530,13 +3530,25 @@
         // Инвентарь и магазин
         let inventory = [];
         let shopItems = [
+                        {
+                id: 'new_year_greeting',
+                name: 'С новым годом!',
+                description: 'Праздничный коллекционный предмет к Новому году.',
+                price: 2026,
+                icon: '🎄',
+                owned: false,
+                hiddenInShop: true,
+                possibilityToBuy: true
+            },
             {
                 id: 'bonus_difficulty',
                 name: 'Бонусная Сложность',
                 description: 'Каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, добавляется 5 попыток. Если успеваете ввести число до истечения таймера, получаете +25% монеток. Работает до 3 раз за игру.',
                 price: 1000,
                 icon: '⚡',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'calming_pills',
@@ -3544,7 +3556,9 @@
                 description: 'Увеличивает таймер паники до 15 секунд, давая больше времени на реакцию.',
                 price: 100,
                 icon: '💊',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'switch',
@@ -3552,7 +3566,9 @@
                 description: 'С вероятностью 50% за игру отключает режим тревоги на всю текущую игру.',
                 price: 500,
                 icon: '🔌',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'attempts_falsification',
@@ -3560,7 +3576,9 @@
                 description: 'Снижает наценку в магазине на 20%, делая товары дешевле.',
                 price: 150,
                 icon: '📉',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'five_bonus',
@@ -3568,7 +3586,9 @@
                 description: 'Добавляет бонус 35% монеток от имеющихся в конце игры, если в загаданном числе присутствует цифра 5.',
                 price: 55,
                 icon: '5️',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'golden_fives',
@@ -3576,7 +3596,9 @@
                 description: 'Даёт +10 монет за каждую цифру 5 в загаданном числе',
                 price: 155,
                 icon: '💰',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'excellent_student',
@@ -3584,7 +3606,9 @@
                 description: 'Повышает вероятность появления цифры 5 в загаданном числе на 60%',
                 price: 100,
                 icon: '🎓',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'lucky_coin',
@@ -3592,7 +3616,9 @@
                 description: 'С вероятностью 1% удваивает все бонусы в конце игры',
                 price: 800,
                 icon: '🪙',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'triad',
@@ -3600,7 +3626,9 @@
                 description: 'Увеличивает заработок в 5 раз, если загаданное число равно 555.',
                 price: 5555,
                 icon: '✨',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'project_500',
@@ -3608,7 +3636,9 @@
                 description: 'При наличии в инвентаре загаданное число будет в районе 500-599 включительно.',
                 price: 500,
                 icon: '🎯',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             }
         ];
         
@@ -4048,8 +4078,9 @@
         
         function renderShopItems(markup) {
             shopItemsEl.innerHTML = '';
-            
+
             shopItems.forEach(item => {
+                if (item.hiddenInShop) return;
                 const shopItemEl = document.createElement('div');
                 shopItemEl.className = 'shop-item';
                 if (item.owned) {
@@ -4069,9 +4100,9 @@
                         <span class="shop-final-price">${finalPrice} монеток</span>
                     </div>
                     <div class="shop-markup-note">(Наценка: +${markup}%)</div>
-                    ${owned ? 
-                        '<div class="shop-item-owned">✓ УЖЕ КУПЛЕНО</div>' : 
-                        `<button class="shop-buy-btn" data-item="${item.id}" data-price="${finalPrice}" ${coins < finalPrice ? 'disabled' : ''}>КУПИТЬ</button>`
+                    ${owned ?
+                        '<div class="shop-item-owned">✓ УЖЕ КУПЛЕНО</div>' :
+                        `<button class="shop-buy-btn" data-item="${item.id}" data-price="${finalPrice}" ${coins < finalPrice || item.possibilityToBuy ? 'disabled' : ''}>КУПИТЬ</button>`
                     }
                 `;
                 
@@ -4153,6 +4184,11 @@
                 // Добавляем класс активности для предметов, которые могут быть активны
                 if (itemId === 'bonus_difficulty' && bonusDifficultyActive) {
                     inventoryItemEl.classList.add('active');
+                }
+
+                // Добавляем фиолетовую тень для предмета 'new_year_greeting'
+                if (itemId === 'new_year_greeting') {
+                    inventoryItemEl.style.boxShadow = '0 0 15px purple';
                 }
 
                 inventoryItemEl.innerHTML = `
