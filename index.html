@@ -1721,12 +1721,12 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .reset-confirm-overlay.active {
             display: flex;
             animation: overlayAppear 0.3s ease-out;
         }
-        
+
         .reset-confirm-popup {
             background-color: var(--background-color);
             border: 3px solid #a00;
@@ -1737,7 +1737,7 @@
             box-shadow: 0 0 20px #a00, 0 0 40px #a00;
             animation: resetConfirmAppear 0.5s ease-out;
         }
-        
+
         @keyframes resetConfirmAppear {
             0% {
                 transform: scale(0.8);
@@ -1751,7 +1751,7 @@
                 opacity: 1;
             }
         }
-        
+
         .reset-confirm-popup h3 {
             margin-top: 0;
             color: #a00;
@@ -1759,25 +1759,25 @@
             font-size: 20px;
             animation: resetTitlePulse 2s infinite;
         }
-        
+
         @keyframes resetTitlePulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
-        
+
         .reset-confirm-popup p {
             margin: 15px 0;
             color: #a00;
             line-height: 1.5;
         }
-        
+
         .reset-confirm-buttons {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
         }
-        
+
         .reset-confirm-btn {
             padding: 10px 20px;
             border: 2px solid;
@@ -1788,25 +1788,130 @@
             flex: 1;
             transition: all var(--transition-fast) ease;
         }
-        
+
         #confirmResetBtn {
             color: #a00;
             border-color: #a00;
         }
-        
+
         #confirmResetBtn:hover, #confirmResetBtn:active {
             background-color: #a00;
             color: var(--background-color);
             transform: scale(1.05);
             box-shadow: 0 0 10px #a00;
         }
-        
+
         #cancelResetBtn {
             color: var(--secondary-color);
             border-color: var(--secondary-color);
         }
-        
+
         #cancelResetBtn:hover, #cancelResetBtn:active {
+            background-color: var(--secondary-color);
+            color: var(--background-color);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        /* Модальное окно подтверждения удаления предмета */
+        .remove-confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 450;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .remove-confirm-overlay.active {
+            display: flex;
+            animation: overlayAppear 0.3s ease-out;
+        }
+
+        .remove-confirm-popup {
+            background-color: var(--background-color);
+            border: 3px solid #d00;
+            padding: 25px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 0 20px #d00, 0 0 40px #d00;
+            animation: removeConfirmAppear 0.5s ease-out;
+        }
+
+        @keyframes removeConfirmAppear {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .remove-confirm-popup h3 {
+            margin-top: 0;
+            color: #d00;
+            text-shadow: 0 0 10px #d00;
+            font-size: 20px;
+            animation: removeTitlePulse 2s infinite;
+        }
+
+        @keyframes removeTitlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .remove-confirm-popup p {
+            margin: 15px 0;
+            color: #d00;
+            line-height: 1.5;
+        }
+
+        .remove-confirm-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .remove-confirm-btn {
+            padding: 10px 20px;
+            border: 2px solid;
+            background-color: var(--background-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            cursor: pointer;
+            flex: 1;
+            transition: all var(--transition-fast) ease;
+        }
+
+        #confirmRemoveBtn {
+            color: #d00;
+            border-color: #d00;
+        }
+
+        #confirmRemoveBtn:hover, #confirmRemoveBtn:active {
+            background-color: #d00;
+            color: var(--background-color);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #d00;
+        }
+
+        #cancelRemoveBtn {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        #cancelRemoveBtn:hover, #cancelRemoveBtn:active {
             background-color: var(--secondary-color);
             color: var(--background-color);
             transform: scale(1.05);
@@ -2447,6 +2552,31 @@
         .inventory-use-btn:hover {
             background-color: #0f0;
             transform: scale(1.05);
+        }
+
+        .inventory-remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #9e0101;
+            color: #fff;
+            border: 1px solid #580000;
+            border-radius: 0;
+            width: 20px;
+            height: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .inventory-remove-btn:hover {
+            background-color: #4b0000;
+            transform: scale(1.1);
+            box-shadow: 0 0 5px #ff0000;
         }
 
         /* Стили для инвентаря в режиме паники */
@@ -3132,6 +3262,32 @@
         </div>
     </div>
 
+    <!-- Окно подтверждения удаления предмета -->
+    <div class="remove-confirm-overlay" id="removeConfirmOverlay">
+        <div class="remove-confirm-popup">
+            <h3>УДАЛЕНИЕ ПРЕДМЕТА</h3>
+            <p id="removeConfirmMessage">Вы уверены, что хотите уничтожить предмет?</p>
+            <p>Цена предмета не вернётся вам обратно!</p>
+            <div class="remove-confirm-buttons">
+                <button id="confirmRemoveBtn" class="remove-confirm-btn">УНИЧТОЖИТЬ</button>
+                <button id="cancelRemoveBtn" class="remove-confirm-btn">ОТМЕНА</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Окно подтверждения удаления предмета -->
+    <div class="remove-confirm-overlay" id="removeConfirmOverlay">
+        <div class="remove-confirm-popup">
+            <h3>УДАЛЕНИЕ ПРЕДМЕТА</h3>
+            <p id="removeConfirmMessage">Вы уверены, что хотите уничтожить предмет?</p>
+            <p>Цена предмета не вернётся вам обратно!</p>
+            <div class="remove-confirm-buttons">
+                <button id="confirmRemoveBtn" class="remove-confirm-btn">УНИЧТОЖИТЬ</button>
+                <button id="cancelRemoveBtn" class="remove-confirm-btn">ОТМЕНА</button>
+            </div>
+        </div>
+    </div>
+
     <div class="shop-overlay" id="shopOverlay">
         <div class="shop-popup">
             <h3>МАГАЗИН</h3>
@@ -3317,6 +3473,9 @@
         /* ===========================================
            ИГРОВЫЕ ПЕРЕМЕННЫЕ И КОНСТАНТЫ
            =========================================== */
+
+        // Переменные для удаления предметов
+        let itemToRemove = null;
 
         // Основные переменные игрового состояния
         let targetNumber;          // Загаданное число
@@ -3526,6 +3685,12 @@
         const itemActivationIcon = document.getElementById('itemActivationIcon');
         const itemActivationText = document.getElementById('itemActivationText');
 
+        // Элементы для удаления предметов
+        const removeConfirmOverlay = document.getElementById('removeConfirmOverlay');
+        const confirmRemoveBtn = document.getElementById('confirmRemoveBtn');
+        const cancelRemoveBtn = document.getElementById('cancelRemoveBtn');
+        const removeConfirmMessage = document.getElementById('removeConfirmMessage');
+
         // Функции для анимаций
         function showCoinsEarnedAnimation(coinsCalculation) {
             // Устанавливаем значение
@@ -3628,14 +3793,47 @@
             // Устанавливаем иконку и текст
             itemActivationIcon.textContent = itemIcon;
             itemActivationText.textContent = `${itemName} активирован!`;
-            
+
             // Показываем анимацию
             itemActivation.style.display = 'flex';
-            
+
             // Скрываем анимацию через 2 секунды
             setTimeout(() => {
                 itemActivation.style.display = 'none';
             }, 2000);
+        }
+
+        // Функции для подтверждения удаления предметов
+        function showRemoveConfirm(itemId) {
+            const item = shopItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            itemToRemove = itemId;
+            removeConfirmMessage.textContent = `Вы уверены, что хотите уничтожить "${item.name}"?`;
+            removeConfirmOverlay.classList.add('active');
+        }
+
+        function confirmRemoveItem() {
+            if (!itemToRemove) return;
+
+            const item = shopItems.find(i => i.id === itemToRemove);
+            if (item) {
+                inventory = inventory.filter(id => id !== itemToRemove);
+                item.owned = false;
+                saveStats();
+                updateInventoryDisplay();
+                updateShopDisplay();
+                messageEl.textContent = `Предмет "${item.name}" удалён!`;
+                messageEl.className = 'message hint';
+            }
+
+            itemToRemove = null;
+            removeConfirmOverlay.classList.remove('active');
+        }
+
+        function cancelRemoveItem() {
+            itemToRemove = null;
+            removeConfirmOverlay.classList.remove('active');
         }
 
         function generateTargetNumber() {
@@ -3933,7 +4131,7 @@
         // Функции для инвентаря
         function updateInventoryDisplay() {
             inventoryListEl.innerHTML = '';
-            
+
             if (inventory.length === 0) {
                 inventoryListEl.innerHTML = `
                     <div class="inventory-item empty">
@@ -3944,25 +4142,35 @@
                 `;
                 return;
             }
-            
+
             inventory.forEach(itemId => {
                 const item = shopItems.find(i => i.id === itemId);
                 if (!item) return;
-                
+
                 const inventoryItemEl = document.createElement('div');
                 inventoryItemEl.className = 'inventory-item';
-                
+
                 // Добавляем класс активности для предметов, которые могут быть активны
                 if (itemId === 'bonus_difficulty' && bonusDifficultyActive) {
                     inventoryItemEl.classList.add('active');
                 }
-                
+
                 inventoryItemEl.innerHTML = `
                     <div class="inventory-icon">${item.icon}</div>
                     <div class="inventory-name">${item.name}</div>
                     <div class="inventory-description">${item.description}</div>
                 `;
-                
+
+                // Добавляем кнопку удаления
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'inventory-remove-btn';
+                removeBtn.textContent = '🧺';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    showRemoveConfirm(itemId);
+                };
+
+                inventoryItemEl.appendChild(removeBtn);
                 inventoryListEl.appendChild(inventoryItemEl);
             });
         }
@@ -4833,6 +5041,17 @@
                 closeShop();
             }
         });
+
+                // Обработчики для удаления предметов
+        confirmRemoveBtn.addEventListener('click', confirmRemoveItem);
+        cancelRemoveBtn.addEventListener('click', cancelRemoveItem);
+
+        // Закрытие окна подтверждения удаления при клике на оверлей
+        removeConfirmOverlay.addEventListener('click', function(e) {
+            if (e.target === removeConfirmOverlay) {
+                cancelRemoveItem();
+            }
+        });
         
         // Обработчик для оплаты налога
         payTaxBtn.addEventListener('click', payTax);
@@ -5094,7 +5313,7 @@
 
         // Массив частиц пепла
         const ashParticles = [];
-        const particleCount = 150;
+        const particleCount = 150; // Количество частиц (увеличено для заметности)
 
         // Инициализация частиц
         function initAshParticles() {
