@@ -1166,19 +1166,19 @@
         .shake-screen {
             animation: shake 0.5s infinite;
         }
-        
+
         @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            0% { transform: translate(0.5px, 0.5px) rotate(0deg); }
+            10% { transform: translate(-0.5px, -1px) rotate(-0.5deg); }
+            20% { transform: translate(-1.5px, 0px) rotate(0.5deg); }
+            30% { transform: translate(1.5px, 1px) rotate(0deg); }
+            40% { transform: translate(0.5px, -0.5px) rotate(0.5deg); }
+            50% { transform: translate(-0.5px, 1px) rotate(-0.5deg); }
+            60% { transform: translate(-1.5px, 0.5px) rotate(0deg); }
+            70% { transform: translate(1.5px, 0.5px) rotate(-0.5deg); }
+            80% { transform: translate(-0.5px, -0.5px) rotate(0.5deg); }
+            90% { transform: translate(0.5px, 1px) rotate(0deg); }
+            100% { transform: translate(0.5px, -1px) rotate(-0.5deg); }
         }
         
         .panic-timer {
@@ -1200,6 +1200,12 @@
             pointer-events: none;
             padding: 20px;
             text-align: center;
+        }
+
+        /* Отмена тряски для таймера паники */
+        .shake-screen #panicTimer {
+            animation: none !important;
+            transform: none !important;
         }
         
         .panic-timer.active {
@@ -3275,19 +3281,6 @@
         </div>
     </div>
 
-    <!-- Окно подтверждения удаления предмета -->
-    <div class="remove-confirm-overlay" id="removeConfirmOverlay">
-        <div class="remove-confirm-popup">
-            <h3>УДАЛЕНИЕ ПРЕДМЕТА</h3>
-            <p id="removeConfirmMessage">Вы уверены, что хотите уничтожить предмет?</p>
-            <p>Цена предмета не вернётся вам обратно!</p>
-            <div class="remove-confirm-buttons">
-                <button id="confirmRemoveBtn" class="remove-confirm-btn">УНИЧТОЖИТЬ</button>
-                <button id="cancelRemoveBtn" class="remove-confirm-btn">ОТМЕНА</button>
-            </div>
-        </div>
-    </div>
-
     <div class="shop-overlay" id="shopOverlay">
         <div class="shop-popup">
             <h3>МАГАЗИН</h3>
@@ -3530,7 +3523,29 @@
         // Инвентарь и магазин
         let inventory = [];
         let shopItems = [
-                        {
+            {
+                id: 'air_item',
+                name: 'Предмет',
+                description: '-',
+                price: 0,
+                icon: '-',
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false,
+                collectorsItem: false
+            },
+            {
+                id: 'developers_item',
+                name: 'F12',
+                description: 'Коллекционный предмет разработчика.',
+                price: 999999,
+                icon: '🎩',
+                owned: false,
+                hiddenInShop: true,
+                possibilityToBuy: true,
+                collectorsItem: true
+            },
+            {
                 id: 'new_year_greeting',
                 name: 'С новым годом!',
                 description: 'Праздничный коллекционный предмет к Новому году.',
@@ -3538,7 +3553,8 @@
                 icon: '🎄',
                 owned: false,
                 hiddenInShop: true,
-                possibilityToBuy: true
+                possibilityToBuy: true,
+                collectorsItem: true
             },
             {
                 id: 'bonus_difficulty',
@@ -4186,8 +4202,8 @@
                     inventoryItemEl.classList.add('active');
                 }
 
-                // Добавляем фиолетовую тень для предмета 'new_year_greeting'
-                if (itemId === 'new_year_greeting') {
+                // Добавляем фиолетовую тень для collectorsItem
+                if (item.collectorsItem) {
                     inventoryItemEl.style.boxShadow = '0 0 15px purple';
                 }
 
@@ -4197,16 +4213,16 @@
                     <div class="inventory-description">${item.description}</div>
                 `;
 
-                // Добавляем кнопку удаления
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'inventory-remove-btn';
-                removeBtn.textContent = '🗑️';
-                removeBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    showRemoveConfirm(itemId);
-                };
+                // Добавляем кнопку удаления 
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'inventory-remove-btn';
+                    removeBtn.textContent = '🗑️';
+                    removeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        showRemoveConfirm(itemId);
+                    };
+                    inventoryItemEl.appendChild(removeBtn);
 
-                inventoryItemEl.appendChild(removeBtn);
                 inventoryListEl.appendChild(inventoryItemEl);
             });
         }
@@ -4276,6 +4292,9 @@
         
         // Функция сброса прогресса
         function resetProgress() {
+            // Сохраняем коллекционные предметы
+            const collectors = inventory.filter(id => shopItems.find(item => item.id === id)?.collectorsItem);
+
             // Сброс статистики
             gamesPlayed = 0;
             bestScore = null;
@@ -4283,34 +4302,40 @@
             totalAttempts = 0;
             lastAttempts = 0;
             coins = 0;
-            inventory = [];
+            inventory = collectors; // Оставляем только коллекционные
             taxActive = false;
             taxGamesPlayed = 0;
-            
-            // Сброс состояния предметов магазина
+
+            // Сброс состояния предметов магазина (кроме коллекционных)
             shopItems.forEach(item => {
-                item.owned = false;
+                if (!item.collectorsItem) {
+                    item.owned = false;
+                }
             });
-            
+
             // Очистка localStorage
             localStorage.removeItem('project500_stats');
-            
+
             // Обновление отображения статистики
             updateStatsDisplay();
             updateInventoryDisplay();
             updateTaxCounter();
-            
+
             // Скрываем уведомление о налоге
             taxNotification.classList.remove('active');
-            
+
             // Перезапуск игры
             initGame();
-            
+
             // Закрытие окна подтверждения
             resetConfirmOverlay.classList.remove('active');
-            
-            // Показ сообщения о сбросе
-            messageEl.textContent = 'ПРОГРЕСС СБРОШЕН!';
+
+            // Показ сообщения о сбросе с указанием сохраненных коллекционных предметов
+            if (collectors.length > 0) {
+                messageEl.textContent = `ПРОГРЕСС СБРОШЕН! Сохранено коллекционных предметов: ${collectors.length}`;
+            } else {
+                messageEl.textContent = 'ПРОГРЕСС СБРОШЕН!';
+            }
             messageEl.className = 'message hint';
         }
         
