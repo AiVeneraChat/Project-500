@@ -3579,7 +3579,7 @@
     
     <div class="container pixel-border appear">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.10.snow | С НОВЫМ ГОДОМ!</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.10.snow</div>
         
         <div class="game-area pixel-border-reverse appear">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
@@ -5038,72 +5038,73 @@
             };
         }
         
-        // Обновление статистики после победы
-        function updateStats() {
-            gamesPlayed++;
-            totalAttempts += attempts;
-            lastAttempts = attempts;
+// Обновление статистики после победы
+function updateStats() {
+    gamesPlayed++;
+    totalAttempts += attempts;
+    lastAttempts = attempts;
 
-            if (bestScore === null || attempts < bestScore) {
-                bestScore = attempts;
-            }
+    if (bestScore === null || attempts < bestScore) {
+        bestScore = attempts;
+    }
 
-            if (worstScore === null || attempts > worstScore) {
-                worstScore = attempts;
-            }
+    if (worstScore === null || attempts > worstScore) {
+        worstScore = attempts;
+    }
 
-            // Обновляем глобальную статистику
-            updateGlobalStats();
+    // Обновляем глобальную статистику
+    updateGlobalStats();
 
-            // Расчет заработанных монеток
-            const coinsCalculation = calculateCoinsEarned();
+    // Расчет заработанных монеток
+    const coinsCalculation = calculateCoinsEarned();
 
-            // Показываем анимацию зачисления монет
-            showCoinsEarnedAnimation(coinsCalculation);
+    // Показываем анимацию зачисления монет
+    showCoinsEarnedAnimation(coinsCalculation);
 
-            coins += coinsCalculation.total;
+    coins += coinsCalculation.total;
 
-            // Обновляем статистику с анимацией для монеток
-            updateStatsDisplay(true);
-            saveStats();
+    // Обновляем статистику с анимацией для монеток
+    updateStatsDisplay(true);
+    saveStats();
 
-            // Проверяем, не настало ли время для налога
-            checkTax();
+    // Проверяем, не настало ли время для налога
+    checkTax();
 
-            // Показываем сообщение о победе с информацией о монетках
-            let messageHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty}`;
+    // Показываем сообщение о победе с информацией о монетках
+    let messageHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty}`;
 
-            if (coinsCalculation.bonusPercent > 0) {
-                messageHTML += ` + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus}`;
-            }
+    if (coinsCalculation.bonusPercent > 0) {
+        messageHTML += ` + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus}`;
+    }
 
-            // Добавляем информацию о бонусе "Пятёрочка выручает"
-            if (coinsCalculation.fiveBonus > 0) {
-                messageHTML += ` + бонус "Пятёрочка": ${coinsCalculation.fiveBonus}`;
-            }
+    // Добавляем информацию о бонусе "Пятёрочка выручает"
+    if (coinsCalculation.fiveBonus > 0) {
+        messageHTML += ` + бонус "Пятёрочка": ${coinsCalculation.fiveBonus}`;
+    }
 
-            // Добавляем информацию о бонусе "Золотые Пятёрки"
-            if (coinsCalculation.goldenFives > 0) {
-                const fivesCount = countFivesInNumber(targetNumber);
-                messageHTML += ` + Золотые Пятёрки (${fivesCount}×10): ${coinsCalculation.goldenFives}`;
-            }
+    // Добавляем информацию о бонусе "Золотые Пятёрки"
+    if (coinsCalculation.goldenFives > 0) {
+        const fivesCount = countFivesInNumber(targetNumber);
+        messageHTML += ` + Золотые Пятёрки (${fivesCount}×10): ${coinsCalculation.goldenFives}`;
+    }
 
-            // Добавляем информацию о срабатывании Монетки
-            if (coinsCalculation.luckyCoin) {
-                messageHTML += ` + УДВОЕНИЕ МОНЕТКОЙ!`;
-            }
+    // Добавляем информацию о срабатывании Монетки
+    if (coinsCalculation.luckyCoin) {
+        messageHTML += ` + УДВОЕНИЕ МОНЕТКОЙ!`;
+    }
 
-            messageHTML += `)`;
+    // Добавляем информацию о количестве попыток
+    messageHTML += `)<br>Количество попыток: ${attempts}`;
 
-            messageEl.innerHTML = messageHTML;
+    messageEl.innerHTML = messageHTML;
 
-            // Специальное сообщение если сработала Монетка
-            if (coinsCalculation.luckyCoin) {
-                setTimeout(() => {
-                    messageEl.innerHTML += `<br><span style="color: #ff0; text-shadow: 0 0 10px #ff0;">✨ УДАЧА! МОНЕТКА УДВОИЛА ВАШИ БОНУСЫ! ✨</span>`;
-                }, 1000);
-            }
-        }
+    // Специальное сообщение если сработала Монетка
+    if (coinsCalculation.luckyCoin) {
+        setTimeout(() => {
+            messageEl.innerHTML += `<br><span style="color: #ff0; text-shadow: 0 0 10px #ff0;">✨ УДАЧА! МОНЕТКА УДВОИЛА ВАШИ БОНУСЫ! ✨</span>`;
+        }, 1000);
+    }
+}
         
         // Инициализация игры
         function initGame() {
@@ -5337,7 +5338,6 @@
                 deactivateAlarmMode();
                 deactivateBonusDifficulty(false);
                 hideHint();
-                deactivateColdEvent(false); // Деактивируем Холод при победе
 
                 // Обновляем статистику
                 updateStats();
