@@ -11,16 +11,13 @@
 
         /* CSS-переменные для цветов и переходов */
         :root {
-            --primary-color: #00bfff;    /* Холодный голубой */
-            --secondary-color: #008000;  /* Рождественский зелёный */
+            --primary-color: rgb(0, 217, 255);      /* Основной зеленый */
+            --secondary-color: rgb(22, 131, 158);    /* Темно-зеленый */
             --background-color: #000;   /* Черный фон */
-            --container-bg: #111;       /* Темно-серый контейнер */
-            --game-area-bg: #050505;    /* Темный фон игровой зоны */
-            --text-color: #00bfff;      /* Холодный голубой текст */
-            --accent-color: #0ff;       /* Голубой акцент */
-            --danger-color: #f00;       /* Красный опасность */
-            --warning-color: #ff0;      /* Желтый предупреждение */
-            --success-color: #00bfff;   /* Холодный голубой успех */
+            --container-bg: #001522;    /* Темно-зеленый контейнер */
+            --game-area-bg: #000b0f;    /* Темный фон игровой зоны */
+            --text-color: rgb(255, 255, 255);         /* Зеленый текст */
+            --accent-color: rgb(255, 53, 53);       /* Голубой акцент */
             --transition-fast: 0.2s;   /* Быстрый переход */
             --transition-medium: 0.4s; /* Средний переход */
             --transition-slow: 0.8s;   /* Медленный переход */
@@ -59,7 +56,7 @@
             bottom: 0;
             right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                        linear-gradient(90deg, rgba(221, 0, 0, 0.1), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.15));
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.15));
             background-size: 100% 2px, 3px 100%;
             z-index: 10000;
             pointer-events: none;
@@ -110,8 +107,8 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: rgba(0, 191, 255, 0.3);
-            box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+            background: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
             z-index: 9999;
             pointer-events: none;
             animation: scan 3s linear infinite;
@@ -297,7 +294,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
             transition: left var(--transition-slow) ease;
         }
         
@@ -645,7 +642,7 @@
         .range-current {
             position: absolute;
             height: 100%;
-            background-color: rgba(0, 191, 255, 0.2);
+            background-color: rgba(0, 255, 0, 0.2);
             border: 1px solid var(--primary-color);
             transition: all 0.5s ease;
             z-index: 1;
@@ -939,7 +936,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 1);
             z-index: 103;
             pointer-events: none;
         }
@@ -981,12 +978,12 @@
         .panic-mode .container {
             box-shadow: 0 0 10px #f00, 0 0 20px #f00 !important;
             border: 2px solid #f00 !important;
-            animation: panicContainer 1s infinite alternate;
+            animation: panicContainer 0.7s infinite alternate;
         }
-        
+
         @keyframes panicContainer {
-            0% { transform: translateX(-2px); }
-            100% { transform: translateX(2px); }
+            0% { transform: translateX(-5px); }
+            100% { transform: translateX(5px); }
         }
         
         .panic-mode .game-area {
@@ -1162,24 +1159,7 @@
             0% { transform: scale(1); }
             100% { transform: scale(1.2); }
         }
-        
-        .shake-screen {
-            animation: shake 0.5s infinite;
-        }
-        
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
+        /* Анимация тряски экрана убрана для режима паники */
         
         .panic-timer {
             position: fixed;
@@ -1200,6 +1180,12 @@
             pointer-events: none;
             padding: 20px;
             text-align: center;
+        }
+
+        /* Отмена тряски для таймера паники */
+        .shake-screen #panicTimer {
+            animation: none !important;
+            transform: none !important;
         }
         
         .panic-timer.active {
@@ -1245,158 +1231,6 @@
             margin-top: 10px;
             font-size: 14px;
             animation: blink 1s infinite;
-        }
-
-        /* Стили для режима Нового года */
-        .new-year-mode {
-            --glow-intensity: 15px; /* Увеличенное свечение */
-        }
-
-        .new-year-mode .container {
-            box-shadow: 0 0 25px var(--primary-color), 0 0 45px var(--primary-color), 0 0 65px rgba(255, 215, 0, 0.8);
-            animation: newYearContainerGlow 4s infinite alternate;
-        }
-
-        @keyframes newYearContainerGlow {
-            0% { box-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--primary-color), 0 0 60px rgba(255, 215, 0, 0.8); }
-            100% { box-shadow: 0 0 30px var(--primary-color), 0 0 50px var(--primary-color), 0 0 70px rgba(255, 215, 0, 0.8), 0 0 90px rgba(255, 215, 0, 0.5); }
-        }
-
-        .new-year-mode h1 {
-            text-shadow: 2px 2px 0 #030, 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.4);
-            animation: newYearTitleGlow 3s infinite alternate;
-        }
-
-        @keyframes newYearTitleGlow {
-            0% {
-                text-shadow: 2px 2px 0 #030, 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6);
-            }
-            100% {
-                text-shadow: 2px 2px 0 #030, 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.4);
-            }
-        }
-
-        .new-year-mode .game-area {
-            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.3), 0 0 15px var(--primary-color);
-            animation: newYearGameAreaGlow 4s infinite alternate;
-        }
-
-        @keyframes newYearGameAreaGlow {
-            0% { box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.3), 0 0 10px var(--primary-color); }
-            100% { box-shadow: inset 0 0 25px rgba(255, 215, 0, 0.3), 0 0 20px var(--primary-color); }
-        }
-
-        .new-year-mode button {
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 15px var(--primary-color);
-            animation: newYearButtonGlow 5s infinite alternate;
-        }
-
-        @keyframes newYearButtonGlow {
-            0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5), 0 0 10px var(--primary-color); }
-            100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.5), 0 0 20px var(--primary-color), 0 0 25px rgba(255, 215, 0, 0.3); }
-        }
-
-        .new-year-mode .message {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px var(--primary-color);
-            animation: newYearMessageGlow 6s infinite alternate;
-        }
-
-        @keyframes newYearMessageGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px var(--primary-color); }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 25px var(--primary-color); }
-        }
-
-        .new-year-mode input[type="number"] {
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px var(--primary-color);
-            animation: newYearInputGlow 4s infinite alternate;
-        }
-
-        @keyframes newYearInputGlow {
-            0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.4), 0 0 10px var(--primary-color); }
-            100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px var(--primary-color); }
-        }
-
-        .new-year-mode .rules {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px var(--primary-color);
-            animation: newYearRulesGlow 5s infinite alternate;
-        }
-
-        @keyframes newYearRulesGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px var(--primary-color); }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 25px var(--primary-color); }
-        }
-
-        .new-year-mode .stats-section {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px var(--primary-color);
-            animation: newYearStatsGlow 5s infinite alternate;
-        }
-
-        @keyframes newYearStatsGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px var(--primary-color); }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 25px var(--primary-color); }
-        }
-
-        .new-year-mode .history-section {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px var(--primary-color);
-            animation: newYearHistoryGlow 5s infinite alternate;
-        }
-
-        @keyframes newYearHistoryGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px var(--primary-color); }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 25px var(--primary-color); }
-        }
-
-        .new-year-mode .range-visualization {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px var(--primary-color);
-            animation: newYearRangeGlow 5s infinite alternate;
-        }
-
-        @keyframes newYearRangeGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px var(--primary-color); }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 25px var(--primary-color); }
-        }
-
-        .new-year-mode .shop-section {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px #fff;
-            animation: newYearShopGlow 4s infinite alternate;
-        }
-
-        @keyframes newYearShopGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px #fff; }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 25px #fff; }
-        }
-
-        .new-year-mode .inventory-section {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3), 0 0 20px #0a0;
-            animation: newYearInventoryGlow 4s infinite alternate;
-        }
-
-        @keyframes newYearInventoryGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3), 0 0 15px #0a0; }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 25px #0a0; }
-        }
-
-        .new-year-mode .coins-value {
-            animation: newYearCoinsGlow 3s infinite alternate;
-        }
-
-        @keyframes newYearCoinsGlow {
-            0% {
-                text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
-            }
-            100% {
-                text-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 40px #00ffff, 0 0 50px #00ffff, 0 0 60px #ffff00, 0 0 70px #ffff00;
-            }
-        }
-
-        .new-year-mode .reset-section {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 20px #a00;
-            animation: newYearResetGlow 5s infinite alternate;
-        }
-
-        @keyframes newYearResetGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), 0 0 15px #a00; }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 25px #a00; }
         }
 
         .hint-popup {
@@ -1529,10 +1363,58 @@
             display: block;
             animation: overlayAppear 0.3s ease-out;
         }
-        
+
         @keyframes overlayAppear {
             0% { opacity: 0; }
             100% { opacity: 1; }
+        }
+
+        /* Login form styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        .login-input {
+            padding: 12px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            transition: all var(--transition-fast) ease;
+            text-align: center;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px var(--accent-color);
+        }
+
+        .login-btn {
+            padding: 12px 15px;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Courier New', Courier, monospace;
+            transition: all var(--transition-fast) ease;
+            animation: button-glow 3s infinite alternate;
+        }
+
+        .login-btn:hover {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
         }
         
         /* Стили для режима тревоги */
@@ -1798,89 +1680,6 @@
             font-size: 14px;
             animation: blink 1s infinite;
         }
-
-        /* Стили для события "Холод" */
-        .cold-vignette {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            box-shadow: inset 0 0 200px rgba(0, 191, 255, 0.7), inset 0 0 50px rgba(0, 191, 255, 0.5);
-            z-index: 103;
-            animation: cold-vignette-pulse 1s infinite alternate;
-        }
-
-        @keyframes cold-vignette-pulse {
-            from { box-shadow: inset 0 0 150px rgba(0, 191, 255, 0.6), inset 0 0 40px rgba(0, 191, 255, 0.4); }
-            to { box-shadow: inset 0 0 250px rgba(0, 191, 255, 0.8), inset 0 0 60px rgba(0, 191, 255, 0.6); }
-        }
-
-        .cold-event {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-            font-size: 36px;
-            color: #00bfff;
-            text-shadow: 0 0 15px #00bfff;
-            flex-direction: column;
-            display: none;
-            pointer-events: none;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .cold-event.active {
-            display: flex;
-            animation: coldEventAppear 0.5s ease-out;
-        }
-
-        @keyframes coldEventAppear {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .cold-timer-text {
-            font-size: 24px;
-            margin-bottom: 15px;
-            text-align: center;
-            animation: coldTimerTextPulse 2s infinite;
-        }
-
-        @keyframes coldTimerTextPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .cold-timer-count {
-            font-size: 48px;
-            font-weight: bold;
-            color: #00bfff;
-            text-shadow: 0 0 20px #00bfff;
-            animation: cold-timer-pulse 1s infinite;
-            margin-bottom: 15px;
-        }
-
-        @keyframes cold-timer-pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .cold-warning {
-            color: #00bfff;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 16px;
-            animation: blink 1s infinite;
-            text-shadow: 0 0 10px #00bfff;
-        }
         
         /* Стили для кнопки сброса прогресса */
         .reset-section {
@@ -1941,8 +1740,24 @@
             color: #200;
             transform: scale(1.05);
             box-shadow: 0 0 15px #a00;
+}
+
+        /* Переопределяем стиль кнопки выхода */
+        #logoutBtn {
+            background-color: #200;
+            color: #a00;
+            border: 2px solid #a00;
+            margin-top: 10px;
+            transition: all var(--transition-fast) ease;
         }
-        
+
+        #logoutBtn:hover, #logoutBtn:active {
+            background-color: #a00;
+            color: #200;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #a00;
+        }
+
         /* Модальное окно подтверждения сброса */
         .reset-confirm-overlay {
             position: fixed;
@@ -2236,25 +2051,29 @@
         }
         
         .shop-popup {
-            background-color: var(--background-color);
+            background: linear-gradient(135deg, var(--background-color) 0%, #001100 50%, var(--background-color) 100%);
             border: 3px solid #fff;
-            padding: 25px;
-            max-width: 90%;
-            width: 500px;
-            height: 80%;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 95%;
+            max-height: 90%;
+            width: 550px;
             overflow: auto;
             text-align: center;
-            box-shadow: 0 0 20px #fff, 0 0 40px #fff;
+            box-shadow: 0 0 25px #fff, 0 0 50px #fff, 0 0 75px #ff0;
             animation: shop-appear 0.4s ease-out;
             transform: scale(0.9);
             opacity: 0;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Courier New', monospace;
         }
         
-        .shop-overlay.active .shop-popup {
-            transform: scale(1);
-            opacity: 1;
-        }
+    .shop-overlay.active .shop-popup {
+        transform: scale(1);
+        opacity: 1;
+    }
         
         @keyframes shop-appear {
             0% {
@@ -2273,6 +2092,7 @@
         
         .shop-popup h3 {
             margin-top: 0;
+            margin-bottom: 15px;
             color: #fff;
             text-shadow: 0 0 10px #fff;
             font-size: 20px;
@@ -2300,6 +2120,11 @@
             cursor: pointer;
             transition: all var(--transition-fast) ease;
             margin-top: 15px;
+            position: sticky;
+            bottom: 10px;
+            z-index: 15;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.9);
         }
         
         .shop-close-btn:hover, .shop-close-btn:active {
@@ -2417,8 +2242,12 @@
             margin: 15px 0;
             padding: 10px;
             border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.3);
+            position: sticky;
+            top: 10px;
+            z-index: 15;            
         }
 
         @keyframes shop-coins-glow {
@@ -2445,17 +2274,18 @@
         }
 
         .shop-item {
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #222;
-            border: 1px solid #fff;
-            border-radius: 0;
+            padding: 18px;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
             text-align: left;
             transition: all var(--transition-medium) ease;
             position: relative;
             overflow: hidden;
             transform: translateY(0);
             opacity: 0;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1), inset 0 0 15px rgba(0, 255, 0, 0.05);
             animation: shopItemAppear 0.5s ease-out forwards;
         }
 
@@ -2471,7 +2301,7 @@
         @keyframes shopItemAppear {
             0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(25px);
             }
             100% {
                 opacity: 1;
@@ -2480,8 +2310,9 @@
         }
 
         .shop-item:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 15px 40px rgba(0, 255, 0, 0.2), inset 0 0 20px rgba(255, 230, 0, 0.1);
+            border-color: rgba(255, 243, 71, 0.7);
         }
 
         .shop-item.purchased {
@@ -2529,19 +2360,45 @@
         }
 
         .shop-buy-btn {
-            background-color: #333;
+            background: linear-gradient(45deg, #333 0%, #444 50%, #333 100%);
             color: #fff;
-            border: 2px solid #fff;
-            padding: 8px 15px;
+            border: 3px solid #fff;
+            padding: 10px 18px;
             cursor: pointer;
             font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
             transition: all var(--transition-fast) ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2), inset 0 0 10px rgba(0, 255, 0, 0.1);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shop-buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .shop-buy-btn:hover::before {
+            left: 100%;
         }
 
         .shop-buy-btn:hover {
-            background-color: #fff;
+            background: linear-gradient(45deg, #fff 0%, #eee 50%, #fff 100%);
             color: #333;
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 5px 15px rgba(0, 255, 0, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .shop-buy-btn:active {
             transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.4);
         }
 
         .shop-buy-btn:disabled {
@@ -2812,19 +2669,6 @@
             background-color: #4b0000;
             transform: scale(1.1);
             box-shadow: 0 0 5px #ff0000;
-        }
-
-        /* Новогодний стиль для предмета "С новым годом!" */
-        .new-year-item {
-            border: 1px solid #d00 !important;
-            background-color: rgba(255, 0, 0, 0.1) !important;
-            box-shadow: 0 5px 15px #d00;
-        }
-
-        .new-year-item .inventory-name,
-        .new-year-item .inventory-description {
-            color: #ff0000;
-            text-shadow: 0 0 10px #ff0000;
         }
 
         /* Стили для инвентаря в режиме паники */
@@ -3288,42 +3132,7 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes slideInFromRight {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
 
-        @keyframes slideInFromBottom {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes slideInFromTop {
-            from { transform: translateY(-100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes rotateIn {
-            from { transform: rotate(-180deg) scale(0); opacity: 0; }
-            to { transform: rotate(0) scale(1); opacity: 1; }
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes pulseIn {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
 
         /* Анимации для кнопок */
         .btn-pulse {
@@ -3360,85 +3169,47 @@
             100% { transform: scale(1); }
         }
 
-        /* Анимации для ошибок */
-        .error-animation {
-            animation: errorShake 0.5s ease-out;
-        }
 
-        @keyframes errorShake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-
-        /* Анимации для появления элементов с задержкой */
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-        .delay-6 { animation-delay: 0.6s; }
-        .delay-7 { animation-delay: 0.7s; }
-        .delay-8 { animation-delay: 0.8s; }
-        .delay-9 { animation-delay: 0.9s; }
-        .delay-10 { animation-delay: 1.0s; }
-
-        /* Стили для новогодней скидки */
-        .holiday-discount {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            opacity: 0.7;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 0;
-            text-shadow: 0 0 5px #fff;
-            pointer-events: none;
-        }
 
         /* Медиа-запросы для адаптивности */
         @media (min-width: 480px) {
             .buttons-container {
                 flex-direction: row;
             }
-
+            
             .stats {
                 flex-direction: row;
             }
-
+            
             .stats-row {
                 flex: 1;
             }
         }
-
+        
         @media (min-width: 768px) {
             body {
                 padding: 20px;
             }
-
+            
             .container {
                 max-width: 700px;
                 margin: 0 auto;
                 padding: 25px;
             }
-
+            
             h1 {
                 font-size: 24px;
             }
-
+            
             .game-area {
                 padding: 15px;
             }
-
+            
             .buttons-container {
                 flex-direction: row;
             }
         }
-
+        
         /* Отключение анимаций для пользователей, предпочитающих уменьшенное движение */
         @media (prefers-reduced-motion: reduce) {
             * {
@@ -3480,7 +3251,7 @@
     <!-- Уведомление о налоге -->
     <div id="taxNotification" class="tax-notification">
         <div class="tax-popup">
-            <h3>ОЙ ЧТО ЭТО?</h3>
+            <h3>НАЛОГОВАЯ СЛУЖБА</h3>
             <p>Вы достигли <span id="taxGamesPlayed">10</span> игр. Необходимо оплатить налог!</p>
             <div class="tax-amount" id="taxAmount">0 монеток</div>
             <div class="tax-formula" id="taxFormula">
@@ -3495,8 +3266,8 @@
     <div class="hint-overlay" id="hintOverlay"></div>
     <div class="hint-popup" id="hintPopup">
         <div class="hint-title">ПОДСКАЗКА СИСТЕМЫ</div>
-        <div>Не пробуй число:</div>
-        <div class="hint-value" id="hintNumber">2026</div>
+        <div>Попробуй число:</div>
+        <div class="hint-value" id="hintNumber">500</div>
         <div class="hint-timer">Исчезнет через: <span id="hintTimer">5</span> сек.</div>
     </div>
     
@@ -3512,13 +3283,6 @@
         <div class="timer-text">РЕЖИМ ТРЕВОГИ!</div>
         <div class="timer-count" id="alarmTimerCount">20</div>
         <div class="timer-text">+10 попыток через:</div>
-    </div>
-
-    <!-- Таймер события "Холод" -->
-    <div class="cold-event" id="coldEvent">
-        <div class="timer-text">СОБЫТИЕ "ХОЛОД"!</div>
-        <div class="cold-timer-count" id="coldTimerCount">30</div>
-        <div class="timer-text">+30 попыток через:</div>
     </div>
     
     <!-- Окно подтверждения сброса прогресса -->
@@ -3547,19 +3311,6 @@
         </div>
     </div>
 
-    <!-- Окно подтверждения удаления предмета -->
-    <div class="remove-confirm-overlay" id="removeConfirmOverlay">
-        <div class="remove-confirm-popup">
-            <h3>УДАЛЕНИЕ ПРЕДМЕТА</h3>
-            <p id="removeConfirmMessage">Вы уверены, что хотите уничтожить предмет?</p>
-            <p>Цена предмета не вернётся вам обратно!</p>
-            <div class="remove-confirm-buttons">
-                <button id="confirmRemoveBtn" class="remove-confirm-btn">УНИЧТОЖИТЬ</button>
-                <button id="cancelRemoveBtn" class="remove-confirm-btn">ОТМЕНА</button>
-            </div>
-        </div>
-    </div>
-
     <div class="shop-overlay" id="shopOverlay">
         <div class="shop-popup">
             <h3>МАГАЗИН</h3>
@@ -3567,20 +3318,38 @@
             <div class="shop-info">
                 <div class="shop-markup-text">Текущая наценка:</div>
                 <div class="shop-markup-value" id="shopMarkup">0%</div>
-                <div class="shop-note">Новый Год!: Если наценка = >0% тогда = 0%</div>
+                <div class="shop-note">Наценка равна среднему количеству попыток за все игры</div>
+                <div class="holiday-discount">Новогодняя скидка: 20%!</div>
             </div>
             <div class="shop-items" id="shopItems">
                 <!-- Товары будут добавляться динамически -->
             </div>
-            <div class="holiday-discount">Новогодняя скидка: 20%!</div>
             <button class="shop-close-btn" id="shopCloseBtn">ЗАКРЫТЬ</button>
         </div>
     </div>
     
-    <div class="container pixel-border appear">
-        <h1 class="glitch-text" data-text="ПРИВЕТ!">PROJECT 500</h1>
-        <div class="subtitle terminal-text">ЗАКИРОВ 0.10.snow</div>
-        
+    <!-- Экран логина -->
+    <div id="loginScreen" class="container pixel-border appear">
+        <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.11.snowb | HTML EDITION</div>
+        <div style="color: #ff0; text-align: center; font-size: 14px; margin-bottom: 10px;">Введите данные регистрации из Telegram бота</div>
+
+        <div class="login-form">
+            <input type="text" id="loginName" placeholder="Имя пользователя" class="login-input">
+            <input type="password" id="loginPassword" placeholder="Пароль" class="login-input">
+            <button id="loginBtn" class="login-btn">ВОЙТИ</button>
+            <div id="loginMessage" class="message"></div>
+        </div>
+        <div style="color: var(--accent-color); text-align: center; font-size: 14px; margin-top: 15px;">
+            <a href="https://t.me/project500t" target="_blank" style="color: var(--accent-color); text-decoration: none; border-bottom: 1px dotted var(--accent-color);">Получить данные и зарегистрироваться в @Project500Bot</a>
+        </div>
+    </div>
+     <!-- Основной экран игры -->
+    <div id="mainGame" class="container pixel-border appear" style="display: none;">
+        <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.11.snowb | HTML EDITION</div>
+        <div style="color: #ff0; text-align: center; font-size: 14px; margin-bottom: 10px;">Это Пре-Альфа версия! Текущий вид игры это только начальная стадия разработки и многое будет изменено!</div>
+
         <div class="game-area pixel-border-reverse appear">
             <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
             
@@ -3601,8 +3370,8 @@
                     <!-- Маркеры будут добавляться динамически -->
                 </div>
                 <div class="range-numbers">
-                    <span>2025</span>
-                    <span>2026</span>
+                    <span>1</span>
+                    <span>1000</span>
                 </div>
                 <div class="stats">
                     <div class="stats-row">
@@ -3650,7 +3419,7 @@
                         <div class="stat-value" id="worstScore">-</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Что-то важное</div>
+                        <div class="stat-label">СРЕДНЕЕ</div>
                         <div class="stat-value" id="averageAttempts">-</div>
                     </div>
                     <div class="stat-item">
@@ -3662,8 +3431,8 @@
 
             <div class="shop-section appear">
                 <h3>МАГАЗИН</h3>
-                <h3>Здесь что-то было?</h3>
                 <p>Тратьте заработанные монетки на улучшения!</p>
+                <button id="shopBtn" class="pixel-border">ОТКРЫТЬ МАГАЗИН</button>
             </div>
             
             <div class="inventory-section appear">
@@ -3682,18 +3451,41 @@
         <div class="rules pixel-border-reverse appear">
             <h3>ПРАВИЛА ИГРЫ:</h3>
             <ul>
-                <li>ОЙ... всё удалилось</li>
-                <li>Ну ладно</li>
-                <li></li>
-                <li>А вот же оно:</li>
-                <button id="shopBtn" class="pixel-border">ОТКРЫТЬ МАГАЗИН</button>
+                <li>Компьютер загадывает случайное число от 1 до 1000</li>
+                <li>Вы вводите число в поле выше и нажимаете "ПРОВЕРИТЬ"</li>
+                <li>Компьютер подскажет, больше или меньше загаданное число</li>
+                <li>Цель - угадать число за минимальное количество попыток</li>
+                <li>За каждую игру вы получаете монетки, количество равным загаданному числу</li>
+                <li>Каждая попытка стоит 1 монетку</li>
+                <li>Бонусы за рекорды: ≤2 попыток = +40%, ≤6 попыток = +20%, ≤8 попыток = +15%</li>
+                <li>Для начала новой игры нажмите кнопку "НОВАЯ ИГРА"</li>
+                <li>Все ваши попытки сохраняются в истории ниже</li>
+                <li>Диапазон возможных чисел сужается после каждой попытки</li>
+                <li>Когда диапазон становится узким, он начинает светиться!</li>
+                <li>При сужении диапазона до 10 чисел активируется режим паники!</li>
+                <li>После 10 попыток и затем каждые 2 попытки активируется режим тревоги!</li>
+                <li>Каждые 5 попыток система предлагает подсказку</li>
+                <li>Режим тревоги отключается после ввода числа</li>
+                <li>В магазине можно приобрести улучшения за монетки</li>
+                <li>Предмет "Бонусная Сложность": каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, добавляется 5 попыток. Если успеваете ввести число до истечения таймера, получаете +25% монеток. Работает до 3 раз за игру.</li>
+                <li>Предмет "Успокаивающие": увеличивает таймер паники до 15 секунд</li>
+                <li>Предмет "Отличник": повышает вероятность появления цифры 5 в загаданном числе на 30%</li>
+                <li>Предмет "Золотые Пятёрки": даёт +10 монет за каждую цифру 5 в загаданном числе</li>
+                <li>Предмет "Монетка": с вероятностью 1% удваивает все бонусы в конце игры</li>
+                <li>Предмет "Пятроица": увеличивает заработок в 5 раз, если загаданное число равно 555</li>
+                <li>Предмет "Project 500": при наличии в инвентаре загаданное число будет в районе 500-599 включительно</li>
+                <li>Каждую 10-ю игру взимается налог: ((-Среднее * 3) + (Число игр * 10) - Анти-Рекорд) + Бонус Рекорда%</li>
+                <li>Если налог не оплачен, весь прогресс сбрасывается</li>
+            </ul>
         </div>
-        
+
         <!-- Новая секция с кнопкой сброса прогресса -->
         <div class="reset-section appear">
             <h3>ОПАСНАЯ ЗОНА</h3>
             <p>Нажатие этой кнопки полностью сбросит всю статистику и прогресс</p>
             <button id="resetProgressBtn" class="pixel-border">СБРОСИТЬ ВЕСЬ ПРОГРЕСС</button>
+            <br><br>
+            <button id="logoutBtn" class="pixel-border">ВЫЙТИ ИЗ АККАУНТА</button>
         </div>
 
         <!-- Глобальная статистика -->
@@ -3758,12 +3550,6 @@
         let hintActive = false;
         let hintTimer;
         let hintTimeLeft = 5;
-
-        // Переменные для события "Холод"
-        let coldEventActive = false;
-        let coldTimer;
-        let coldTimeLeft = 30;
-        let coldTargetNumber;
         
         // Статистика
         let gamesPlayed = 0;
@@ -3784,25 +3570,42 @@
         let taxActive = false;
         let taxAmount = 0;
         let taxGamesPlayed = 0;
-
+        
         // Инвентарь и магазин
         let inventory = [];
         let shopItems = [
-                        {
+            {
+                id: 'new_years_gift',
+                name: 'Подарок',
+                description: 'Бонус +25 монет за игру.',
+                price: 26,
+                icon: '🎁',
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false,
+                collectorsItem: true
+            },
+            {
                 id: 'new_year_greeting',
-                name: 'С новым годом!',
-                description: 'Праздничный коллекционный предмет к Новому году.',
+                name: 'С новым 2026 годом!',
+                description: 'Праздничный коллекционный предмет к 2026 Новому году.',
                 price: 26,
                 icon: '🎄',
                 owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false,
+                collectorsItem: true
             },
             {
                 id: 'collector_orange',
                 name: 'Мандарин',
-                description: 'Праздничный коллекционный предмет к Новому году.',
+                description: 'Праздничный коллекционный предмет к 2026 Новому году.',
                 price: 26,
                 icon: '🍊',
                 owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false,
+                collectorsItem: true
             },
             {
                 id: 'bonus_difficulty',
@@ -3810,7 +3613,9 @@
                 description: 'Каждая попытка с вероятностью 50% активирует режим тревоги на 5 секунд. Если таймер истекает, добавляется 5 попыток. Если успеваете ввести число до истечения таймера, получаете +25% монеток. Работает до 3 раз за игру.',
                 price: 800,
                 icon: '⚡',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'calming_pills',
@@ -3818,7 +3623,9 @@
                 description: 'Увеличивает таймер паники до 15 секунд, давая больше времени на реакцию.',
                 price: 80,
                 icon: '💊',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'switch',
@@ -3826,7 +3633,9 @@
                 description: 'С вероятностью 50% за игру отключает режим тревоги на всю текущую игру.',
                 price: 400,
                 icon: '🔌',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'attempts_falsification',
@@ -3834,7 +3643,9 @@
                 description: 'Снижает наценку в магазине на 20%, делая товары дешевле.',
                 price: 120,
                 icon: '📉',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'five_bonus',
@@ -3842,7 +3653,9 @@
                 description: 'Добавляет бонус 35% монеток от имеющихся в конце игры, если в загаданном числе присутствует цифра 5.',
                 price: 44,
                 icon: '5️',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'golden_fives',
@@ -3850,7 +3663,9 @@
                 description: 'Даёт +10 монет за каждую цифру 5 в загаданном числе',
                 price: 124,
                 icon: '💰',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'excellent_student',
@@ -3858,15 +3673,19 @@
                 description: 'Повышает вероятность появления цифры 5 в загаданном числе на 60%',
                 price: 80,
                 icon: '🎓',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'lucky_coin',
-                name: 'Монетка|100% скидка!',
+                name: 'Монетка|Скидка 100%',
                 description: 'С вероятностью 1% удваивает все бонусы в конце игры',
                 price: 0,
                 icon: '🪙',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'triad',
@@ -3874,15 +3693,19 @@
                 description: 'Увеличивает заработок в 5 раз, если загаданное число равно 555.',
                 price: 4444,
                 icon: '✨',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             },
             {
                 id: 'project_500',
-                name: 'Project 500|100% скидка!(нет)',
+                name: 'Project 500',
                 description: 'При наличии в инвентаре загаданное число будет в районе 500-599 включительно.',
                 price: 400,
                 icon: '🎯',
-                owned: false
+                owned: false,
+                hiddenInShop: false,
+                possibilityToBuy: false
             }
         ];
         
@@ -3893,6 +3716,164 @@
         let bonusDifficultyUses = 0;
         const maxBonusDifficultyUses = 3;
         
+        // Элементы для логина
+        const loginScreen = document.getElementById('loginScreen');
+        const loginName = document.getElementById('loginName');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginMessage = document.getElementById('loginMessage');
+        const mainGame = document.getElementById('mainGame');
+
+        // Глобальные переменные для аутентификации
+        let currentUserName = '';
+        let currentUserPassword = '';
+
+        // Функция логина (manualLogin для разлучения)
+        async function manualLogin() {
+            console.log('Manual login function called');
+            const name = loginName.value.trim();
+            const password = loginPassword.value;
+
+            if (!name || !password) {
+                loginMessage.textContent = 'Оба поля обязательны!';
+                loginMessage.className = 'message hint';
+                return;
+            }
+
+            await login(name, password, false);
+        }
+
+        // Общая функция логина
+        async function login(name, password, fromAutoLogin = false) {
+            console.log('Login function called', fromAutoLogin ? '(auto)' : '(manual)');
+
+            try {
+                // Проверить логин
+                const response = await fetch('https://server-production-236d.up.railway.app/api/check_login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, password }),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log('Login successful');
+                    currentUserName = name;
+                    currentUserPassword = password;
+
+                    // Загрузить статистику
+                    const statsResponse = await fetch('https://server-production-236d.up.railway.app/api/load_stats', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name, password }),
+                    });
+
+                    const statsResult = await statsResponse.json();
+
+                    if (statsResult.success) {
+                        // Восстановить статистику из сервера
+                        const userStats = statsResult.stats;
+                        const userGlobalStats = statsResult.globalStats;
+
+                        // Восстановить переменные
+                        gamesPlayed = userStats.gamesPlayed || 0;
+                        bestScore = userStats.bestScore;
+                        worstScore = userStats.worstScore;
+                        totalAttempts = userStats.totalAttempts || 0;
+                        lastAttempts = userStats.lastAttempts || 0;
+                        coins = userStats.coins || 0;
+                        inventory = userStats.inventory || [];
+                        taxActive = userStats.taxActive || false;
+                        taxGamesPlayed = userStats.taxGamesPlayed || 0;
+
+                        totalGamesEver = userGlobalStats.totalGamesEver || 0;
+                        bestScoreEver = userGlobalStats.bestScoreEver;
+                        worstScoreEver = userGlobalStats.worstScoreEver;
+                        totalAttemptsEver = userGlobalStats.totalAttemptsEver || 0;
+                        averageAttemptsEver = userGlobalStats.averageAttemptsEver || 0;
+
+                        // Обновить предметы магазина
+                        shopItems.forEach(item => {
+                            item.owned = inventory.includes(item.id);
+                        });
+
+                        // Успешный вход - сохранить credentials в localStorage
+                        localStorage.setItem('project500_user', name);
+                        localStorage.setItem('project500_pass', password);
+
+                        // Переключить экраны
+                        loginScreen.style.display = 'none';
+                        mainGame.style.display = 'block';
+                        updateStatsDisplay();
+                        updateGlobalStatsDisplay();
+                        updateInventoryDisplay();
+                        checkTax();
+                        initGame();
+
+                        if (fromAutoLogin) {
+                            loginMessage.textContent = 'Автоматический вход выполнен!';
+                            loginMessage.className = 'message success';
+                        }
+                    } else {
+                        if (!fromAutoLogin) {
+                            loginMessage.textContent = 'Ошибка загрузки статистики.';
+                            loginMessage.className = 'message hint error-animation';
+                        }
+                    }
+                } else {
+                    if (!fromAutoLogin) {
+                        loginMessage.textContent = result.message || 'Неверный логин или пароль! Получите данные в Telegram боте.';
+                        loginMessage.className = 'message hint error-animation';
+                    }
+                }
+            } catch (error) {
+                if (!fromAutoLogin) {
+                    console.log('Login error:', error);
+                    loginMessage.textContent = 'Ошибка подключения к серверу. Попробуйте позже.';
+                    loginMessage.className = 'message hint';
+                }
+            }
+        }
+
+        // Функция выхода из аккаунта
+        function logout() {
+            // Очистить localStorage
+            localStorage.removeItem('project500_user');
+            localStorage.removeItem('project500_pass');
+
+            // Очистить переменные
+            currentUserName = '';
+            currentUserPassword = '';
+
+            // Переключить экраны
+            mainGame.style.display = 'none';
+            loginScreen.style.display = 'block';
+
+            // Очистить формы
+            loginName.value = '';
+            loginPassword.value = '';
+            loginMessage.textContent = 'Выход выполнен. Введите данные для входа.';
+            loginMessage.className = 'message hint';
+        }
+
+        // Попытка автоматического входа
+        async function tryAutoLogin() {
+            const savedUser = localStorage.getItem('project500_user');
+            const savedPass = localStorage.getItem('project500_pass');
+
+            if (savedUser && savedPass) {
+                console.log('Attempting auto-login...');
+                await login(savedUser, savedPass, true);
+            } else {
+                console.log('No saved credentials, showing login screen');
+            }
+        }
+
         // Элементы DOM
         const guessInput = document.getElementById('guessInput');
         const guessBtn = document.getElementById('guessBtn');
@@ -4023,6 +4004,17 @@
                     <span class="coins-breakdown-value coins-breakdown-bonus">+${coinsCalculation.goldenFives}</span>
                 `;
                 coinsBreakdown.appendChild(goldenFivesItem);
+            }
+
+            // Бонус: Подарок (если есть)
+            if (coinsCalculation.giftBonus > 0) {
+                const giftItem = document.createElement('div');
+                giftItem.className = 'coins-breakdown-item';
+                giftItem.innerHTML = `
+                    <span class="coins-breakdown-label">Бонус "Подарок":</span>
+                    <span class="coins-breakdown-value coins-breakdown-bonus">+${coinsCalculation.giftBonus}</span>
+                `;
+                coinsBreakdown.appendChild(giftItem);
             }
             
             // Бонус: Монетка (если сработала)
@@ -4198,7 +4190,12 @@
             
             // Расчет налога
             let tax = ((-average * 3) + (gamesCount * 10) - worst);
-            
+
+            // Если Налог Формулы < Ход Игры * 10, тогда налог = Ход Игры * 10
+            if (tax < gamesCount * 10) {
+                tax = gamesCount * 10;
+            }
+
             // Добавляем бонус рекорда%
             tax = tax + (tax * bonusPercent / 100);
             
@@ -4299,24 +4296,21 @@
         function updateShopDisplay() {
             // Обновляем отображение монеток в магазине
             shopCoinsDisplay.textContent = coins;
-
+            
             // Обновляем наценку
             const shopMarkupEl = document.getElementById('shopMarkup');
             let markup = 0;
-
+            
             if (gamesPlayed > 0) {
                 // Наценка равна среднему количеству попыток (округляем до целого)
                 markup = Math.round(totalAttempts / gamesPlayed);
             }
-
+            
             // Фальсификация Попыток снижает наценку на 20%
             if (inventory.includes('attempts_falsification')) {
                 markup = markup - 20;
             }
-
-            // Если Наценка = <0% тогда она = 0%
-            if (markup > 0) markup = 0;
-
+            
             shopMarkupEl.textContent = `${markup}%`;
             
             // Обновляем список товаров
@@ -4325,8 +4319,9 @@
         
         function renderShopItems(markup) {
             shopItemsEl.innerHTML = '';
-            
+
             shopItems.forEach(item => {
+                if (item.hiddenInShop) return;
                 const shopItemEl = document.createElement('div');
                 shopItemEl.className = 'shop-item';
                 if (item.owned) {
@@ -4346,9 +4341,9 @@
                         <span class="shop-final-price">${finalPrice} монеток</span>
                     </div>
                     <div class="shop-markup-note">(Наценка: +${markup}%)</div>
-                    ${owned ? 
-                        '<div class="shop-item-owned">✓ УЖЕ КУПЛЕНО</div>' : 
-                        `<button class="shop-buy-btn" data-item="${item.id}" data-price="${finalPrice}" ${coins < finalPrice ? 'disabled' : ''}>КУПИТЬ</button>`
+                    ${owned ?
+                        '<div class="shop-item-owned">✓ УЖЕ КУПЛЕНО</div>' :
+                        `<button class="shop-buy-btn" data-item="${item.id}" data-price="${finalPrice}" ${coins < finalPrice || item.possibilityToBuy ? 'disabled' : ''}>КУПИТЬ</button>`
                     }
                 `;
                 
@@ -4427,14 +4422,14 @@
                 const inventoryItemEl = document.createElement('div');
                 inventoryItemEl.className = 'inventory-item';
 
-                // Индивидуальный стиль для новогоднего предмета
-                if (itemId === 'new_year_greeting' || itemId === 'collector_orange') {
-                    inventoryItemEl.classList.add('new-year-item');
-                }
-
                 // Добавляем класс активности для предметов, которые могут быть активны
                 if (itemId === 'bonus_difficulty' && bonusDifficultyActive) {
                     inventoryItemEl.classList.add('active');
+                }
+
+                // Добавляем фиолетовую тень для collectorsItem
+                if (item.collectorsItem) {
+                    inventoryItemEl.style.boxShadow = '0 0 15px red';
                 }
 
                 inventoryItemEl.innerHTML = `
@@ -4443,16 +4438,24 @@
                     <div class="inventory-description">${item.description}</div>
                 `;
 
-                // Добавляем кнопку удаления
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'inventory-remove-btn';
-                removeBtn.textContent = '🗑️';
-                removeBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    showRemoveConfirm(itemId);
-                };
+                // Добавляем фиолетовую окраску для collectorsItem
+                if (item.collectorsItem) {
+                    inventoryItemEl.style.borderColor = 'red';
+                    inventoryItemEl.querySelector('.inventory-name').style.color = 'red';
+                    inventoryItemEl.querySelector('.inventory-description').style.color = 'red';
+                    inventoryItemEl.querySelector('.inventory-icon').style.color = 'red';
+                }
 
-                inventoryItemEl.appendChild(removeBtn);
+                // Добавляем кнопку удаления
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'inventory-remove-btn';
+                    removeBtn.textContent = '🗑️';
+                    removeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        showRemoveConfirm(itemId);
+                    };
+                    inventoryItemEl.appendChild(removeBtn);
+
                 inventoryListEl.appendChild(inventoryItemEl);
             });
         }
@@ -4522,6 +4525,9 @@
         
         // Функция сброса прогресса
         function resetProgress() {
+            // Сохраняем коллекционные предметы
+            const collectors = inventory.filter(id => shopItems.find(item => item.id === id)?.collectorsItem);
+
             // Сброс статистики
             gamesPlayed = 0;
             bestScore = null;
@@ -4529,18 +4535,13 @@
             totalAttempts = 0;
             lastAttempts = 0;
             coins = 0;
-            inventory = [];
+            inventory = collectors; // Оставляем только коллекционные
             taxActive = false;
             taxGamesPlayed = 0;
 
-            // Сохраняем предмет "С новым годом!" уязвимым к сбросу
-            inventory = ['new_year_greeting'];
-
-            // Сброс состояния предметов магазина
+            // Сброс состояния предметов магазина (кроме коллекционных)
             shopItems.forEach(item => {
-                if (item.id === 'new_year_greeting') {
-                    item.owned = true;
-                } else {
+                if (!item.collectorsItem) {
                     item.owned = false;
                 }
             });
@@ -4562,8 +4563,12 @@
             // Закрытие окна подтверждения
             resetConfirmOverlay.classList.remove('active');
 
-            // Показ сообщения о сбросе
-            messageEl.textContent = 'ПРОГРЕСС СБРОШЕН!';
+            // Показ сообщения о сбросе с указанием сохраненных коллекционных предметов
+            if (collectors.length > 0) {
+                messageEl.textContent = `ПРОГРЕСС СБРОШЕН! Сохранено коллекционных предметов: ${collectors.length}`;
+            } else {
+                messageEl.textContent = 'ПРОГРЕСС СБРОШЕН!';
+            }
             messageEl.className = 'message hint';
         }
         
@@ -4681,7 +4686,7 @@
             if (panicModeActive || taxActive) return;
             
             panicModeActive = true;
-            bodyEl.classList.add('panic-mode', 'shake-screen');
+            bodyEl.classList.add('panic-mode');
             panicTimerEl.classList.add('active');
             
             // Устанавливаем время паники в зависимости от наличия предмета "Успокаивающие"
@@ -4710,7 +4715,7 @@
         
         function deactivatePanicMode() {
             panicModeActive = false;
-            bodyEl.classList.remove('panic-mode', 'shake-screen');
+            bodyEl.classList.remove('panic-mode');
             panicTimerEl.classList.remove('active');
             clearInterval(panicTimer);
 
@@ -4719,111 +4724,13 @@
                 hintPopup.classList.remove('panic-mode');
             }
         }
-
-        // Функции для события "Холод"
-        function activateColdEvent() {
-            if (coldEventActive) return;
-
-            coldEventActive = true;
-
-            // Применяем эффекты
-            document.body.classList.add('cold-vignette');
-            coldEvent.style.display = 'flex';
-
-            coldTimeLeft = 30;
-            document.getElementById('coldTimerCount').textContent = coldTimeLeft;
-
-            // Показываем сообщение
-            messageEl.textContent = `СОБЫТИЕ "ХОЛОД"! Введите ЛЮБОЕ число за 30 секунд! УСПЕХ: +30 монеток. НЕУСПЕХ: +30 попыток.`;
-            messageEl.className = 'message hint cold-event-message';
-
-            // Запускаем таймер
-            coldTimer = setInterval(function() {
-                coldTimeLeft--;
-                document.getElementById('coldTimerCount').textContent = coldTimeLeft;
-
-                if (coldTimeLeft <= 0) {
-                    deactivateColdEvent(false);
-                }
-            }, 1000);
-        }
-
-        function deactivateColdEvent(success) {
-            coldEventActive = false;
-            document.body.classList.remove('cold-vignette');
-            coldEvent.style.display = 'none';
-            clearInterval(coldTimer);
-
-            if (success) {
-                coins += 30;
-                updateStatsDisplay(true);
-                messageEl.textContent = 'УСПЕХ! Вы ввели правильное число! +30 монеток!';
-                messageEl.className = 'message success';
-            } else {
-                attempts += 30;
-                attemptsEl.textContent = `Попытки: ${attempts}`;
-                messageEl.textContent = 'Время вышло! +30 попыток!';
-                messageEl.className = 'message hint';
-            }
-        }
         
-        // Загрузка статистики из localStorage
-        function loadStats() {
-            const savedStats = localStorage.getItem('project500_stats');
-            if (savedStats) {
-                const stats = JSON.parse(savedStats);
-                gamesPlayed = stats.gamesPlayed || 0;
-                bestScore = stats.bestScore || null;
-                worstScore = stats.worstScore || null;
-                totalAttempts = stats.totalAttempts || 0;
-                lastAttempts = stats.lastAttempts || 0;
-                coins = stats.coins || 0;
-                inventory = stats.inventory || [];
-                taxActive = stats.taxActive || false;
-                taxGamesPlayed = stats.taxGamesPlayed || 0;
+        // Теперь загрузка происходит в login, нет необходимости отдельно
 
-                // Обновляем состояние предметов магазина
-                shopItems.forEach(item => {
-                    item.owned = inventory.includes(item.id);
-                });
-
-                // Если налог активен, активируем его
-                if (taxActive) {
-                    taxAmount = calculateTax();
-                    activateTax();
-                }
-            }
-
-            // Загрузка глобальной статистики
-            loadGlobalStats();
-
-            updateStatsDisplay();
-            updateInventoryDisplay();
-            updateTaxCounter();
-        }
-        
-        // Загрузка глобальной статистики
-        function loadGlobalStats() {
-            const savedGlobalStats = localStorage.getItem('project500_global_stats');
-            if (savedGlobalStats) {
-                const globalStats = JSON.parse(savedGlobalStats);
-                totalGamesEver = globalStats.totalGamesEver || 0;
-                bestScoreEver = globalStats.bestScoreEver || null;
-                worstScoreEver = globalStats.worstScoreEver || null;
-                totalAttemptsEver = globalStats.totalAttemptsEver || 0;
-            }
-            updateGlobalStatsDisplay();
-        }
-
-        // Сохранение глобальной статистики
+        // Сохранение глобальной статистики (теперь в users.json)
         function saveGlobalStats() {
-            const globalStats = {
-                totalGamesEver,
-                bestScoreEver,
-                worstScoreEver,
-                totalAttemptsEver
-            };
-            localStorage.setItem('project500_global_stats', JSON.stringify(globalStats));
+            // Глобальная статистика теперь сохраняется в API вместе с остальной статистикой
+            saveStats();
         }
 
         // Обновление глобальной статистики
@@ -4872,8 +4779,10 @@
             }
         }
 
-        // Сохранение статистики в localStorage
-        function saveStats() {
+        // Сохранение статистики на сервер
+        async function saveStats() {
+            if (currentUserName === 'Admin') return;
+
             const stats = {
                 gamesPlayed,
                 bestScore,
@@ -4885,7 +4794,36 @@
                 taxActive,
                 taxGamesPlayed
             };
-            localStorage.setItem('project500_stats', JSON.stringify(stats));
+            const globalStats = {
+                totalGamesEver,
+                bestScoreEver,
+                worstScoreEver,
+                totalAttemptsEver,
+                averageAttemptsEver
+            };
+
+            try {
+                const response = await fetch('https://server-production-236d.up.railway.app/api/save_stats', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: currentUserName,
+                        password: currentUserPassword,
+                        stats: stats,
+                        globalStats: globalStats
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    console.error('Ошибка сохранения статистики:', result.message);
+                }
+            } catch (error) {
+                console.error('Ошибка сети при сохранении статистики:', error);
+            }
         }
         
         // Функция для обновления отображения монеток с анимацией
@@ -4941,13 +4879,13 @@
         function calculateCoinsEarned() {
             // Базовое количество монеток пропорционально загаданному числу
             let baseCoins = Math.floor(targetNumber / 10);
-            
+
             // Вычитаем 1 монетку за каждую попытку
             let coinsEarned = baseCoins - attempts;
-            
+
             // Не позволяем уйти в отрицательное значение
             if (coinsEarned < 0) coinsEarned = 0;
-            
+
             // Применяем бонусы за рекорд
             let bonusPercent = 0;
             if (bestScore <= 2) {
@@ -4957,11 +4895,11 @@
             } else if (bestScore <= 8) {
                 bonusPercent = 15;  // +15% за 8 и менее попыток
             }
-            
+
             // Добавляем бонус за рекорд
             const bonusAmount = Math.floor(coinsEarned * bonusPercent / 100);
             coinsEarned += bonusAmount;
-            
+
             // Бонус "Пятёрочка выручает"
             let fiveBonusAmount = 0;
             if (inventory.includes('five_bonus')) {
@@ -4972,7 +4910,7 @@
                     coinsEarned += fiveBonusAmount;
                 }
             }
-            
+
             // Бонус: Золотые Пятёрки
             let goldenFivesBonus = 0;
             if (inventory.includes('golden_fives')) {
@@ -4980,7 +4918,14 @@
                 goldenFivesBonus = fivesCount * 10;
                 coinsEarned += goldenFivesBonus;
             }
-            
+
+            // Бонус: Подарок (+25 монеток всегда)
+            let giftBonus = 0;
+            if (inventory.includes('new_years_gift')) {
+                giftBonus = 25;
+                coinsEarned += giftBonus;
+            }
+
             // Бонус: Монетка (удвоение всех бонусов с вероятностью 1%)
             let luckyCoinMultiplier = 1;
             let luckyCoinActive = false;
@@ -4992,7 +4937,7 @@
                 const bonusPart = coinsEarned - basePart;
                 coinsEarned = basePart + (bonusPart * 2);
             }
-            
+
             // Предмет "Пятроица"
             let triadMultiplier = 1;
             let triadActive = false;
@@ -5001,7 +4946,7 @@
                 triadActive = true;
                 coinsEarned *= triadMultiplier;
             }
-            
+
             return {
                 base: baseCoins,
                 penalty: attempts,
@@ -5010,6 +4955,7 @@
                 bonusPercent: bonusPercent,
                 fiveBonus: fiveBonusAmount,
                 goldenFives: goldenFivesBonus,
+                giftBonus: giftBonus,
                 luckyCoin: luckyCoinActive,
                 luckyCoinMultiplier: luckyCoinMultiplier,
                 triad: triadActive,
@@ -5017,73 +4963,77 @@
             };
         }
         
-// Обновление статистики после победы
-function updateStats() {
-    gamesPlayed++;
-    totalAttempts += attempts;
-    lastAttempts = attempts;
+        // Обновление статистики после победы
+        function updateStats() {
+            gamesPlayed++;
+            totalAttempts += attempts;
+            lastAttempts = attempts;
 
-    if (bestScore === null || attempts < bestScore) {
-        bestScore = attempts;
-    }
+            if (bestScore === null || attempts < bestScore) {
+                bestScore = attempts;
+            }
 
-    if (worstScore === null || attempts > worstScore) {
-        worstScore = attempts;
-    }
+            if (worstScore === null || attempts > worstScore) {
+                worstScore = attempts;
+            }
 
-    // Обновляем глобальную статистику
-    updateGlobalStats();
+            // Обновляем глобальную статистику
+            updateGlobalStats();
 
-    // Расчет заработанных монеток
-    const coinsCalculation = calculateCoinsEarned();
+            // Расчет заработанных монеток
+            const coinsCalculation = calculateCoinsEarned();
 
-    // Показываем анимацию зачисления монет
-    showCoinsEarnedAnimation(coinsCalculation);
+            // Показываем анимацию зачисления монет
+            showCoinsEarnedAnimation(coinsCalculation);
 
-    coins += coinsCalculation.total;
+            coins += coinsCalculation.total;
 
-    // Обновляем статистику с анимацией для монеток
-    updateStatsDisplay(true);
-    saveStats();
+            // Обновляем статистику с анимацией для монеток
+            updateStatsDisplay(true);
+            saveStats();
 
-    // Проверяем, не настало ли время для налога
-    checkTax();
+            // Проверяем, не настало ли время для налога
+            checkTax();
 
-    // Показываем сообщение о победе с информацией о монетках
-    let messageHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty}`;
+            // Показываем сообщение о победе с информацией о монетках
+            let messageHTML = `ПОЗДРАВЛЯЕМ! Вы угадали число ${targetNumber} за ${attempts} попыток!<br>Получено монеток: ${coinsCalculation.total} (базово: ${coinsCalculation.base} - штраф: ${coinsCalculation.penalty}`;
 
-    if (coinsCalculation.bonusPercent > 0) {
-        messageHTML += ` + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus}`;
-    }
+            if (coinsCalculation.bonusPercent > 0) {
+                messageHTML += ` + бонус ${coinsCalculation.bonusPercent}%: ${coinsCalculation.bonus}`;
+            }
 
-    // Добавляем информацию о бонусе "Пятёрочка выручает"
-    if (coinsCalculation.fiveBonus > 0) {
-        messageHTML += ` + бонус "Пятёрочка": ${coinsCalculation.fiveBonus}`;
-    }
+            // Добавляем информацию о бонусе "Пятёрочка выручает"
+            if (coinsCalculation.fiveBonus > 0) {
+                messageHTML += ` + бонус "Пятёрочка": ${coinsCalculation.fiveBonus}`;
+            }
 
-    // Добавляем информацию о бонусе "Золотые Пятёрки"
-    if (coinsCalculation.goldenFives > 0) {
-        const fivesCount = countFivesInNumber(targetNumber);
-        messageHTML += ` + Золотые Пятёрки (${fivesCount}×10): ${coinsCalculation.goldenFives}`;
-    }
+            // Добавляем информацию о бонусе "Золотые Пятёрки"
+            if (coinsCalculation.goldenFives > 0) {
+                const fivesCount = countFivesInNumber(targetNumber);
+                messageHTML += ` + Золотые Пятёрки (${fivesCount}×10): ${coinsCalculation.goldenFives}`;
+            }
 
-    // Добавляем информацию о срабатывании Монетки
-    if (coinsCalculation.luckyCoin) {
-        messageHTML += ` + УДВОЕНИЕ МОНЕТКОЙ!`;
-    }
+            // Добавляем информацию о бонусе "Подарок"
+            if (coinsCalculation.giftBonus > 0) {
+                messageHTML += ` + Подарок: ${coinsCalculation.giftBonus}`;
+            }
 
-    // Добавляем информацию о количестве попыток
-    messageHTML += `)<br>Количество попыток: ${attempts}`;
+            // Добавляем информацию о срабатывании Монетки
+            if (coinsCalculation.luckyCoin) {
+                messageHTML += ` + УДВОЕНИЕ МОНЕТКОЙ!`;
+            }
 
-    messageEl.innerHTML = messageHTML;
+            messageHTML += `)`;
 
-    // Специальное сообщение если сработала Монетка
-    if (coinsCalculation.luckyCoin) {
-        setTimeout(() => {
-            messageEl.innerHTML += `<br><span style="color: #ff0; text-shadow: 0 0 10px #ff0;">✨ УДАЧА! МОНЕТКА УДВОИЛА ВАШИ БОНУСЫ! ✨</span>`;
-        }, 1000);
-    }
-}
+            messageEl.innerHTML = messageHTML;
+
+            // Специальное сообщение если сработала Монетка
+            if (coinsCalculation.luckyCoin) {
+                setTimeout(() => {
+                    messageEl.innerHTML += `<br><span style="color: #ff0; text-shadow: 0 0 10px #ff0;">✨ УДАЧА! МОНЕТКА УДВОИЛА ВАШИ БОНУСЫ! ✨</span>`;
+                }, 1000);
+            }
+        }
         
         // Инициализация игры
         function initGame() {
@@ -5245,65 +5195,52 @@ function updateStats() {
         // Обработка попытки угадать
         function makeGuess() {
             if (!gameActive || taxActive) return;
-
+            
             // Если активно окно подсказки, скрываем его
             if (hintActive) {
                 hideHint();
             }
-
+            
             // Если активна бонусная сложность, деактивируем ее с успехом
             if (bonusDifficultyActive) {
                 deactivateBonusDifficulty(true);
             }
-
+            
             // Отключаем режим тревоги при вводе числа
             if (alarmModeActive) {
                 deactivateAlarmMode();
                 // Устанавливаем следующую активацию через 2 попытки
                 nextAlarmAttempt = attempts + 2;
             }
-
+            
             const userGuess = parseInt(guessInput.value);
-
+            
             // Проверка ввода
             if (isNaN(userGuess) || userGuess < minRange || userGuess > maxRange) {
                 messageEl.textContent = `Пожалуйста, введите число от ${minRange} до ${maxRange}!`;
                 messageEl.className = 'message hint error-animation';
                 return;
             }
-
+            
             attempts++;
             attemptsEl.textContent = `Попытки: ${attempts}`;
-
-            // Обрабатываем событие "Холод" - каждая попытка дает успех
-            if (coldEventActive) {
-                deactivateColdEvent(true);
-            }
-
-            // Проверяем вероятность активировать событие "Холод" (10%)
-            if (Math.random() < 0.1 && !coldEventActive && !panicModeActive && !alarmModeActive && !bonusDifficultyActive && !taxActive) {
-                activateColdEvent();
-                guessInput.value = '';
-                guessInput.focus();
-                return;
-            }
-
+            
             // Проверяем, нужно ли активировать режим тревоги
             if (attempts === nextAlarmAttempt && (currentMax - currentMin) >= 10 && !taxActive) {
                 activateAlarmMode();
             }
-
+            
             // Проверяем, нужно ли показать подсказку (каждые 5 попыток)
             if (attempts % 5 === 0 && attempts > 0 && !taxActive) {
                 // Показываем подсказку через небольшую задержку
                 setTimeout(showHint, 500);
             }
-
+            
             // Проверяем, нужно ли активировать бонусную сложность
             if (inventory.includes('bonus_difficulty') && bonusDifficultyUses < maxBonusDifficultyUses && !taxActive) {
                 activateBonusDifficulty();
             }
-
+            
             // Записываем попытку в историю
             let result;
             if (userGuess === targetNumber) {
@@ -5311,16 +5248,16 @@ function updateStats() {
                 gameActive = false;
                 guessInput.disabled = true;
                 guessBtn.disabled = true;
-
+                
                 // Деактивируем режимы при победе
                 deactivatePanicMode();
                 deactivateAlarmMode();
                 deactivateBonusDifficulty(false);
                 hideHint();
-
+                
                 // Обновляем статистику
                 updateStats();
-
+                
                 messageEl.className = 'message success success-animation';
             } else if (userGuess < targetNumber) {
                 result = 'higher';
@@ -5339,18 +5276,18 @@ function updateStats() {
                     currentMax = userGuess - 1;
                 }
             }
-
+            
             // Добавляем попытку в историю
             guessHistory.push({
                 attempt: attempts,
                 guess: userGuess,
                 result: result
             });
-
+            
             // Обновляем отображение истории и диапазона
             updateHistory();
             updateRangeVisualization();
-
+            
             guessInput.value = '';
             guessInput.focus();
         }
@@ -5405,6 +5342,17 @@ function updateStats() {
         
         // Обработчик для оплаты налога
         payTaxBtn.addEventListener('click', payTax);
+
+        // Обработчики для логина и выхода
+        loginBtn.addEventListener('click', manualLogin);
+        loginPassword.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                manualLogin();
+            }
+        });
+
+        // Обработчик для кнопки выхода
+        logoutBtn.addEventListener('click', logout);
         
         // Система команд консоли
         window.Project500 = function(command) {
@@ -5599,34 +5547,46 @@ function updateStats() {
 
 
         /* ===========================================
-           ЭФФЕКТ СНЕГОПАДА
+           ЭФФЕКТ ПЕПЛА
            =========================================== */
 
-        // Переменные для эффекта снегопада
-        const snowCanvas = document.getElementById('ashCanvas');
-        const snowCtx = snowCanvas.getContext('2d');
+        // Переменные для эффекта пепла
+        const ashCanvas = document.getElementById('ashCanvas');
+        const ashCtx = ashCanvas.getContext('2d');
 
         // Настройка Canvas на полный экран
-        function resizeSnowCanvas() {
-            snowCanvas.width = window.innerWidth;
-            snowCanvas.height = window.innerHeight;
+        function resizeAshCanvas() {
+            ashCanvas.width = window.innerWidth;
+            ashCanvas.height = window.innerHeight;
         }
-        resizeSnowCanvas();
-        window.addEventListener('resize', resizeSnowCanvas);
+        resizeAshCanvas();
+        window.addEventListener('resize', resizeAshCanvas);
 
-        // Класс снежной частицы
-        class SnowParticle {
+        // Класс частицы пепла
+        class AshParticle {
             constructor() {
                 this.reset();
             }
 
             reset() {
-                this.x = Math.random() * snowCanvas.width;
-                this.y = -Math.random() * 50; // Начало выше экрана
+                this.x = Math.random() * ashCanvas.width;
+                this.y = -Math.random() * 50; // Начало ниже экрана
                 this.dy = Math.random() * 0.5 + 0.2; // Вниз, скорость 0.2-0.7
-                this.dx = (Math.random() - 0.5) * 0.4; // Небольшое боковое движение
-                this.size = Math.random() * 3 + 2; // Размер 2-5 пикселей
-                this.alpha = Math.random() * 0.6 + 0.4; // Прозрачность 0.4-1.0
+                this.dx = 0.1 + Math.random() * 0;
+                this.size = Math.random() * 4 + 3; // Размер шрифта пикселей
+                this.alpha = Math.random() * 0.6 + 0.3; // Прозрачность 0.3-0.5
+                this.color = this.getRandomAshColor();
+                
+            }
+
+            getRandomAshColor() {
+                const colors = [
+                    'rgba(255, 255, 255, ',     
+                    'rgba(255, 255, 255, ',     
+                    'rgba(255, 255, 255, ',     
+                    'rgba(255, 255, 255, '       
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
             }
 
             update() {
@@ -5634,54 +5594,64 @@ function updateStats() {
                 this.x += this.dx;
 
                 // Добавляем легкую синусоидальную анимацию для более естественного движения
-                this.x += Math.sin(this.y * 0.005) * 0.2;
+                this.x += Math.sin(this.y * 0.01) * 0.1;
 
-                // Если частица вышла за нижнюю границу, пересоздаем её сверху
-                if (this.y > snowCanvas.height + this.size) {
+                // Если частица вышла за правую границу, перемещаем её влево
+                if (this.x > ashCanvas.width) {
+                    this.x = -this.size;
+                }
+
+                // Если частица вышла за левую границу, перемещаем её вправо
+                if (this.x < -this.size) {
+                    this.x = ashCanvas.width + this.size;
+                }
+
+                // Если частица вышла за нижнюю границу, пересоздаем её вверху
+                if (this.y > ashCanvas.height +this.size) {
                     this.reset();
                 }
             }
 
             draw() {
-                snowCtx.globalAlpha = this.alpha;
-                snowCtx.fillStyle = 'rgba(255, 255, 255, ' + this.alpha + ')';
+                ashCtx.globalAlpha = this.alpha;
+                ashCtx.fillStyle = 'rgba(255, 255, 255, ' + this.alpha + ')';
                 // Рисуем снежинку как круг
-                snowCtx.beginPath();
-                snowCtx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
-                snowCtx.fill();
+                ashCtx.beginPath();
+                ashCtx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+                ashCtx.fill();
             }
         }
 
-        // Массив снежных частиц
-        const snowParticles = [];
-        const particleCount = 100; // Количество частиц
+        // Массив частиц пепла
+        const ashParticles = [];
+        const particleCount = 250; // Количество частиц (увеличено для заметности)
 
-        // Инициализация снежных частиц
-        function initSnowParticles() {
-            snowParticles.length = 0;
+        // Инициализация частиц
+        function initAshParticles() {
+            ashParticles.length = 0;
             for (let i = 0; i < particleCount; i++) {
-                snowParticles.push(new SnowParticle());
+                ashParticles.push(new AshParticle());
             }
         }
 
-        // Анимация снегопада
-        function animateSnow() {
-            snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+        // Анимация пепла
+        function animateAsh() {
+            ashCtx.clearRect(0, 0, ashCanvas.width, ashCanvas.height);
 
-            snowParticles.forEach(particle => {
+            ashParticles.forEach(particle => {
                 particle.update();
                 particle.draw();
             });
 
-            requestAnimationFrame(animateSnow);
+            requestAnimationFrame(animateAsh);
         }
 
+
         // Начало игры при загрузке страницы
-        window.onload = function() {
-            loadStats();
-            initGame();
-            initSnowParticles();
-            animateSnow();
+        window.onload = async function() {
+            await tryAutoLogin();
+            initAshParticles();
+            animateAsh();
         };
     </script>
 </body>
