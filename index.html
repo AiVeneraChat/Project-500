@@ -15,7 +15,7 @@
             --secondary-color: rgb(22, 131, 158);    /* Темно-зеленый */
             --background-color: #000;   /* Черный фон */
             --container-bg: #001522;    /* Темно-зеленый контейнер */
-            --game-area-bg: #000b0f;    /* Темный фон игровой зоны */
+            --game-area-bg: #0f0000;    /* Темный фон игровой зоны */
             --text-color: rgb(255, 255, 255);         /* Зеленый текст */
             --accent-color: rgb(255, 53, 53);       /* Голубой акцент */
             --transition-fast: 0.2s;   /* Быстрый переход */
@@ -56,7 +56,7 @@
             bottom: 0;
             right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.15));
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.15), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.02));
             background-size: 100% 2px, 3px 100%;
             z-index: 10000;
             pointer-events: none;
@@ -3331,7 +3331,7 @@
     <!-- Экран логина -->
     <div id="loginScreen" class="container pixel-border appear">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.11.snowb | HTML EDITION</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.11.snowc | HTML EDITION</div>
         <div style="color: #ff0; text-align: center; font-size: 14px; margin-bottom: 10px;">Введите данные регистрации из Telegram бота</div>
 
         <div class="login-form">
@@ -3347,7 +3347,7 @@
      <!-- Основной экран игры -->
     <div id="mainGame" class="container pixel-border appear" style="display: none;">
         <h1 class="glitch-text" data-text="PROJECT 500">PROJECT 500</h1>
-        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.11.snowb | HTML EDITION</div>
+        <div class="subtitle terminal-text">МАКСИМ ЗАКИРОВ 0.11.snowc | HTML EDITION</div>
         <div style="color: #ff0; text-align: center; font-size: 14px; margin-bottom: 10px;">Это Пре-Альфа версия! Текущий вид игры это только начальная стадия разработки и многое будет изменено!</div>
 
         <div class="game-area pixel-border-reverse appear">
@@ -3576,9 +3576,9 @@
         let shopItems = [
             {
                 id: 'new_years_gift',
-                name: 'Подарок',
+                name: 'Подарок|Скидка 100%',
                 description: 'Бонус +25 монет за игру.',
-                price: 26,
+                price: 0,
                 icon: '🎁',
                 owned: false,
                 hiddenInShop: false,
@@ -3587,9 +3587,9 @@
             },
             {
                 id: 'new_year_greeting',
-                name: 'С новым 2026 годом!',
+                name: 'С новым 2026 годом!|Скидка 100%',
                 description: 'Праздничный коллекционный предмет к 2026 Новому году.',
-                price: 26,
+                price: 0,
                 icon: '🎄',
                 owned: false,
                 hiddenInShop: false,
@@ -3598,9 +3598,9 @@
             },
             {
                 id: 'collector_orange',
-                name: 'Мандарин',
+                name: 'Мандарин|Скидка 100%',
                 description: 'Праздничный коллекционный предмет к 2026 Новому году.',
-                price: 26,
+                price: 0,
                 icon: '🍊',
                 owned: false,
                 hiddenInShop: false,
